@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -19,7 +13,7 @@ model Book {
   description String?
   price       Float
   rate        Int
-  quantity    Int
+  quantity Int
   imageUrl    String
   categoryId  String
   createdAt   DateTime      @default(now())
@@ -30,13 +24,13 @@ model Book {
 }
 
 model BookAuthor {
-  id        String   @id @default(uuid())
-  book      Book     @relation(fields: [bookId], references: [id])
   bookId    String
-  author    Author   @relation(fields: [authorId], references: [id])
   authorId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+  id        String   @id @default(uuid())
+  author    Author   @relation(fields: [authorId], references: [id])
+  book      Book     @relation(fields: [bookId], references: [id])
 
   @@index([bookId, authorId])
 }
@@ -53,9 +47,9 @@ model Category {
   id          String   @id @default(uuid())
   name        String
   description String?
-  books       Book[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
+  books       Book[]
 }
 
 model User {
@@ -63,22 +57,22 @@ model User {
   email       String
   name        String
   password    String
-  userRoleId  Int
-  role        Role     @relation(fields: [userRoleId], references: [id])
   is_active   Boolean
   phoneNumber String?
   address     String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
+  userRoleId  Int
   order       Order[]
+  role        Role     @relation(fields: [userRoleId], references: [id])
 }
 
 model Role {
-  id        Int      @id @default(autoincrement())
   name      String
-  users     User[]
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  users     User[]
 }
 
 model Order {
@@ -87,18 +81,18 @@ model Order {
   payment_method String
   isPaid         Boolean       @default(false)
   userId         String
-  user           User          @relation(fields: [userId], references: [id])
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @default(now())
+  user           User          @relation(fields: [userId], references: [id])
   OrderDetail    OrderDetail[]
 }
 
 model OrderDetail {
   id        String   @id @default(uuid())
   orderId   String
-  order     Order    @relation(fields: [orderId], references: [id])
   bookId    String
-  book      Book     @relation(fields: [bookId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  book      Book     @relation(fields: [bookId], references: [id])
+  order     Order    @relation(fields: [orderId], references: [id])
 }

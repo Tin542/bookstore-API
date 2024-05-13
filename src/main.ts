@@ -1,7 +1,7 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { ClassSerializerInterceptor } from '@nestjs/common';
-import { ValidationPipe} from './shared/pipe/validation.pipe';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+// import { ValidationPipe} from './shared/pipe/validation.pipe';
 import { AppModule } from './app.module';
 import { PrismaService } from './shared/prisma/prisma.service';
 
@@ -12,7 +12,6 @@ async function bootstrap() {
   await prismaService.enableShutdownHooks(app);
 
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   // Use DocumentBuilder to create a new Swagger document configuration
   const config = new DocumentBuilder()

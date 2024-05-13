@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, Book } from '@prisma/client';
 import { PrismaService } from '../../shared/prisma/prisma.service';
-import { BookEntity } from './entities/book.entity';
+import { BookEntity } from '../../entities/book.entity';
 
 @Injectable()
 export class BookRepository {
@@ -15,15 +15,13 @@ export class BookRepository {
   async findMany(params: {
     skip?: number;
     take?: number;
-    cursor?: Prisma.BookWhereUniqueInput;
     where?: Prisma.BookWhereInput;
     orderBy?: Prisma.BookOrderByWithRelationInput;
   }): Promise<BookEntity[]> {
-    const { skip, take, where, orderBy, cursor } = params;
+    const { skip, take, where, orderBy } = params;
     return this.prisma.book.findMany({
       skip,
       take,
-      cursor,
       where,
       orderBy,
     });

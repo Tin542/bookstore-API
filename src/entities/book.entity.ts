@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AuthorEntity } from 'src/modules/author/entities/author.entity';
-import { CategoryEntity } from 'src/modules/category/entities/category.entity';
+import { AuthorEntity } from 'src/entities/author.entity';
+import { CategoryEntity } from 'src/entities/category.entity';
 
 export class BookEntity {
   @ApiProperty()
@@ -19,16 +19,19 @@ export class BookEntity {
   rate: number;
 
   @ApiProperty()
+  quantity: number;
+
+  @ApiProperty()
   imageUrl: string;
 
   @ApiProperty()
   categoryId: string;
 
-  @ApiProperty()
-  category: CategoryEntity;
+  // @ApiProperty()
+  // category: CategoryEntity;
 
-  @ApiProperty()
-  author: AuthorEntity[];
+  // @ApiProperty({isArray: true, })
+  // author: AuthorEntity[];
 
   @ApiProperty()
   createdAt: Date;

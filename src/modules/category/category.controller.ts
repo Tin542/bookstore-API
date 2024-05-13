@@ -4,7 +4,7 @@ import { ApiOkResponse, ApiTags, ApiQuery, ApiCreatedResponse } from '@nestjs/sw
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { CategoryEntity } from './entities/category.entity';
+import { CategoryEntity } from '../../entities/category.entity';
 
 @ApiTags('category')
 @Controller('category')

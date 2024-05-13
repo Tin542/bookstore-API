@@ -4,7 +4,7 @@ import { plainToInstance } from 'class-transformer';
 import { BookRepository } from './book.repository';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
-import { BookEntity } from './entities/book.entity';
+import { BookEntity } from '../../entities/book.entity';
 import { FillterBookDto } from './dto/fillter-book.dto';
 
 @Injectable()
@@ -25,6 +25,7 @@ export class BookService {
         description: createBookDto.description,
         price: createBookDto.price,
         rate: createBookDto.rate,
+        quantity: createBookDto.quantity,
         imageUrl: createBookDto.imageUrl,
         category: {
           connect: {

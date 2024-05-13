@@ -3,7 +3,7 @@ import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { AuthorRepository } from './author.repository';
 import { plainToInstance } from 'class-transformer';
-import { AuthorEntity } from './entities/author.entity';
+import { AuthorEntity } from '../../entities/author.entity';
 
 @Injectable()
 export class AuthorService {

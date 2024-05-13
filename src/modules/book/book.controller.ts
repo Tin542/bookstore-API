@@ -17,7 +17,7 @@ import {
 } from '@nestjs/swagger';
 
 import { BookService } from './book.service';
-import { BookEntity } from './entities/book.entity';
+import { BookEntity } from '../../entities/book.entity';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { FillterBookDto } from './dto/fillter-book.dto';
