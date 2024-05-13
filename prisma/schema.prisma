@@ -1,0 +1,104 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Book {
+  id          String        @id @default(uuid())
+  title       String
+  description String?
+  price       Float
+  rate        Int
+  quantity    Int
+  imageUrl    String
+  categoryId  String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
+  category    Category      @relation(fields: [categoryId], references: [id])
+  authors     BookAuthor[]
+  orderDetail OrderDetail[]
+}
+
+model BookAuthor {
+  id        String   @id @default(uuid())
+  book      Book     @relation(fields: [bookId], references: [id])
+  bookId    String
+  author    Author   @relation(fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([bookId, authorId])
+}
+
+model Author {
+  id        String       @id @default(uuid())
+  name      String
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @default(now()) @updatedAt
+  books     BookAuthor[]
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  books       Book[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+}
+
+model User {
+  id          String   @id @default(uuid())
+  email       String
+  name        String
+  password    String
+  userRoleId  Int
+  role        Role     @relation(fields: [userRoleId], references: [id])
+  is_active   Boolean
+  phoneNumber String?
+  address     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  order       Order[]
+}
+
+model Role {
+  id        Int      @id @default(autoincrement())
+  name      String
+  users     User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Order {
+  id             String        @id @default(uuid())
+  totalPrice     Float
+  payment_method String
+  isPaid         Boolean       @default(false)
+  userId         String
+  user           User          @relation(fields: [userId], references: [id])
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now())
+  OrderDetail    OrderDetail[]
+}
+
+model OrderDetail {
+  id        String   @id @default(uuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id])
+  bookId    String
+  book      Book     @relation(fields: [bookId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
