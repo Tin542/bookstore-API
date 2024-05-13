@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CategoryEntity } from 'src/category/entities/category.entity';
-import { AuthorEntity } from 'src/author/entities/author.entity';
-import { Transform } from 'class-transformer';
+import { AuthorEntity } from 'src/modules/author/entities/author.entity';
+import { CategoryEntity } from 'src/modules/category/entities/category.entity';
 
 export class BookEntity {
   @ApiProperty()
@@ -22,11 +21,14 @@ export class BookEntity {
   @ApiProperty()
   imageUrl: string;
 
-  // @ApiProperty()
-  // category: string;
+  @ApiProperty()
+  categoryId: string;
 
-  // @ApiProperty()
-  // author: [AuthorEntity];
+  @ApiProperty()
+  category: CategoryEntity;
+
+  @ApiProperty()
+  author: AuthorEntity[];
 
   @ApiProperty()
   createdAt: Date;

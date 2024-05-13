@@ -3,8 +3,8 @@ import { IsNotEmpty, IsString } from "class-validator";
 
 export class CreateAuthorDto {
     @ApiProperty()
-    @IsString()
-    @IsNotEmpty()
+    @IsString({message: "name must be string"})
+    @IsNotEmpty({message: "name must not be empty"})
     name: string;
 
     @ApiProperty()

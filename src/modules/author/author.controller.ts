@@ -13,15 +13,16 @@ export class AuthorController {
   constructor(private readonly authorService: AuthorService) {}
 
   @Post()
-  create(@Body() createAuthorDto: CreateAuthorDto) {
-    return this.authorService.create(createAuthorDto);
+  async create(@Body() createAuthorDto: CreateAuthorDto): Promise<ResponseData<AuthorEntity>> {
+    const result = await this.authorService.create(createAuthorDto);
+    return new ResponseData<AuthorEntity>( HttpMessage.SUCCESS, HttpStatus.SUCCESS, result);
   }
 
   @Get()
-  async findAll(): Promise<ResponseData<AuthorEntity[]>> {
+  async findAll(): Promise<ResponseData<AuthorEntity>> {
     try {
       const result = await this.authorService.findAll();
-      return new ResponseData<AuthorEntity[]>( HttpMessage.SUCCESS, HttpStatus.SUCCESS, result);
+      return new ResponseData<AuthorEntity>( HttpMessage.SUCCESS, HttpStatus.SUCCESS, result);
     } catch (error) {
       
     }
