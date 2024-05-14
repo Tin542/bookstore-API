@@ -24,6 +24,10 @@ export class BookRepository {
       take,
       where,
       orderBy,
+      include: {
+        category: true,
+        authors: {select: {author: true}}
+      }
     });
   }
 

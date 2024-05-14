@@ -20,7 +20,10 @@ import { BookService } from './book.service';
 import { BookEntity } from '../../entities/book.entity';
 import { CreateBookDto } from './dto/request/create-book.dto';
 import { UpdateBookDto } from './dto/request/update-book.dto';
-import { FillterBookDto } from './dto/request/fillter-book.dto';
+import { FilterBookDto } from './dto/request/fillter-book.dto';
+import { ResponseData } from 'src/shared/global/globalClass';
+import { HttpMessage, HttpStatus } from 'src/shared/global/globalEnum';
+import { ResponseBookDto } from './dto/response/response-book.dto';
 
 @ApiTags('Book')
 @Controller('book')
@@ -30,19 +33,42 @@ export class BookController {
 
   @Post()
   @ApiCreatedResponse({ type: BookEntity })
-  create(@Body() createBookDto: CreateBookDto) {
+  async create(@Body() createBookDto: CreateBookDto) {
     this.logger.log('Create Book');
-    return this.bookService.create(createBookDto);
+    try {
+      const result = await this.bookService.create(createBookDto);
+      return new ResponseData<BookEntity>(
+        HttpMessage.SUCCESS,
+        HttpStatus.SUCCESS,
+        result,
+      );
+    } catch (error) {
+      return new ResponseData<BookEntity>(
+        HttpMessage.ERROR,
+        HttpStatus.ERROR,
+        error,
+      );
+    }
   }
 
   @Get()
-  @ApiOkResponse({ type: BookEntity, isArray: true })
-  @ApiQuery({ name: 'page', required: false })
-  @ApiQuery({ name: 'limit', required: false })
-  @ApiQuery({ name: 'sort', required: false })
-  findAll(@Query() book: FillterBookDto, page: number, limit: number, sort: string) {
+  @ApiOkResponse({ isArray: true })
+  async findAll(@Query() filter: FilterBookDto): Promise<ResponseData<ResponseBookDto>> {
     this.logger.log('Find all books');
-    return this.bookService.findAll(book, page, limit, sort);
+    try {
+      const result = await this.bookService.findAll(filter);
+      return new ResponseData<ResponseBookDto>(
+        HttpMessage.SUCCESS,
+        HttpStatus.SUCCESS,
+        result,
+      );
+    } catch (error) {
+      return new ResponseData<ResponseBookDto>(
+        HttpMessage.ERROR,
+        HttpStatus.ERROR,
+        error,
+      );
+    }
   }
 
   @Get(':id')

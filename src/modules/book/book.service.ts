@@ -1,11 +1,13 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
 import { BookRepository } from './book.repository';
 import { CreateBookDto } from './dto/request/create-book.dto';
 import { UpdateBookDto } from './dto/request/update-book.dto';
 import { BookEntity } from '../../entities/book.entity';
-import { FillterBookDto } from './dto/request/fillter-book.dto';
+import { FilterBookDto } from './dto/request/fillter-book.dto';
+import { ResponseBookDto } from './dto/response/response-book.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class BookService {
@@ -42,51 +44,42 @@ export class BookService {
     return plainToInstance(BookEntity, result);
   }
 
-  async findAll(
-    fillterBookDto: FillterBookDto,
-    page: number,
-    limit: number,
-    sort: string,
-  ): Promise<{
-    data: BookEntity[];
-    totalProducts: number;
-    totalPages: number;
-    currentPage: number;
-    limit: number;
-  }> {
-    let itemPerPage: number = limit ? limit : 5;
-    let offset: number = page > 0 ? (page - 1) * limit : 0;
-    let currentPage: number = page ? page : 1;
+  async findAll(filter: FilterBookDto): Promise<ResponseBookDto> {
+    let itemPerPage: number = filter.limit ? filter.limit : 5;
+    let offset: number = filter.page > 0 ? (filter.page - 1) * filter.limit : 0;
+    let currentPage: number = filter.page ? filter.page : 1;
 
     const listBooks = await this.bookRepository.findMany({
       skip: offset,
       take: itemPerPage,
       where: {
         AND: {
-          title: { contains: fillterBookDto.title },
-          price: { gte: fillterBookDto.minPrice, lte: fillterBookDto.maxPrice },
-          rate: { equals: fillterBookDto.rate },
+          title: { contains: filter.title },
+          price: { gte: filter.minPrice, lte: filter.maxPrice },
+          rate: { equals: filter.rate },
+          categoryId: { in: filter.category },
+          authors: { some: { authorId: { in: filter.author } } },
         },
       },
       orderBy: {
-        id: 'asc',
+        createdAt: filter.sortByCreateDate,
       },
     });
 
     const total = await this.bookRepository.countBook({
       where: {
         AND: {
-          title: { contains: fillterBookDto.title },
-          price: { gte: fillterBookDto.minPrice, lte: fillterBookDto.maxPrice },
-          rate: { equals: fillterBookDto.rate },
+          title: { contains: filter.title },
+          price: { gte: filter.minPrice, lte: filter.maxPrice },
+          rate: { equals: filter.rate },
+          categoryId: { in: filter.category },
+          authors: { some: { bookId: { in: filter.author } } },
         },
       },
     });
-    const result = listBooks.map((book) =>
-      plainToInstance(BookEntity, book),
-    );
+    const result = listBooks.map((book) => plainToInstance(BookEntity, book));
     return {
-      data: result,
+      list: result,
       totalProducts: total,
       totalPages:
         total % itemPerPage !== 0

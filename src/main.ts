@@ -11,7 +11,7 @@ async function bootstrap() {
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({whitelist: true, transform: true}));
 
   // Use DocumentBuilder to create a new Swagger document configuration
   const config = new DocumentBuilder()
