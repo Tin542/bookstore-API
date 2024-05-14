@@ -27,12 +27,6 @@ export class BookEntity {
   @ApiProperty()
   categoryId: string;
 
-  // @ApiProperty()
-  // category: CategoryEntity;
-
-  // @ApiProperty({isArray: true, })
-  // author: AuthorEntity[];
-
   @ApiProperty()
   createdAt: Date;
 

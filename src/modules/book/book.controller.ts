@@ -18,9 +18,9 @@ import {
 
 import { BookService } from './book.service';
 import { BookEntity } from '../../entities/book.entity';
-import { CreateBookDto } from './dto/create-book.dto';
-import { UpdateBookDto } from './dto/update-book.dto';
-import { FillterBookDto } from './dto/fillter-book.dto';
+import { CreateBookDto } from './dto/request/create-book.dto';
+import { UpdateBookDto } from './dto/request/update-book.dto';
+import { FillterBookDto } from './dto/request/fillter-book.dto';
 
 @ApiTags('Book')
 @Controller('book')

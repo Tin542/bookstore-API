@@ -2,10 +2,10 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
 import { BookRepository } from './book.repository';
-import { CreateBookDto } from './dto/create-book.dto';
-import { UpdateBookDto } from './dto/update-book.dto';
+import { CreateBookDto } from './dto/request/create-book.dto';
+import { UpdateBookDto } from './dto/request/update-book.dto';
 import { BookEntity } from '../../entities/book.entity';
-import { FillterBookDto } from './dto/fillter-book.dto';
+import { FillterBookDto } from './dto/request/fillter-book.dto';
 
 @Injectable()
 export class BookService {
