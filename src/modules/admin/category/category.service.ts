@@ -3,7 +3,7 @@ import { plainToInstance } from 'class-transformer';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryRepository } from './category.repository';
-import { CategoryEntity } from '../../entities/category.entity';
+import { CategoryEntity } from '../../../entities/category.entity';
 
 @Injectable()
 export class CategoryService {

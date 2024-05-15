@@ -4,7 +4,7 @@ import { plainToInstance } from 'class-transformer';
 import { BookRepository } from './book.repository';
 import { CreateBookDto } from './dto/request/create-book.dto';
 import { UpdateBookDto } from './dto/request/update-book.dto';
-import { BookEntity } from '../../entities/book.entity';
+import { BookEntity } from '../../../entities/book.entity';
 import { FilterBookDto } from './dto/request/fillter-book.dto';
 import { ResponseBookDto } from './dto/response/response-book.dto';
 import { Prisma } from '@prisma/client';

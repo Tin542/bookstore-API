@@ -1,8 +1,8 @@
 import { NestFactory, Reflector } from '@nestjs/core';
-// import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { join } from 'path';
+import { join, resolve  } from 'path';
 
 // import { ValidationPipe} from './shared/pipe/validation.pipe';
 import { AppModule } from './app.module';
@@ -15,20 +15,22 @@ async function bootstrap() {
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
 
-  app.useGlobalPipes(new ValidationPipe({whitelist: true}));
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
-  app.setBaseViewsDir(join(__dirname, '..', 'views'));
+  // Read static file in folder views and public
+  app.useStaticAssets(resolve('./src/public'));
+  app.setBaseViewsDir(resolve('./src/views'));
   app.setViewEngine('ejs');
 
-  // const config = new DocumentBuilder()
-  //   .setTitle('BOOKSTORE API')
-  //   .setDescription('API for book store project') 
-  //   .setVersion('0.1')
-  //   .build();
+  const config = new DocumentBuilder()
+    .setTitle('BOOKSTORE API')
+    .setDescription('API for book store project')
+    .setVersion('0.1')
+    .build();
 
-  // const document = SwaggerModule.createDocument(app, config);
-  // SwaggerModule.setup('api', app, document);
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(3000);
 }

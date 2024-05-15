@@ -13,7 +13,7 @@ import { UpdateAuthorDto } from './dto/update-author.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ResponseData } from 'src/shared/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/shared/global/globalEnum';
-import { AuthorEntity } from '../../entities/author.entity';
+import { AuthorEntity } from '../../../entities/author.entity';
 
 @ApiTags('Author')
 @Controller('author')
