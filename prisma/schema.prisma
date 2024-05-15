@@ -13,12 +13,13 @@ model Book {
   description String?
   price       Float
   rate        Int
-  quantity Int
+  quantity    Int
   imageUrl    String
   categoryId  String
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @default(now()) @updatedAt
   category    Category      @relation(fields: [categoryId], references: [id])
+  cartDetail  CartDetail[]
   authors     BookAuthor[]
   orderDetail OrderDetail[]
 }
@@ -64,6 +65,7 @@ model User {
   updatedAt   DateTime @default(now())
   userRoleId  Int
   order       Order[]
+  cart        Cart?
   role        Role     @relation(fields: [userRoleId], references: [id])
 }
 
@@ -72,7 +74,7 @@ model Role {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   id        Int      @id @default(autoincrement())
-  users     User[]
+  user      User[]
 }
 
 model Order {
@@ -95,4 +97,21 @@ model OrderDetail {
   updatedAt DateTime @default(now())
   book      Book     @relation(fields: [bookId], references: [id])
   order     Order    @relation(fields: [orderId], references: [id])
+}
+
+model Cart {
+  id         String       @id @default(uuid())
+  userId     String       @unique()
+  cartDetail CartDetail[]
+  user       User         @relation(fields: [userId], references: [id])
+}
+
+model CartDetail {
+  id       String @id @default(uuid())
+  bookId   String
+  cartId   String
+  quantity Int
+
+  book Book @relation(fields: [bookId], references: [id])
+  cart Cart @relation(fields: [cartId], references: [id])
 }
