@@ -15,6 +15,7 @@ import {
   ApiQuery,
   ApiCreatedResponse,
 } from '@nestjs/swagger';
+import { plainToInstance } from 'class-transformer';
 
 import { BookService } from './book.service';
 import { BookEntity } from '../../entities/book.entity';
@@ -24,6 +25,7 @@ import { FilterBookDto } from './dto/request/fillter-book.dto';
 import { ResponseData } from 'src/shared/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/shared/global/globalEnum';
 import { ResponseBookDto } from './dto/response/response-book.dto';
+import { DetailBookDto } from './dto/response/detail-book.dto';
 
 @ApiTags('Book')
 @Controller('book')
@@ -33,17 +35,18 @@ export class BookController {
 
   @Post()
   @ApiCreatedResponse({ type: BookEntity })
-  async create(@Body() createBookDto: CreateBookDto) {
+  async create(@Body() createBookDto: CreateBookDto): Promise<ResponseData<DetailBookDto>> {
     this.logger.log('Create Book');
     try {
       const result = await this.bookService.create(createBookDto);
-      return new ResponseData<BookEntity>(
+      const bookDto = plainToInstance(DetailBookDto, result);
+      return new ResponseData<DetailBookDto>(
         HttpMessage.SUCCESS,
         HttpStatus.SUCCESS,
-        result,
+        bookDto,
       );
     } catch (error) {
-      return new ResponseData<BookEntity>(
+      return new ResponseData<DetailBookDto>(
         HttpMessage.ERROR,
         HttpStatus.ERROR,
         error,
@@ -72,10 +75,30 @@ export class BookController {
   }
 
   @Get(':id')
-  @ApiOkResponse({ type: BookEntity })
-  findOne(@Param('id') id: string) {
+  @ApiOkResponse({})
+  async findOne(@Param('id') id: string): Promise<ResponseData<BookEntity>> {
     this.logger.log('Find one book');
-    return this.bookService.findOne(id);
+    try {
+      const result = await this.bookService.findOne(id);
+      if(!result) {
+        return new ResponseData<BookEntity>(
+          HttpMessage.NOT_FOUND,
+          HttpStatus.NOT_FOUND,
+          result,
+        );  
+      }
+      return new ResponseData<BookEntity>(
+        HttpMessage.SUCCESS,
+        HttpStatus.SUCCESS,
+        result,
+      );
+    } catch (error) {
+      return new ResponseData (
+        HttpMessage.ERROR,
+        HttpStatus.ERROR,
+        error,
+      );
+    }
   }
 
   @Patch(':id')

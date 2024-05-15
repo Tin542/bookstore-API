@@ -1,8 +1,13 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { AuthorEntity } from 'src/entities/author.entity';
-import { CategoryEntity } from 'src/entities/category.entity';
+import { ApiProperty } from '@nestjs/swagger'
+import { Book, BookAuthor, Category } from '@prisma/client';
+import { CategoryEntity } from './category.entity';
+import { BookAuthorEntity } from './book_author.entity';
+import { AuthorEntity } from './author.entity';
 
-export class BookEntity {
+export class BookEntity implements Book {
+  constructor(partial: Partial<BookEntity>) {
+    Object.assign(this, partial); // Copy properties from partial object to entity Instance
+  }
   @ApiProperty()
   id: string;
 
@@ -32,4 +37,10 @@ export class BookEntity {
 
   @ApiProperty()
   updatedAt: Date;
+
+  @ApiProperty({required: false, type: CategoryEntity})
+  category?: CategoryEntity;
+
+  @ApiProperty({required: false, type: () => [AuthorEntity]})
+  authors?: AuthorEntity[]
 }

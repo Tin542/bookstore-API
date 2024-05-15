@@ -17,7 +17,7 @@ export class BookRepository {
     take?: number;
     where?: Prisma.BookWhereInput;
     orderBy?: Prisma.BookOrderByWithRelationInput;
-  }): Promise<BookEntity[]> {
+  }): Promise<Book[]> {
     const { skip, take, where, orderBy } = params;
     return this.prisma.book.findMany({
       skip,
@@ -25,8 +25,7 @@ export class BookRepository {
       where,
       orderBy,
       include: {
-        category: true,
-        authors: {select: {author: true}}
+        category: true
       }
     });
   }

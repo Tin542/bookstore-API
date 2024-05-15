@@ -8,6 +8,7 @@ import { BookEntity } from '../../entities/book.entity';
 import { FilterBookDto } from './dto/request/fillter-book.dto';
 import { ResponseBookDto } from './dto/response/response-book.dto';
 import { Prisma } from '@prisma/client';
+import { DetailBookDto } from './dto/response/detail-book.dto';
 
 @Injectable()
 export class BookService {
