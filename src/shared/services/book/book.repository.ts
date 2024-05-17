@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, Book } from '@prisma/client';
 import { PrismaService } from '../../../shared/prisma/prisma.service';
-import { BookEntity } from '../../../entities/book.entity';
 
 @Injectable()
 export class BookRepository {
@@ -25,8 +24,8 @@ export class BookRepository {
       where,
       orderBy,
       include: {
-        category: true
-      }
+        category: true,
+      },
     });
   }
 
@@ -40,7 +39,7 @@ export class BookRepository {
   async findOne(id: Prisma.BookWhereUniqueInput): Promise<Book | null> {
     return this.prisma.book.findUnique({
       where: id,
-      include: { category: true, authors: { select: { author: true } } },
+      include: { category: true, author: true },
     });
   }
 

@@ -34,7 +34,7 @@ export class UpdateBookDto {
   
     @ApiProperty({isArray: true, type: "array"})
     @IsNotEmpty()
-    author: string[];
+    author: string;
   
     @ApiProperty()
     @IsNotEmpty()

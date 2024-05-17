@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Author } from '@prisma/client';
-import { BookAuthorEntity } from './book_author.entity';
 import { BookEntity } from './book.entity';
 
 export class AuthorEntity implements Author {
@@ -9,6 +8,9 @@ export class AuthorEntity implements Author {
 
   @ApiProperty()
   name: string;
+
+  @ApiProperty()
+  isActive: boolean;
 
   @ApiProperty()
   createdAt: Date;

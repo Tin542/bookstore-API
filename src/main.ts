@@ -19,8 +19,8 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   // Read static file in folder views and public
-  app.useStaticAssets(resolve('./src/public'));
-  app.setBaseViewsDir(resolve('./src/views'));
+  app.useStaticAssets(resolve('./src/views/assets'));
+  app.setBaseViewsDir(resolve('./src/views/pages'));
   app.setViewEngine('ejs');
 
   const config = new DocumentBuilder()

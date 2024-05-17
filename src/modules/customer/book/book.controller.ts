@@ -17,7 +17,7 @@ import {
 } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 
-import { BookService } from './book.service';
+
 import { BookEntity } from '../../../entities/book.entity';
 import { CreateBookDto } from './dto/request/create-book.dto';
 import { UpdateBookDto } from './dto/request/update-book.dto';
@@ -26,6 +26,7 @@ import { ResponseData } from 'src/shared/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/shared/global/globalEnum';
 import { ResponseBookDto } from './dto/response/response-book.dto';
 import { DetailBookDto } from './dto/response/detail-book.dto';
+import { BookService } from 'src/shared/services/book/book.service';
 
 @ApiTags('Book')
 @Controller('book')

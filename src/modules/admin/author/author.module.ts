@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AuthorService } from './author.service';
+import { AuthorService } from '../../../shared/services/author/author.service';
 import { AuthorController } from './author.controller';
 import { PrismaModule } from 'src/shared/prisma/prisma.module';
-import { AuthorRepository } from './author.repository';
+import { AuthorRepository } from '../../../shared/services/author/author.repository';
 
 @Module({
   imports: [PrismaModule],

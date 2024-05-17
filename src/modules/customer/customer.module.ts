@@ -6,7 +6,7 @@ import { AuthorModule } from './author/author.module';
 import { BookController } from './book/book.controller';
 
 @Module({
-  imports: [PrismaModule, BookModule, CategoryModule, AuthorModule],
+  imports: [PrismaModule],
   providers: [],
   controllers: [],
 })

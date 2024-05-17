@@ -1,27 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
-import { BookRepository } from './book.repository';
-import { CreateBookDto } from './dto/request/create-book.dto';
-import { UpdateBookDto } from './dto/request/update-book.dto';
 import { BookEntity } from '../../../entities/book.entity';
-import { FilterBookDto } from './dto/request/fillter-book.dto';
-import { ResponseBookDto } from './dto/response/response-book.dto';
-import { Prisma } from '@prisma/client';
-import { DetailBookDto } from './dto/response/detail-book.dto';
+import { BookRepository } from './book.repository';
+import { CreateBookDto } from 'src/modules/admin/book/dto/request/create-book.dto';
+import { FilterBookDto } from 'src/modules/admin/book/dto/request/fillter-book.dto';
+import { ResponseBookDto } from 'src/modules/admin/book/dto/response/response-book.dto';
+import { UpdateBookDto } from 'src/modules/admin/book/dto/request/update-book.dto';
 
 @Injectable()
 export class BookService {
   constructor(private bookRepository: BookRepository) {}
 
   async create(createBookDto: CreateBookDto) {
-    let listAuthorId = [];
-    createBookDto.author.forEach((author) => {
-      listAuthorId.push({
-        authorId: author,
-      });
-    });
-
     const result = await this.bookRepository.create({
       data: {
         title: createBookDto.title,
@@ -35,9 +26,9 @@ export class BookService {
             id: createBookDto.category,
           },
         },
-        authors: {
-          createMany: {
-            data: listAuthorId,
+        author: {
+          connect: {
+            id: createBookDto.author,
           },
         },
       },
@@ -59,7 +50,7 @@ export class BookService {
           price: { gte: filter.minPrice, lte: filter.maxPrice },
           rate: { equals: filter.rate },
           categoryId: { in: filter.category },
-          authors: { some: { authorId: { in: filter.author } } },
+          authorId: { in: filter.author },
         },
       },
       orderBy: {
@@ -74,7 +65,7 @@ export class BookService {
           price: { gte: filter.minPrice, lte: filter.maxPrice },
           rate: { equals: filter.rate },
           categoryId: { in: filter.category },
-          authors: { some: { bookId: { in: filter.author } } },
+          authorId: { in: filter.author },
         },
       },
     });
@@ -97,12 +88,6 @@ export class BookService {
   }
 
   async update(id: string, updateBookDto: UpdateBookDto) {
-    let listAuthorId = [];
-    updateBookDto.author.forEach((author) => {
-      listAuthorId.push({
-        authorId: author,
-      });
-    });
     const result = await this.bookRepository.update({
       id: { id },
       data: {
@@ -116,9 +101,9 @@ export class BookService {
             id: updateBookDto.category,
           },
         },
-        authors: {
-          createMany: {
-            data: listAuthorId,
+        author: {
+          connect: {
+            id: updateBookDto.author,
           },
         },
       },

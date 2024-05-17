@@ -15,44 +15,36 @@ enum OrderStatus {
   SHIPING
   DONE
 }
+
 model Book {
-  id          String       @id @default(uuid())
-  title       String
-  description String?
-  price       Float
-  rate        Int
-  quantity    Int
-  imageUrl    String
-  isActive    Boolean      @default(true)
-  categoryId  String
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @default(now()) @updatedAt
-  cartDetail  CartItem[]
-  authors     BookAuthor[]
-  orderDetail OrderItem[]
-  bookPromotion BookPromotion[]
-  review Review[]
-  category    Category     @relation(fields: [categoryId], references: [id])
-}
+  id            String                      @id @default(uuid())
+  title         String
+  description   String?
+  price         Float
+  rate          Int
+  quantity      Int
+  imageUrl      String
+  isActive      Boolean                     @default(true)
+  categoryId    String
+  authorId      String
+  createdAt     DateTime                    @default(now())
+  updatedAt     DateTime                    @default(now()) @updatedAt
+  cartDetail    CartItem[]
+  orderDetail   OrderItem[]
+  bookPromotion BookPromotionRelationship[]
+  review        Review[]
 
-model BookAuthor {
-  bookId    String
-  authorId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  id        String   @id @default(uuid())
-  author    Author   @relation(fields: [authorId], references: [id])
-  book      Book     @relation(fields: [bookId], references: [id])
-
-  @@index([bookId, authorId])
+  category Category @relation(fields: [categoryId], references: [id])
+  author   Author   @relation(fields: [authorId], references: [id])
 }
 
 model Author {
-  id        String       @id @default(uuid())
+  id        String   @id @default(uuid())
   name      String
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @default(now()) @updatedAt
-  books     BookAuthor[]
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  books     Book[]
 }
 
 model Category {
@@ -66,42 +58,46 @@ model Category {
 }
 
 model User {
-  id          String   @id @default(uuid())
-  email       String
-  name        String
+  id          String     @id @default(uuid())
+  email       String     @unique()
+  fullName    String
+  useranme    String     @unique()
   password    String
-  is_active   Boolean  @default(true)
+  isActive    Boolean    @default(true)
+  phoneNumber String?
+  address     String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @default(now())
+  order       Order[]
+  review      Review[]
+  cartItem    CartItem[]
+}
+
+model Admin {
+  id          String   @id @default(uuid())
+  email       String   @unique()
+  username    String   @unique()
+  fullName    String
+  password    String
+  isActive    Boolean  @default(true)
   phoneNumber String?
   address     String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
-  cartId      String   @unique()
-  userRoleId  Int
-  order       Order[]
-  review Review[]
-  cart        Cart?    @relation(fields: [cartId], references: [id])
-  role        Role     @relation(fields: [userRoleId], references: [id])
-}
-
-model Role {
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  id        Int      @id @default(autoincrement())
-  user      User[]
 }
 
 model Order {
   id            String      @id @default(uuid())
   totalPrice    Float
   paymentMethod String
-  isPaid        Boolean     @default(false)
   userId        String
   status        OrderStatus
+  paidAt        DateTime
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @default(now())
   OrderDetail   OrderItem[]
-  user          User        @relation(fields: [userId], references: [id])
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 model OrderItem {
@@ -110,64 +106,56 @@ model OrderItem {
   bookId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-  book      Book     @relation(fields: [bookId], references: [id])
-  order     Order    @relation(fields: [orderId], references: [id])
-}
 
-model Cart {
-  id         String     @id @default(uuid())
-  cartDetail CartItem[]
-  user       User?
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @default(now())
+  book  Book  @relation(fields: [bookId], references: [id])
+  order Order @relation(fields: [orderId], references: [id])
 }
 
 model CartItem {
   id        String   @id @default(uuid())
   bookId    String
-  cartId    String
+  userId    String
   quantity  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
   book Book @relation(fields: [bookId], references: [id])
-  cart Cart @relation(fields: [cartId], references: [id])
+  User User @relation(fields: [userId], references: [id])
 }
 
 model Promotion {
-  id String @id @default(uuid())
-  description String
-  startDate DateTime
-  expriedDate DateTime
+  id               String   @id @default(uuid())
+  description      String
+  startDate        DateTime
+  expriedDate      DateTime
   discountPercents Int
-  isActive Boolean
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  isActive         Boolean
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @default(now())
 
-  bookPromotion BookPromotion[]
+  bookPromotion BookPromotionRelationship[]
 }
 
-model BookPromotion {
-  id String @id @default(uuid())
-  bookId String
+model BookPromotionRelationship {
+  id          String   @id @default(uuid())
+  bookId      String
   promotionId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 
-  book Book @relation(fields: [bookId], references: [id])
+  book      Book      @relation(fields: [bookId], references: [id])
   promotion Promotion @relation(fields: [promotionId], references: [id])
-
 }
 
 model Review {
-  id String @id @default(uuid())
-  content String
-  rate Int
-  bookId String
-  userId String
+  id        String   @id @default(uuid())
+  content   String
+  rate      Int
+  bookId    String
+  userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-  
+
   book Book @relation(fields: [bookId], references: [id])
   user User @relation(fields: [userId], references: [id])
 }

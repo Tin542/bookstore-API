@@ -10,7 +10,8 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import { AuthorService } from './author.service';
+import { Moment } from 'moment';
+import { AuthorService } from '../../../shared/services/author/author.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { ResponseData } from 'src/shared/global/globalClass';
@@ -44,7 +45,7 @@ export class AuthorController {
   @Render('adminPage')
   async findAll(@Req() req: Request, @Res() res: Response) {
     const result = await this.authorService.findAll();
-    return result;
+    return { data: result, module: 'author' };
   }
 
   @Get(':id')

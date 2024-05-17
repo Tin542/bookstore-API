@@ -1,7 +1,5 @@
-import { BookAuthor } from "@prisma/client";
 import {} from 'class-transformer'
 import { AuthorEntity } from "src/entities/author.entity";
-import { BookAuthorEntity } from "src/entities/book_author.entity";
 import { CategoryEntity } from "src/entities/category.entity";
 
 export class DetailBookDto {
@@ -14,7 +12,7 @@ export class DetailBookDto {
   imageUrl: string;
   categoryId: string;
   category: CategoryEntity;
-  authors: BookAuthorEntity[];
+  authors: AuthorEntity;
   createdAt: Date;
   updatedAt: Date;
 }

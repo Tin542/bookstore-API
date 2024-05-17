@@ -35,9 +35,9 @@ export class CreateBookDto {
   @IsNotEmpty({message: 'category must not empty'})
   category: string;
 
-  @ApiProperty({isArray: true, type: "array"})
+  @ApiProperty()
   @IsNotEmpty({message: 'Author must not empty'})
-  author: string[];
+  author: string;
 
   @ApiProperty()
   @IsNotEmpty()

@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Book, BookAuthor, Category } from '@prisma/client';
+import { Book, Category } from '@prisma/client';
 import { CategoryEntity } from './category.entity';
-import { BookAuthorEntity } from './book_author.entity';
 import { AuthorEntity } from './author.entity';
 
 export class BookEntity implements Book {
@@ -35,6 +34,9 @@ export class BookEntity implements Book {
   @ApiProperty()
   categoryId: string;
 
+  @ApiProperty({ required: false })
+  authorId: string;
+
   @ApiProperty()
   createdAt: Date;
 
@@ -44,6 +46,6 @@ export class BookEntity implements Book {
   @ApiProperty({required: false, type: CategoryEntity})
   category?: CategoryEntity;
 
-  @ApiProperty({required: false, type: () => [AuthorEntity]})
-  authors?: AuthorEntity[]
+  @ApiProperty({required: false, type: CategoryEntity})
+  authors?: AuthorEntity
 }
