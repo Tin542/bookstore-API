@@ -29,6 +29,9 @@ export class BookEntity implements Book {
   @ApiProperty()
   imageUrl: string;
 
+  @ApiProperty({ required: false })
+  isActive: boolean;
+
   @ApiProperty()
   categoryId: string;
 

@@ -11,6 +11,9 @@ export class CategoryEntity implements Category {
   description: string;
 
   @ApiProperty({ required: false })
+  isActive: boolean;
+
+  @ApiProperty({ required: false })
   createdAt: Date;
 
   @ApiProperty({ required: false })

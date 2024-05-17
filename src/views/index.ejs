@@ -2,11 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookStore admin</title>
+    <title>Nest & EJS ❤</title>
+    
+    <!-- CSS (load bootstrap from a CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+      body { padding-top:50px; }
+    </style>
 </head>
-<body>
-    <h1>Hello world</h1>
-    <%=result%>
+<body class="container">
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about">About</a>
+          </li>
+        </ul>
+      </nav>
+</header>
+
+<main>
+  <div class="jumbotron">
+    <h1><%-title%></h1>
+    <p><%-subtitle%></p>
+  </div>
+</main>
+<img src="/logo.svg"> 
+<footer>
+</footer>
 </body>
 </html>

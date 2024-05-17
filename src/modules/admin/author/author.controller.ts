@@ -6,17 +6,17 @@ import {
   Patch,
   Param,
   Delete,
+  Render,
+  Req,
+  Res,
 } from '@nestjs/common';
 import { AuthorService } from './author.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
-import { ApiTags } from '@nestjs/swagger';
 import { ResponseData } from 'src/shared/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/shared/global/globalEnum';
 import { AuthorEntity } from '../../../entities/author.entity';
-
-@ApiTags('Author')
-@Controller('author')
+@Controller('admin/author')
 export class AuthorController {
   constructor(private readonly authorService: AuthorService) {}
 
@@ -41,28 +41,17 @@ export class AuthorController {
   }
 
   @Get()
-  async findAll(): Promise<ResponseData<AuthorEntity>> {
-    try {
-      const result = await this.authorService.findAll();
-      return new ResponseData<AuthorEntity>(
-        HttpMessage.SUCCESS,
-        HttpStatus.SUCCESS,
-        result,
-      );
-    } catch (error) {
-      return new ResponseData<AuthorEntity>(
-        HttpMessage.ERROR,
-        HttpStatus.ERROR,
-        null,
-      );
-    }
+  @Render('adminPage')
+  async findAll(@Req() req: Request, @Res() res: Response) {
+    const result = await this.authorService.findAll();
+    return result;
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<ResponseData<AuthorEntity>> {
     try {
       const result = await this.authorService.findOne(id);
-      if(!result){
+      if (!result) {
         return new ResponseData<AuthorEntity>(
           HttpMessage.NOT_FOUND,
           HttpStatus.NOT_FOUND,
@@ -90,7 +79,7 @@ export class AuthorController {
   ): Promise<ResponseData<AuthorEntity>> {
     try {
       const author = await this.authorService.findOne(id);
-      if(!author) {
+      if (!author) {
         return new ResponseData<AuthorEntity>(
           HttpMessage.NOT_FOUND,
           HttpStatus.NOT_FOUND,
@@ -116,7 +105,7 @@ export class AuthorController {
   async remove(@Param('id') id: string) {
     try {
       const author = await this.authorService.findOne(id);
-      if(!author) {
+      if (!author) {
         return new ResponseData<AuthorEntity>(
           HttpMessage.NOT_FOUND,
           HttpStatus.NOT_FOUND,

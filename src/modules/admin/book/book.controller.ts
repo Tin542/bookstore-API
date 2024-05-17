@@ -27,14 +27,12 @@ import { HttpMessage, HttpStatus } from 'src/shared/global/globalEnum';
 import { ResponseBookDto } from './dto/response/response-book.dto';
 import { DetailBookDto } from './dto/response/detail-book.dto';
 
-@ApiTags('Book')
 @Controller('book')
 export class BookController {
   private readonly logger = new Logger(BookController.name);
   constructor(private readonly bookService: BookService) {}
 
   @Post()
-  @ApiCreatedResponse({ type: BookEntity })
   async create(@Body() createBookDto: CreateBookDto): Promise<ResponseData<DetailBookDto>> {
     this.logger.log('Create Book');
     try {
@@ -55,7 +53,6 @@ export class BookController {
   }
 
   @Get()
-  @ApiOkResponse({ isArray: true })
   async findAll(@Query() filter: FilterBookDto): Promise<ResponseData<ResponseBookDto>> {
     this.logger.log('Find all books');
     try {
@@ -75,7 +72,6 @@ export class BookController {
   }
 
   @Get(':id')
-  @ApiOkResponse({})
   async findOne(@Param('id') id: string): Promise<ResponseData<BookEntity>> {
     this.logger.log('Find one book');
     try {

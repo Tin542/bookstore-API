@@ -12,12 +12,12 @@ export class AuthorService {
 
   async create(createAuthorDto: CreateAuthorDto) {
     const result = await this.authorRepository.create({data: createAuthorDto});
-    return plainToInstance(AuthorEntity, result);
+    return result;
   }
 
   async findAll() {
     const result = await this.authorRepository.findMany({});
-    return plainToInstance(AuthorEntity, result);
+    return result;
   }
 
   async findOne(id: string) {
