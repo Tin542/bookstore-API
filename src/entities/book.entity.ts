@@ -1,54 +1,51 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { Book, Category } from '@prisma/client';
+
 import { CategoryEntity } from './category.entity';
 import { AuthorEntity } from './author.entity';
+import { Field, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 export class BookEntity implements Book {
-  constructor(partial: Partial<BookEntity>) {
-    Object.assign(this, partial); // Copy properties from partial object to entity Instance
-  }
-  @ApiProperty()
+  @Field(() => String)
   id: string;
 
-  @ApiProperty()
+  @Field(() => String)
   title: string;
 
-  @ApiProperty()
+  @Field(() => String)
   description: string;
 
-  @ApiProperty()
+  @Field(() => Number)
   price: number;
 
-  @ApiProperty()
+  @Field(() => Number)
   rate: number;
 
-  @ApiProperty()
+  @Field(() => Number)
   quantity: number;
 
-  @ApiProperty()
+  @Field(() => String)
   imageUrl: string;
 
-  @ApiProperty({ required: false })
+  @Field(() => Boolean)
   isActive: boolean;
 
-  @ApiProperty({})
+  @Field(() => Boolean)
   isOutofStock: boolean;
 
-  @ApiProperty()
+  @Field(() => String)
   categoryId: string;
 
-  @ApiProperty({ required: false })
+  @Field(() => String)
   authorId: string;
 
-  @ApiProperty()
+  @Field(() => Date)
   createdAt: Date;
 
-  @ApiProperty()
+  @Field(() => Date)
   updatedAt: Date;
 
-  @ApiProperty({required: false, type: CategoryEntity})
   category?: CategoryEntity;
 
-  @ApiProperty({required: false, type: CategoryEntity})
   authors?: AuthorEntity
 }

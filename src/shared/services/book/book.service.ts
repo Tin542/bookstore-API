@@ -5,7 +5,6 @@ import { BookEntity } from '../../../entities/book.entity';
 import { BookRepository } from './book.repository';
 import { CreateBookDto } from 'src/dtos/book/create-book.dto';
 import { FilterBookDto } from 'src/dtos/book/fillter-book.dto';
-import { ResponseBookDto } from 'src/dtos/book/response-book.dto';
 import { UpdateBookDto } from 'src/dtos/book/update-book.dto';
 
 @Injectable()
@@ -35,7 +34,7 @@ export class BookService {
     return plainToInstance(BookEntity, result);
   }
 
-  async findAll(filter: FilterBookDto): Promise<ResponseBookDto> {
+  async findAll(filter: FilterBookDto) {
     let itemPerPage: number = filter.limit ? filter.limit : 5;
     let offset: number = filter.page > 0 ? (filter.page - 1) * filter.limit : 0;
     let currentPage: number = filter.page ? filter.page : 1;

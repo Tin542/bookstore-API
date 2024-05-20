@@ -21,9 +21,6 @@ import { BookEntity } from '../../../entities/book.entity';
 import { CreateBookDto } from '../../../dtos/book/create-book.dto';
 import { UpdateBookDto } from '../../../dtos/book/update-book.dto';
 import { FilterBookDto } from '../../../dtos/book/fillter-book.dto';
-import { ResponseData } from 'src/shared/global/globalClass';
-import { HttpMessage, HttpStatus } from 'src/shared/global/globalEnum';
-import { ResponseBookDto } from '../../../dtos/book/response-book.dto';
 import { DetailBookDto } from '../../../dtos/book/detail-book.dto';
 import { BookService } from 'src/shared/services/book/book.service';
 
@@ -33,68 +30,21 @@ export class BookController {
   constructor(private readonly bookService: BookService) {}
 
   @Post()
-  async create(@Body() createBookDto: CreateBookDto): Promise<ResponseData<DetailBookDto>> {
+  async create(@Body() createBookDto: CreateBookDto) {
     this.logger.log('Create Book');
-    try {
-      const result = await this.bookService.create(createBookDto);
-      const bookDto = plainToInstance(DetailBookDto, result);
-      return new ResponseData<DetailBookDto>(
-        HttpMessage.SUCCESS,
-        HttpStatus.SUCCESS,
-        bookDto,
-      );
-    } catch (error) {
-      return new ResponseData<DetailBookDto>(
-        HttpMessage.ERROR,
-        HttpStatus.ERROR,
-        error,
-      );
-    }
+    return 'create book';
   }
 
   @Get()
-  async findAll(@Query() filter: FilterBookDto): Promise<ResponseData<ResponseBookDto>> {
+  async findAll(@Query() filter: FilterBookDto) {
     this.logger.log('Find all books');
-    try {
-      const result = await this.bookService.findAll(filter);
-      return new ResponseData<ResponseBookDto>(
-        HttpMessage.SUCCESS,
-        HttpStatus.SUCCESS,
-        result,
-      );
-    } catch (error) {
-      return new ResponseData<ResponseBookDto>(
-        HttpMessage.ERROR,
-        HttpStatus.ERROR,
-        error,
-      );
-    }
+   return 'list book'
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<ResponseData<BookEntity>> {
+  async findOne(@Param('id') id: string) {
     this.logger.log('Find one book');
-    try {
-      const result = await this.bookService.findOne(id);
-      if(!result) {
-        return new ResponseData<BookEntity>(
-          HttpMessage.NOT_FOUND,
-          HttpStatus.NOT_FOUND,
-          result,
-        );  
-      }
-      return new ResponseData<BookEntity>(
-        HttpMessage.SUCCESS,
-        HttpStatus.SUCCESS,
-        result,
-      );
-    } catch (error) {
-      return new ResponseData (
-        HttpMessage.ERROR,
-        HttpStatus.ERROR,
-        error,
-      );
-    }
+    return 'find one book'
   }
 
   @Patch(':id')

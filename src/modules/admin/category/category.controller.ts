@@ -4,8 +4,6 @@ import { CategoryService } from '../../../shared/services/category/category.serv
 import { CreateCategoryDto } from '../../../dtos/category/create-category.dto';
 import { UpdateCategoryDto } from '../../../dtos/category/update-category.dto';
 import { CategoryEntity } from '../../../entities/category.entity';
-import { ResponseData } from 'src/shared/global/globalClass';
-import { HttpMessage, HttpStatus } from 'src/shared/global/globalEnum';
 import { plainToInstance } from 'class-transformer';
 
 @Controller('admin/category')

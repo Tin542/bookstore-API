@@ -1,23 +1,22 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Author } from '@prisma/client';
 import { BookEntity } from './book.entity';
+import { Field, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 export class AuthorEntity implements Author {
-  @ApiProperty()
+  @Field(() => String)
   id: string;
 
-  @ApiProperty()
+  @Field(() => String)
   name: string;
 
-  @ApiProperty()
+  @Field(() => Boolean)
   isActive: boolean;
 
-  @ApiProperty()
+  @Field(() => Date)
   createdAt: Date;
 
-  @ApiProperty()
+  @Field(() => Date)
   updatedAt: Date;
 
-  @ApiProperty({required: false, type: BookEntity})
-  book?: BookEntity[]
 }

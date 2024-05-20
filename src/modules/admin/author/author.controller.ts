@@ -13,8 +13,6 @@ import {
 import { AuthorService } from '../../../shared/services/author/author.service';
 import { CreateAuthorDto } from '../../../dtos/author/create-author.dto';
 import { UpdateAuthorDto } from '../../../dtos/author/update-author.dto';
-import { ResponseData } from 'src/shared/global/globalClass';
-import { HttpMessage, HttpStatus } from 'src/shared/global/globalEnum';
 import { AuthorEntity } from '../../../entities/author.entity';
 @Controller('admin/author')
 export class AuthorController {
@@ -41,82 +39,20 @@ export class AuthorController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<ResponseData<AuthorEntity>> {
-    try {
-      const result = await this.authorService.findOne(id);
-      if (!result) {
-        return new ResponseData<AuthorEntity>(
-          HttpMessage.NOT_FOUND,
-          HttpStatus.NOT_FOUND,
-          result,
-        );
-      }
-      return new ResponseData<AuthorEntity>(
-        HttpMessage.SUCCESS,
-        HttpStatus.SUCCESS,
-        result,
-      );
-    } catch (error) {
-      return new ResponseData<AuthorEntity>(
-        HttpMessage.ERROR,
-        HttpStatus.ERROR,
-        null,
-      );
-    }
+  async findOne(@Param('id') id: string) {
+   return 'find one'
   }
 
   @Patch(':id')
   async update(
     @Param('id') id: string,
     @Body() updateAuthorDto: UpdateAuthorDto,
-  ): Promise<ResponseData<AuthorEntity>> {
-    try {
-      const author = await this.authorService.findOne(id);
-      if (!author) {
-        return new ResponseData<AuthorEntity>(
-          HttpMessage.NOT_FOUND,
-          HttpStatus.NOT_FOUND,
-          null,
-        );
-      }
-      const result = await this.authorService.update(id, updateAuthorDto);
-      return new ResponseData<AuthorEntity>(
-        HttpMessage.SUCCESS,
-        HttpStatus.SUCCESS,
-        result,
-      );
-    } catch (error) {
-      return new ResponseData<AuthorEntity>(
-        HttpMessage.ERROR,
-        HttpStatus.ERROR,
-        null,
-      );
-    }
+  ){
+    return 'update'
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    try {
-      const author = await this.authorService.findOne(id);
-      if (!author) {
-        return new ResponseData<AuthorEntity>(
-          HttpMessage.NOT_FOUND,
-          HttpStatus.NOT_FOUND,
-          null,
-        );
-      }
-      const result = await this.authorService.remove(id);
-      return new ResponseData<AuthorEntity>(
-        HttpMessage.SUCCESS,
-        HttpStatus.SUCCESS,
-        result,
-      );
-    } catch (error) {
-      return new ResponseData<AuthorEntity>(
-        HttpMessage.ERROR,
-        HttpStatus.ERROR,
-        null,
-      );
-    }
+    return 'remove';
   }
 }
