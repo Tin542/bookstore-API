@@ -12,6 +12,7 @@ import { CategoryModule } from './category/category.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      context: ({ req }) => ({ request: req }),
     }),
     PrismaModule,
     CategoryModule

@@ -1,6 +1,6 @@
 import {} from 'class-transformer'
 import { AuthorEntity } from "src/entities/author.entity";
-import { CategoryEntity } from "src/entities/category.entity";
+import { Category } from "src/entities/category.entity";
 
 export class DetailBookDto {
   id: string;
@@ -11,7 +11,7 @@ export class DetailBookDto {
   quantity: number;
   imageUrl: string;
   categoryId: string;
-  category: CategoryEntity;
+  category: Category;
   authors: AuthorEntity;
   createdAt: Date;
   updatedAt: Date;

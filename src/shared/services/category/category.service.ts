@@ -3,44 +3,44 @@ import { plainToInstance } from 'class-transformer';
 import { CreateCategoryDto } from '../../../dtos/category/create-category.dto';
 import { UpdateCategoryDto } from '../../../dtos/category/update-category.dto';
 import { CategoryRepository } from './category.repository';
-import { CategoryEntity } from '../../../entities/category.entity';
+import { Category } from '../../../entities/category.entity';
 
 @Injectable()
 export class CategoryService {
   constructor(private categoryRepository: CategoryRepository) {}
 
-  async create(createCategorytDto: CreateCategoryDto): Promise<CategoryEntity> {
+  async create(createCategorytDto: CreateCategoryDto): Promise<Category> {
     const result = await this.categoryRepository.create({
       data: {
         name: createCategorytDto.name,
         description: createCategorytDto.description,
       },
     });
-    return plainToInstance(CategoryEntity, result);
+    return plainToInstance(Category, result);
   }
 
-  async findAll(): Promise<CategoryEntity[]> {
+  async findAll(): Promise<Category[]>  {
     const result = await this.categoryRepository.findMany({});
-    return plainToInstance(CategoryEntity, result);
+    return result;
   }
 
-  async findOne(id: string): Promise<CategoryEntity> {
+  async findOne(id: string): Promise<Category> {
     const result = await this.categoryRepository.findOne({ id });
-    return plainToInstance(CategoryEntity, result);
+    return plainToInstance(Category, result);
   }
 
   async update(
     id: string,
     updateCategoryDto: UpdateCategoryDto,
-  ): Promise<CategoryEntity> {
+  ): Promise<Category> {
     const result = await this.categoryRepository.update({
       id: { id },
       data: updateCategoryDto,
     });
-    return plainToInstance(CategoryEntity, result);
+    return plainToInstance(Category, result);
   }
 
-  async remove(id: string): Promise<CategoryEntity> {
+  async remove(id: string): Promise<Category> {
     const result = await this.categoryRepository.delete({id});
     return result;
   }

@@ -1,6 +1,6 @@
-import { Book, Category } from '@prisma/client';
+import { Book } from '@prisma/client';
 
-import { CategoryEntity } from './category.entity';
+import { Category } from './category.entity';
 import { AuthorEntity } from './author.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
 
@@ -44,8 +44,4 @@ export class BookEntity implements Book {
 
   @Field(() => Date)
   updatedAt: Date;
-
-  category?: CategoryEntity;
-
-  authors?: AuthorEntity
 }

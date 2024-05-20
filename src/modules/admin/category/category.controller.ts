@@ -3,7 +3,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Logger, Render, Req,
 import { CategoryService } from '../../../shared/services/category/category.service';
 import { CreateCategoryDto } from '../../../dtos/category/create-category.dto';
 import { UpdateCategoryDto } from '../../../dtos/category/update-category.dto';
-import { CategoryEntity } from '../../../entities/category.entity';
+import { Category } from '../../../entities/category.entity';
 import { plainToInstance } from 'class-transformer';
 
 @Controller('admin/category')
