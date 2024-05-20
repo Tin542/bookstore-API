@@ -3,10 +3,10 @@ import { plainToInstance } from 'class-transformer';
 
 import { BookEntity } from '../../../entities/book.entity';
 import { BookRepository } from './book.repository';
-import { CreateBookDto } from 'src/modules/admin/book/dto/request/create-book.dto';
-import { FilterBookDto } from 'src/modules/admin/book/dto/request/fillter-book.dto';
-import { ResponseBookDto } from 'src/modules/admin/book/dto/response/response-book.dto';
-import { UpdateBookDto } from 'src/modules/admin/book/dto/request/update-book.dto';
+import { CreateBookDto } from 'src/dtos/book/create-book.dto';
+import { FilterBookDto } from 'src/dtos/book/fillter-book.dto';
+import { ResponseBookDto } from 'src/dtos/book/response-book.dto';
+import { UpdateBookDto } from 'src/dtos/book/update-book.dto';
 
 @Injectable()
 export class BookService {

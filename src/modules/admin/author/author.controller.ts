@@ -11,8 +11,8 @@ import {
   Res,
 } from '@nestjs/common';
 import { AuthorService } from '../../../shared/services/author/author.service';
-import { CreateAuthorDto } from './dto/create-author.dto';
-import { UpdateAuthorDto } from './dto/update-author.dto';
+import { CreateAuthorDto } from '../../../dtos/author/create-author.dto';
+import { UpdateAuthorDto } from '../../../dtos/author/update-author.dto';
 import { ResponseData } from 'src/shared/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/shared/global/globalEnum';
 import { AuthorEntity } from '../../../entities/author.entity';

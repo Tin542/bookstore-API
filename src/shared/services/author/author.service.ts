@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthorDto } from '../../../modules/admin/author/dto/create-author.dto';
-import { UpdateAuthorDto } from '../../../modules/admin/author/dto/update-author.dto';
+import { CreateAuthorDto } from '../../../dtos/author/create-author.dto';
+import { UpdateAuthorDto } from '../../../dtos/author/update-author.dto';
 import { AuthorRepository } from './author.repository';
 import { plainToInstance } from 'class-transformer';
 import { AuthorEntity } from '../../../entities/author.entity';

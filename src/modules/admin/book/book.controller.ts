@@ -18,13 +18,13 @@ import {
 import { plainToInstance } from 'class-transformer';
 
 import { BookEntity } from '../../../entities/book.entity';
-import { CreateBookDto } from './dto/request/create-book.dto';
-import { UpdateBookDto } from './dto/request/update-book.dto';
-import { FilterBookDto } from './dto/request/fillter-book.dto';
+import { CreateBookDto } from '../../../dtos/book/create-book.dto';
+import { UpdateBookDto } from '../../../dtos/book/update-book.dto';
+import { FilterBookDto } from '../../../dtos/book/fillter-book.dto';
 import { ResponseData } from 'src/shared/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/shared/global/globalEnum';
-import { ResponseBookDto } from './dto/response/response-book.dto';
-import { DetailBookDto } from './dto/response/detail-book.dto';
+import { ResponseBookDto } from '../../../dtos/book/response-book.dto';
+import { DetailBookDto } from '../../../dtos/book/detail-book.dto';
 import { BookService } from 'src/shared/services/book/book.service';
 
 @Controller('book')

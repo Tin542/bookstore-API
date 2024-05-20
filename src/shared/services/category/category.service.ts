@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CreateCategoryDto } from '../../../dtos/category/create-category.dto';
+import { UpdateCategoryDto } from '../../../dtos/category/update-category.dto';
 import { CategoryRepository } from './category.repository';
 import { CategoryEntity } from '../../../entities/category.entity';
 

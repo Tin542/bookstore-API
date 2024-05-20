@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Logger } from '@nestjs/common';
 import { ApiOkResponse, ApiTags, ApiQuery, ApiCreatedResponse } from '@nestjs/swagger';
 
-import { CategoryService } from './category.service';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CategoryService } from '../../../shared/services/category/category.service';
+import { CreateCategoryDto } from '../../../dtos/category/create-category.dto';
+import { UpdateCategoryDto } from '../../../dtos/category/update-category.dto';
 import { CategoryEntity } from '../../../entities/category.entity';
 import { ResponseData } from 'src/shared/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/shared/global/globalEnum';

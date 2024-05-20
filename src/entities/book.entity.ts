@@ -31,6 +31,9 @@ export class BookEntity implements Book {
   @ApiProperty({ required: false })
   isActive: boolean;
 
+  @ApiProperty({})
+  isOutofStock: boolean;
+
   @ApiProperty()
   categoryId: string;
 
