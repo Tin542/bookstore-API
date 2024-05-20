@@ -38,82 +38,20 @@ export class CategoryController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<ResponseData<CategoryEntity>> {
+  async findOne(@Param('id') id: string) {
     this.logger.log('Find one Category');
-    try {
-      const result = await this.categoryService.findOne(id);
-      if(!result){
-        return new ResponseData<CategoryEntity>(
-          HttpMessage.NOT_FOUND,
-          HttpStatus.NOT_FOUND,
-          result,
-        );
-      }
-      return new ResponseData<CategoryEntity>(
-        HttpMessage.SUCCESS,
-        HttpStatus.SUCCESS,
-        result,
-      );
-    } catch (error) {
-      return new ResponseData<CategoryEntity>(
-        HttpMessage.ERROR,
-        HttpStatus.ERROR,
-        null,
-      );
-    }
+    return 'Find one Category'
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto): Promise<ResponseData<CategoryEntity>> {
+  async update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
     this.logger.log('Update Category');
-    try {
-      const author = await this.categoryService.findOne(id);
-      if(!author) {
-        return new ResponseData<CategoryEntity>(
-          HttpMessage.NOT_FOUND,
-          HttpStatus.NOT_FOUND,
-          null,
-        );
-      }
-      const result = await this.categoryService.update(id, updateCategoryDto);
-      return new ResponseData<CategoryEntity>(
-        HttpMessage.SUCCESS,
-        HttpStatus.SUCCESS,
-        result,
-      );
-    } catch (error) {
-      return new ResponseData<CategoryEntity>(
-        HttpMessage.ERROR,
-        HttpStatus.ERROR,
-        null,
-      );
-    }
+    return 'Update Category'
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<ResponseData<CategoryEntity>> {
+  async remove(@Param('id') id: string) {
     this.logger.log('Delete Category');
-    try {
-      const author = await this.categoryService.findOne(id);
-      if(!author) {
-        return new ResponseData<CategoryEntity>(
-          HttpMessage.NOT_FOUND,
-          HttpStatus.NOT_FOUND,
-          null,
-        );
-      }
-      const result = await this.categoryService.remove(id);
-      return new ResponseData<CategoryEntity>(
-        HttpMessage.SUCCESS,
-        HttpStatus.SUCCESS,
-        result,
-      );
-    } catch (error) {
-      return new ResponseData<CategoryEntity>(
-        HttpMessage.ERROR,
-        HttpStatus.ERROR,
-        null,
-      );
-    }
+    return 'Delete';
   }
 }
