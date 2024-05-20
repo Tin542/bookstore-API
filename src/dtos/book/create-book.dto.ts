@@ -16,10 +16,6 @@ export class CreateBookDto {
   @IsNotEmpty({message: 'Rate must not empty'})
   rate: number;
 
-  @IsNumber()
-  @IsNotEmpty({message: 'Quantity must not empty'})
-  quantity: number;
-
   @IsString()
   imageUrl: string;
 

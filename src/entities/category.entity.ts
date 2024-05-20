@@ -1,21 +1,25 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Category } from '@prisma/client';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Transform } from 'class-transformer';
+import moment from 'moment';
+@ObjectType()
 export class CategoryEntity implements Category {
-  @ApiProperty({ required: false })
+  @Field(() => String)
   id: string;
 
-  @ApiProperty({ required: false })
+  @Field(() => String)
   name: string;
 
-  @ApiProperty({ required: false })
+  @Field(() => String)
   description: string;
 
-  @ApiProperty({ required: false })
+  @Field(() => Boolean)
   isActive: boolean;
 
-  @ApiProperty({ required: false })
+  @Field(() => Date)
   createdAt: Date;
 
-  @ApiProperty({ required: false })
+  // @Transform(updatedAt => moment(updatedAt).format('DD/MM/YY'))
+  @Field(() => Date)
   updatedAt: Date;
 }

@@ -1,13 +1,22 @@
 import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
+
 import { PrismaModule } from '../../shared/prisma/prisma.module';
-import { BookModule } from './book/book.module';
+import { CategoryResolver } from './category/category.resolver';
 import { CategoryModule } from './category/category.module';
-import { AuthorModule } from './author/author.module';
-import { BookController } from './book/book.controller';
 
 @Module({
-  imports: [PrismaModule],
-  providers: [],
+  imports: [
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    }),
+    PrismaModule,
+    CategoryModule
+  ],
+  providers: [CategoryResolver],
   controllers: [],
 })
 export class CustomerModule {}

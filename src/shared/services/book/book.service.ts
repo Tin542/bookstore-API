@@ -19,7 +19,6 @@ export class BookService {
         description: createBookDto.description,
         price: createBookDto.price,
         rate: createBookDto.rate,
-        quantity: createBookDto.quantity,
         imageUrl: createBookDto.imageUrl,
         category: {
           connect: {

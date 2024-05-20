@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator nestgraphql {
+  provider = "node node_modules/prisma-nestjs-graphql"
+  output   = "../src/shared/prismagraphql"
+  reExport = Directories
+}
+
 enum OrderStatus {
   INIT
   INPROGRESS

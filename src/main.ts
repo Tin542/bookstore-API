@@ -23,14 +23,14 @@ async function bootstrap() {
   app.setBaseViewsDir(resolve('./src/views/pages'));
   app.setViewEngine('ejs');
 
-  const config = new DocumentBuilder()
-    .setTitle('BOOKSTORE API')
-    .setDescription('API for book store project')
-    .setVersion('0.1')
-    .build();
+  // const config = new DocumentBuilder()
+  //   .setTitle('BOOKSTORE API')
+  //   .setDescription('API for book store project')
+  //   .setVersion('0.1')
+  //   .build();
 
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  // const document = SwaggerModule.createDocument(app, config);
+  // SwaggerModule.setup('api', app, document);
 
   await app.listen(3000);
 }
