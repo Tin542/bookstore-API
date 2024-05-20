@@ -16,13 +16,18 @@ enum OrderStatus {
   DONE
 }
 
+enum PaymentMethod {
+  COD
+  ONLINE_BANKING
+}
+
 model Book {
   id            String                      @id @default(uuid())
   title         String
   description   String?
   price         Float
   rate          Int
-  quantity      Int
+  isOutofStock  Boolean                     @default(false)
   imageUrl      String
   isActive      Boolean                     @default(true)
   categoryId    String
@@ -58,41 +63,48 @@ model Category {
 }
 
 model User {
-  id          String     @id @default(uuid())
-  email       String     @unique()
-  fullName    String
-  useranme    String     @unique()
-  password    String
-  isActive    Boolean    @default(true)
-  phoneNumber String?
-  address     String
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @default(now())
-  order       Order[]
-  review      Review[]
-  cartItem    CartItem[]
+  id           String     @id @default(uuid())
+  email        String     @unique()
+  fullName     String
+  useranme     String     @unique()
+  password     String
+  isActive     Boolean    @default(true)
+  phoneNumber  String?
+  address      String
+  avatar       String?
+  refreshToken String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now())
+  order        Order[]
+  review       Review[]
+  cartItem     CartItem[]
 }
 
 model Admin {
-  id          String   @id @default(uuid())
-  email       String   @unique()
-  username    String   @unique()
-  fullName    String
-  password    String
-  isActive    Boolean  @default(true)
-  phoneNumber String?
-  address     String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  id           String   @id @default(uuid())
+  email        String   @unique()
+  username     String   @unique()
+  fullName     String
+  password     String
+  isActive     Boolean  @default(true)
+  phoneNumber  String?
+  address      String
+  avatar       String?
+  refreshToken String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
 }
 
 model Order {
   id            String      @id @default(uuid())
   totalPrice    Float
-  paymentMethod String
+  paymentMethod PaymentMethod
   userId        String
   status        OrderStatus
   paidAt        DateTime
+  address       String?
+  phoneNumber   String?
+  customerName  String?
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @default(now())
   OrderDetail   OrderItem[]
@@ -101,11 +113,9 @@ model Order {
 }
 
 model OrderItem {
-  id        String   @id @default(uuid())
-  orderId   String
-  bookId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  id      String @id @default(uuid())
+  orderId String
+  bookId  String
 
   book  Book  @relation(fields: [bookId], references: [id])
   order Order @relation(fields: [orderId], references: [id])
@@ -116,6 +126,7 @@ model CartItem {
   bookId    String
   userId    String
   quantity  Int
+  price     Float?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
@@ -158,4 +169,9 @@ model Review {
 
   book Book @relation(fields: [bookId], references: [id])
   user User @relation(fields: [userId], references: [id])
+}
+
+model About {
+  id      String @id @default(uuid())
+  content String
 }

@@ -10,7 +10,6 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import { Moment } from 'moment';
 import { AuthorService } from '../../../shared/services/author/author.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
@@ -22,30 +21,23 @@ export class AuthorController {
   constructor(private readonly authorService: AuthorService) {}
 
   @Post()
-  async create(
-    @Body() createAuthorDto: CreateAuthorDto,
-  ): Promise<ResponseData<AuthorEntity>> {
+  async create(@Body() createAuthorDto: CreateAuthorDto) {
     try {
-      const result = await this.authorService.create(createAuthorDto);
-      return new ResponseData<AuthorEntity>(
-        HttpMessage.SUCCESS,
-        HttpStatus.SUCCESS,
-        result,
-      );
+      
     } catch (error) {
-      return new ResponseData<AuthorEntity>(
-        HttpMessage.ERROR,
-        HttpStatus.ERROR,
-        error,
-      );
+      return { errMessage: error };
     }
   }
 
   @Get()
   @Render('adminPage')
   async findAll(@Req() req: Request, @Res() res: Response) {
-    const result = await this.authorService.findAll();
-    return { data: result, module: 'author' };
+    try {
+      const result = await this.authorService.findAll();
+      return { data: result, module: 'author' };
+    } catch (error) {
+      return { errMessage: error };
+    }
   }
 
   @Get(':id')
