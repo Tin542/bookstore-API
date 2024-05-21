@@ -13,7 +13,9 @@ import {
   Redirect,
   Query,
   ParseIntPipe,
+  HttpStatus,
 } from '@nestjs/common';
+import { Response, Request } from 'express';
 
 import { CategoryService } from '../../../shared/services/category/category.service';
 import { CreateCategoryDto } from '../../../dtos/category/create-category.dto';
@@ -21,20 +23,19 @@ import { UpdateCategoryDto } from '../../../dtos/category/update-category.dto';
 import { Category } from '../../../entities/category.entity';
 import { plainToInstance } from 'class-transformer';
 import { FilterCategoryDto } from 'src/dtos/category/filter-category.dto';
-import { FilterBookDto } from 'src/dtos/book/fillter-book.dto';
 
 @Controller('admin/category')
 export class CategoryController {
   private readonly logger = new Logger(CategoryController.name);
   constructor(private readonly categoryService: CategoryService) {}
 
-  @Post()
-  @Redirect('category')
+  @Post('create')
   async create(@Req() req: Request, @Res() res: Response) {
     this.logger.log('Create Category');
     try {
       let createData = plainToInstance(CreateCategoryDto, req.body);
-      return await this.categoryService.create(createData);
+      await this.categoryService.create(createData);
+      return res.redirect('/admin/category');
     } catch (error) {
       return { errMessage: error };
     }
@@ -67,24 +68,51 @@ export class CategoryController {
     }
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @Get('detail/:id')
+  async findOne(@Req() req: Request, @Res() res: Response) {
     this.logger.log('Find one Category');
-    return 'Find one Category';
+    try {
+      let id = req.params.id;
+      const result = await this.categoryService.findOne(id);
+      return res.send({ data: result, s: 200 });
+    } catch (error) {
+      return res.send({ errMessage: error });
+    }
   }
 
-  @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateCategoryDto: UpdateCategoryDto,
-  ) {
+  @Post('edit')
+  async update(@Req() req: Request, @Res() res: Response) {
     this.logger.log('Update Category');
-    return 'Update Category';
+    try {
+      let id = req.body.id;
+      let data = plainToInstance(UpdateCategoryDto, req.body);
+      await this.categoryService.update(id, data);
+      return res.redirect('/admin/category')
+    } catch (error) {
+      return res.send({ errMessage: error });
+    }
   }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    this.logger.log('Delete Category');
-    return 'Delete';
+  @Post('disable/:id')
+  async remove(@Req() req: Request, @Res() res: Response)  {
+    this.logger.log('Disable Category');
+    try {
+      let id = req.params.id;
+      await this.categoryService.remove(id);
+      return res.redirect('/admin/category');
+    } catch (error) {
+      return res.send({ errMessage: error });
+    }
+  }
+  @Post('active/:id')
+  async acive(@Req() req: Request, @Res() res: Response)  {
+    this.logger.log('Active Category');
+    try {
+      let id = req.params.id;
+      await this.categoryService.active(id);
+      return res.redirect('/admin/category');
+    } catch (error) {
+      return res.send({ errMessage: error });
+    }
   }
 }

@@ -38,7 +38,7 @@ export class CategoryService {
         name: { contains: filter.name },
       },
       orderBy: {
-        updatedAt: Prisma.SortOrder.desc,
+        createdAt: Prisma.SortOrder.desc,
       },
     });
     const total = await this.categoryRepository.count({
@@ -76,7 +76,21 @@ export class CategoryService {
   }
 
   async remove(id: string) {
-    const result = await this.categoryRepository.delete({ id });
+    const result = await this.categoryRepository.update({
+      id: { id },
+      data: {
+        isActive: false,
+      },
+    });
+    return result;
+  }
+  async active(id: string) {
+    const result = await this.categoryRepository.update({
+      id: { id },
+      data: {
+        isActive: true,
+      },
+    });
     return result;
   }
 }

@@ -112,10 +112,10 @@
           success: function (rs) {
             if (rs.s === 200) {
               let data = rs.data;
-
               // set data vừa get đc lên <input>
               document.getElementById("nameEdit").value = data?.name;
-              document.getElementById("_idEdit").value = data?._id;
+              document.getElementById("descriptionEdit").value = data?.description;
+              document.getElementById("_idEdit").value = data?.id;
             }
           },
         });
@@ -132,10 +132,22 @@
       }
       function deletecategory(id) {
         $.ajax({
-          type: "DELETE",
-          url: `/admin/category/delete/${id}`,
+          type: "POST",
+          url: `/admin/category/disable/${id}`,
           success: function (rs) {
-            alert("delete success");
+            console.log('rs', rs);
+            alert("disable success");
+            window.location.reload();
+          },
+        });
+      }
+      function activeCategory(id) {
+        $.ajax({
+          type: "POST",
+          url: `/admin/category/active/${id}`,
+          success: function (rs) {
+            console.log('rs', rs);
+            alert("active success");
             window.location.reload();
           },
         });
