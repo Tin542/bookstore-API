@@ -44,6 +44,9 @@
           },
         });
       }
+      function onClickResetAUthor(){
+        document.getElementById("name").value = "";
+      }
       function onClickResetPromotion(){
         document.getElementById("scode").value = "";
         document.getElementById("sname").value = "";
@@ -120,6 +123,21 @@
           },
         });
       }
+      function editAuthor(id) {
+        $.ajax({
+          type: "GET",
+          url: `/admin/author/detail/${id}`,
+          success: function (rs) {
+            if (rs.s === 200) {
+              let data = rs.data;
+              // set data vừa get đc lên <input>
+              document.getElementById("nameEdit").value = data?.name;
+              
+              document.getElementById("_idEdit").value = data?.id;
+            }
+          },
+        });
+      }
       function deleteItem(id) {
         $.ajax({
           type: "DELETE",
@@ -145,6 +163,28 @@
         $.ajax({
           type: "POST",
           url: `/admin/category/active/${id}`,
+          success: function (rs) {
+            console.log('rs', rs);
+            alert("active success");
+            window.location.reload();
+          },
+        });
+      }
+      function deleteAuthor(id) {
+        $.ajax({
+          type: "POST",
+          url: `/admin/author/disable/${id}`,
+          success: function (rs) {
+            console.log('rs', rs);
+            alert("disable success");
+            window.location.reload();
+          },
+        });
+      }
+      function activeAuthor(id) {
+        $.ajax({
+          type: "POST",
+          url: `/admin/author/active/${id}`,
           success: function (rs) {
             console.log('rs', rs);
             alert("active success");

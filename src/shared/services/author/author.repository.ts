@@ -47,7 +47,11 @@ export class AuthorRepository {
     return this.prisma.author.update({ where: id, data: data });
   }
 
-  async delete(id: Prisma.AuthorWhereUniqueInput): Promise<Author> {
+  async disable(id: Prisma.AuthorWhereUniqueInput): Promise<Author> {
+    return this.prisma.author.delete({ where: id });
+  }
+
+  async active(id: Prisma.AuthorWhereUniqueInput): Promise<Author> {
     return this.prisma.author.delete({ where: id });
   }
 }
