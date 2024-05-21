@@ -16,16 +16,16 @@
   </div>
  
   <div class="card p-3 mb-3">
-    <form action="/admin/category/list" method="get">
+    <form action="/admin/category" method="get">
       <div class="d-flex justify-content-around align-items-center">
-        <div class="p-2" style="width: 80%;">
+        <div class="me-auto p-2" style="width: 80%;">
           <input
             id="pName"
-            name="searchValue"
+            name="name"
             type="text"
             class="form-control"
             placeholder="Tên Danh mục"
-            value=""
+            value="<%= name %>"
           />
         </div>
 
@@ -48,6 +48,7 @@
       <tr>
         <th scope="col">Mã Danh mục</th>
         <th scope="col">Tên danh mục</th>
+        <th scope="col">Trạng thái</th>
         <th scope="col">Ngày tạo</th>
         <th scope="col">Ngày cập nhật</th>
       </tr>
@@ -67,7 +68,14 @@
             <%= item.name %>
           </span>
         </td>
-
+        <td class="w-2">
+          <% if (item.isActive) { %>
+            <span class="badge bg-success">Đang hoạt động</span>
+          <% } else { %>
+            <span class="badge bg-danger">Đã khóa</span>
+          <% } %>
+          
+        </td>
         <td class="w-2"><%= item.createdAt %></td>
         <td class="w-2"><%= item.updatedAt %></td>
         <td class="w-2">
@@ -123,7 +131,30 @@
       <% }); %>
     </tbody>
   </table>
-
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <% for(var i=1; i <= pages; i++) { %>
+        <% var isActived = ( i === currentPage ) ? "active" : ""; %>
+      <li class="page-item <%= isActived %>">
+        <form action="/admin/category" method="get">
+          <input type="hidden" name="page" value="<%= i %>"/>
+          <input name="name" type="hidden" value="<%= name %>" />
+          <button type="submit" class="btn btn-link page-link"><%= i %></button>
+        </form>
+      </li>
+      <% }; %>
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
   <% } else { %>
     <div class="col-12">
       <div class="card bg-light p-5">

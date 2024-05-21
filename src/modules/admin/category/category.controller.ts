@@ -1,10 +1,27 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Logger, Render, Req, Res, Redirect } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Logger,
+  Render,
+  Req,
+  Res,
+  Redirect,
+  Query,
+  ParseIntPipe,
+} from '@nestjs/common';
 
 import { CategoryService } from '../../../shared/services/category/category.service';
 import { CreateCategoryDto } from '../../../dtos/category/create-category.dto';
 import { UpdateCategoryDto } from '../../../dtos/category/update-category.dto';
 import { Category } from '../../../entities/category.entity';
 import { plainToInstance } from 'class-transformer';
+import { FilterCategoryDto } from 'src/dtos/category/filter-category.dto';
+import { FilterBookDto } from 'src/dtos/book/fillter-book.dto';
 
 @Controller('admin/category')
 export class CategoryController {
@@ -25,11 +42,26 @@ export class CategoryController {
 
   @Get()
   @Render('adminPage')
-  async findAll() {
+  async findAll(
+    @Query('name') name: string,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
     this.logger.log('find all Category');
     try {
-      const result = await this.categoryService.findAll();
-      return { data: result, module: 'category' };
+      let filter: FilterCategoryDto = {
+        name: name || '',
+        page: page || 1,
+        limit: limit || 5,
+      };
+      const result = await this.categoryService.findAll(filter);
+      return {
+        module: 'category',
+        name: filter.name,
+        pages: result.totalPages,
+        currentPage: filter.page,
+        data: result.data,
+      };
     } catch (error) {
       return { errMessage: error };
     }
@@ -38,13 +70,16 @@ export class CategoryController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     this.logger.log('Find one Category');
-    return 'Find one Category'
+    return 'Find one Category';
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateCategoryDto: UpdateCategoryDto,
+  ) {
     this.logger.log('Update Category');
-    return 'Update Category'
+    return 'Update Category';
   }
 
   @Delete(':id')

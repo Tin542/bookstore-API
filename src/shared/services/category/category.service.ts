@@ -4,6 +4,8 @@ import { CreateCategoryDto } from '../../../dtos/category/create-category.dto';
 import { UpdateCategoryDto } from '../../../dtos/category/update-category.dto';
 import { CategoryRepository } from './category.repository';
 import { Category } from '../../../entities/category.entity';
+import { FilterCategoryDto } from 'src/dtos/category/filter-category.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class CategoryService {
@@ -19,9 +21,42 @@ export class CategoryService {
     return plainToInstance(Category, result);
   }
 
-  async findAll(): Promise<Category[]>  {
-    const result = await this.categoryRepository.findMany({});
-    return result;
+  async findAll(filter: FilterCategoryDto): Promise<{
+    data: Category[];
+    totalItem: number;
+    totalPages: number;
+    currentPage: number;
+    limit: number;
+  }> {
+    let itemPerPage: number = filter.limit ? filter.limit : 5;
+    let offset: number = filter.page > 0 ? (filter.page - 1) * filter.limit : 0;
+    let currentPage: number = filter.page ? filter.page : 1;
+    const result = await this.categoryRepository.findMany({
+      skip: offset,
+      take: itemPerPage,
+      where: {
+        name: { contains: filter.name },
+      },
+      orderBy: {
+        updatedAt: Prisma.SortOrder.desc,
+      },
+    });
+    const total = await this.categoryRepository.count({
+      where: {
+        name: { contains: filter.name },
+      },
+    });
+    const data = plainToInstance(Category, result);
+    return {
+      data: data,
+      totalItem: total,
+      totalPages:
+        total % itemPerPage !== 0
+          ? Math.floor(total / itemPerPage) + 1
+          : total / itemPerPage,
+      currentPage: currentPage,
+      limit: itemPerPage,
+    };
   }
 
   async findOne(id: string): Promise<Category> {
@@ -40,8 +75,8 @@ export class CategoryService {
     return plainToInstance(Category, result);
   }
 
-  async remove(id: string): Promise<Category> {
-    const result = await this.categoryRepository.delete({id});
+  async remove(id: string) {
+    const result = await this.categoryRepository.delete({ id });
     return result;
   }
 }

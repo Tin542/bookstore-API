@@ -1,7 +1,7 @@
 import { Category as categoryDB } from '@prisma/client';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
-import moment from 'moment';
+import { format } from 'date-fns';
 @ObjectType()
 export class Category {
   @Field(() => String)
@@ -16,10 +16,27 @@ export class Category {
   @Field(() => Boolean)
   isActive: categoryDB["isActive"];
 
+  @Transform(({ value }) => {
+    if (value) {
+      const date = new Date(value);
+      if (!isNaN(date.getTime())) {
+        return format(date, 'dd/MM/yyyy');
+      }
+    }
+    return value;
+  })
   @Field(() => Date)
   createdAt: categoryDB["createdAt"];
 
-  // @Transform(updatedAt => moment(updatedAt).format('DD/MM/YY'))
+  @Transform(({ value }) => {
+    if (value) {
+      const date = new Date(value);
+      if (!isNaN(date.getTime())) {
+        return format(date, 'dd/MM/yyyy');
+      }
+    }
+    return value;
+  })
   @Field(() => Date)
   updatedAt: categoryDB["updatedAt"];
 }

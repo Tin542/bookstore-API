@@ -6,7 +6,9 @@ import { PrismaService } from '../../../shared/prisma/prisma.service';
 export class CategoryRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(params: { data: Prisma.CategoryCreateInput }): Promise<Category> {
+  async create(params: {
+    data: Prisma.CategoryCreateInput;
+  }): Promise<Category> {
     const { data } = params;
     return this.prisma.category.create({ data });
   }
@@ -28,11 +30,23 @@ export class CategoryRepository {
     });
   }
 
+  async count(params: {
+    where?: Prisma.CategoryWhereInput;
+  }): Promise<number> {
+    const { where } = params;
+    return this.prisma.category.count({
+      where,
+    });
+  }
+
   async findOne(id: Prisma.CategoryWhereUniqueInput): Promise<Category | null> {
     return this.prisma.category.findUnique({ where: id });
   }
 
-  async update(params: {id: Prisma.CategoryWhereUniqueInput, data: Prisma.BookUpdateInput}): Promise<Category | null> {
+  async update(params: {
+    id: Prisma.CategoryWhereUniqueInput;
+    data: Prisma.BookUpdateInput;
+  }): Promise<Category | null> {
     const { id, data } = params;
     return this.prisma.category.update({ where: id, data: data });
   }
