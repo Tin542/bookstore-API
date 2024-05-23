@@ -7,6 +7,7 @@ import { CategoryService } from 'src/shared/services/category/category.service';
 import { CategoryRepository } from 'src/shared/services/category/category.repository';
 import { AuthorService } from 'src/shared/services/author/author.service';
 import { AuthorRepository } from 'src/shared/services/author/author.repository';
+import { CloudinaryService } from 'src/shared/cloudinary/cloudinary.service';
 
 @Module({
   imports: [PrismaModule],
@@ -18,6 +19,7 @@ import { AuthorRepository } from 'src/shared/services/author/author.repository';
     CategoryRepository,
     AuthorService,
     AuthorRepository,
+    CloudinaryService
   ],
 })
 export class BookModule {}

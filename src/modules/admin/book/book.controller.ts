@@ -11,6 +11,8 @@ import {
   Req,
   Res,
   Render,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
@@ -23,6 +25,8 @@ import { BookService } from 'src/shared/services/book/book.service';
 import { Request, Response } from 'express';
 import { CategoryService } from 'src/shared/services/category/category.service';
 import { AuthorService } from 'src/shared/services/author/author.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { CloudinaryService } from 'src/shared/cloudinary/cloudinary.service';
 
 @Controller('admin/book')
 export class BookController {
@@ -31,12 +35,14 @@ export class BookController {
     private readonly bookService: BookService,
     private readonly categoryService: CategoryService,
     private readonly authorService: AuthorService,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   @Post('create')
   async create(@Req() req: Request, @Res() res: Response) {
     this.logger.log('Create book');
     try {
+      console.log('body', req.body);
       let createData = plainToInstance(CreateBookDto, req.body);
       await this.bookService.create(createData);
       return res.redirect('/admin/book');
@@ -57,7 +63,9 @@ export class BookController {
       let requestData = req.query;
       let filter = plainToInstance(FilterBookDto, {
         title: requestData.title || '',
-        rate: requestData.rate ? parseInt(requestData.rate as string) : undefined,
+        rate: requestData.rate
+          ? parseInt(requestData.rate as string)
+          : undefined,
         author: requestData.author ? [requestData.author] : [],
         category: requestData.category ? [requestData.category] : [],
         page: page ? page : 1,
@@ -97,5 +105,11 @@ export class BookController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.bookService.remove(id);
+  }
+
+  @Post('image')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadImage(@UploadedFile() file: Express.Multer.File) {
+    return this.cloudinaryService.uploadFile(file);
   }
 }

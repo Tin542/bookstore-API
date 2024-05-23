@@ -1,8 +1,7 @@
 import { NestFactory, Reflector } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { join, resolve  } from 'path';
+import { join, resolve } from 'path';
 
 // import { ValidationPipe} from './shared/pipe/validation.pipe';
 import { AppModule } from './app.module';
@@ -22,6 +21,8 @@ async function bootstrap() {
   app.useStaticAssets(resolve('./src/views/assets'));
   app.setBaseViewsDir(resolve('./src/views/pages'));
   app.setViewEngine('ejs');
+
+  app.enableCors();
 
   // const config = new DocumentBuilder()
   //   .setTitle('BOOKSTORE API')

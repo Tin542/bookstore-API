@@ -103,7 +103,9 @@
       <% data.forEach(function(item, index) { %>
       <tr>
         <td class="w-2">
-          <img src="<%= item.imageUrl %>" height="50px" width="50px" />
+          <div class="text-center">
+            <img src="<%= item.imageUrl %>" height="50px" width="50px" />
+          </div>
         </td>
         <td
           style="cursor: pointer"
@@ -225,10 +227,10 @@
     aria-labelledby="createModal"
     aria-hidden="true"
   >
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="createModal">Thêm sản phẩm</h5>
+          <h5 class="modal-title" id="createModal">Thêm mới</h5>
           <button
             type="button"
             class="btn-close"
@@ -237,101 +239,114 @@
           ></button>
         </div>
         <div class="modal-body">
-          <input type="file" name="file" id="image_file" />
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-            onclick="uploadImage()"
-          >
-            Lưu ảnh
-          </button>
-
-          <form class="row g-3" action="/admin/products/add" method="post">
-            <div class="col-md-12">
-              <img src="" height="100px" width="100px" id="imageUpload" />
-              <input
-                style="display: none"
-                type="text"
-                class="form-control"
-                name="imageUrl"
-                id="imageUrl"
-                value=""
-              />
-            </div>
-            <div class="col-md-6">
-              <label for="name" class="form-label">Tên sản phẩm</label>
-              <input
-                type="text"
-                class="form-control"
-                id="name"
-                name="name"
-                placeholder="Nhập tên"
-                required
-              />
-            </div>
-            <div class="col-6">
-              <label for="price" class="form-label">Giá</label>
-              <input
-                type="number"
-                class="form-control"
-                id="price"
-                name="price"
-                placeholder="Nhập giá"
-                min="0"
-                required
-              />
-            </div>
-            <div class="col-6">
-              <label for="category" class="form-label">Danh mục</label>
-              <select
-                name="categoryId"
-                id="category"
-                class="form-select"
-                aria-label="Select ategory"
-                required
-              >
-                <option>---</option>
-                <% listCategories.forEach((item) => { %>
-                <option value="<%= item._id %>"><%= item.name %></option>
-                <% }) %>
-              </select>
-            </div>
-            <div class="col-6">
-              <label for="author" class="form-label">Tác giả</label>
-              <input
-                type="text"
-                class="form-control"
-                id="author"
-                name="author"
-                placeholder="Nhập tên tác giả"
-                required
-              />
-            </div>
-            <div class="col-12">
-              <label for="description" class="form-label">Mô tả</label>
-              <textarea
-                class="form-control"
-                id="description"
-                name="description"
-                placeholder="Nhập mô tả"
-                rows="3"
-                required
-              ></textarea>
-            </div>
-
-            <div class="col-12">
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Đóng
-                </button>
-                <button type="submit" class="btn btn-primary">Thêm</button>
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <div class="d-flex flex-column bd-highlight mb-3">
+                  <div class="p-2" style="text-align: center;"> <img src="" height="200px" width="200px" id="imageUpload" /></div>
+                  <div class="p-2" style="text-align: center;"><input type="file" name="file" id="image_file" />
+                    <button type="button" class="btn btn-outline-primary" onclick="uploadImage()">
+                      Lưu ảnh
+                    </button>
+                  </div>
+                </div>
+               
+                
+              </div>
+              <div class="col">
+                <form class="row g-3" action="/admin/book/create" method="post">
+                  <div class="col-md-12">
+                    
+                    <input
+                      style="display: none"
+                      type="text"
+                      class="form-control"
+                      name="imageUrl"
+                      id="imageUrl"
+                      value=""
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="title" class="form-label">Tiêu đề sách</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="title"
+                      name="title"
+                      placeholder="Nhập tên"
+                      required
+                    />
+                  </div>
+                  <div class="col-6">
+                    <label for="price" class="form-label">Giá</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="price"
+                      name="price"
+                      placeholder="Nhập giá"
+                      min="0"
+                      required
+                    />
+                  </div>
+                  <div class="col-6">
+                    <label for="category" class="form-label">Danh mục</label>
+                    <select
+                      name="categoryId"
+                      id="category"
+                      class="form-select"
+                      aria-label="Select ategory"
+                      required
+                    >
+                      <option>---</option>
+                      <% listCategories.forEach((item) => { %>
+                      <option value="<%= item.id %>"><%= item.name %></option>
+                      <% }) %>
+                    </select>
+                  </div>
+                  <div class="col-6">
+                    <label for="category" class="form-label">Danh mục</label>
+                    <select
+                      name="categoryId"
+                      id="category"
+                      class="form-select"
+                      aria-label="Select ategory"
+                      required
+                    >
+                      <option>---</option>
+                      <% listCategories.forEach((item) => { %>
+                      <option value="<%= item._id %>"><%= item.name %></option>
+                      <% }) %>
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <label for="description" class="form-label">Mô tả</label>
+                    <textarea
+                      class="form-control"
+                      id="description"
+                      name="description"
+                      placeholder="Nhập mô tả"
+                      rows="3"
+                      required
+                    ></textarea>
+                  </div>
+      
+                  <div class="col-12">
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        Đóng
+                      </button>
+                      <button type="submit" class="btn btn-primary">Thêm</button>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

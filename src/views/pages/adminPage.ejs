@@ -216,14 +216,15 @@
         formData.append("file", file);
 
         $.ajax({
-          url: "/admin/products/upload-image",
+          url: "/admin/book/image",
           type: "POST",
           data: formData,
           processData: false,
           contentType: false,
           success: function (response) {
-            document.getElementById("imageUpload").src = response.urlUploaded;
-            document.getElementById("imageUrl").value = response.urlUploaded;
+            console.log('rsp', response);
+            document.getElementById("imageUpload").src = response.secure_url;
+            document.getElementById("imageUrl").value = response.secure_url;
           },
           error: function (xhr, status, error) {
             // Xử lý lỗi
