@@ -44,30 +44,28 @@ export class BookService {
       take: itemPerPage,
       where: {
         AND: {
-          title: { contains: filter.title },
-          price: { gte: filter.minPrice, lte: filter.maxPrice },
-          rate: { equals: filter.rate },
-          categoryId: { in: filter.category },
-          authorId: { in: filter.author },
+          title: filter.title ? { contains: filter.title } : {},
+          rate: filter.rate ? { equals: filter.rate } : {},
+          categoryId: filter.category.length > 0 ? { in: filter.category } : {},
+          authorId: filter.author.length > 0 ? { in: filter.author } : {},
         },
       },
       orderBy: {
-        createdAt: filter.sortByCreateDate,
+        createdAt: 'desc',
       },
     });
 
     const total = await this.bookRepository.countBook({
       where: {
         AND: {
-          title: { contains: filter.title },
-          price: { gte: filter.minPrice, lte: filter.maxPrice },
-          rate: { equals: filter.rate },
-          categoryId: { in: filter.category },
-          authorId: { in: filter.author },
+          title: filter.title ? { contains: filter.title } : {},
+          rate: filter.rate ? { equals: filter.rate } : {},
+          categoryId: filter.category.length > 0 ? { in: filter.category } : {},
+          authorId: filter.author.length > 0 ? { in: filter.author } : {},
         },
       },
     });
-    const result = listBooks.map((book) => plainToInstance(BookEntity, book));
+    const result = plainToInstance(BookEntity, listBooks);
     return {
       list: result,
       totalProducts: total,

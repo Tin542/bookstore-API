@@ -1,28 +1,31 @@
 <div class="jumbotron p-3">
-  <div class="d-flex bd-highlight mb-3">
-    <div class="me-auto p-2 bd-highlight"><h3>Danh sách sản phẩm</h3></div>
-    <div class="p-2 bd-highlight">
-      <button
-        type="button"
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#createModal"
-      >
-        Thêm sản phẩm
-      </button>
+  <div class="card p-3 mb-3">
+    <div class="d-flex bd-highlight">
+      <div class="me-auto p-2 bd-highlight"><h3>QUẢN LÝ SÁCH</h3></div>
+      <div class="p-2 bd-highlight">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#createModal"
+        >
+          Thêm mới
+        </button>
+      </div>
     </div>
   </div>
+  
   <div class="card p-3 mb-3">
-    <form action="/admin/products/list" method="get">
+    <form action="/admin/book" method="get">
       <div class="d-flex justify-content-around align-items-center">
         <div class="p-2">
           <input
-            id="pName"
-            name="pName"
+            id="title"
+            name="title"
             type="text"
             class="form-control"
-            placeholder="Tên sản phẩm"
-            value="<%= filters.name %>"
+            placeholder="Tên sách"
+            value="<%= filters.title %>"
           />
         </div>
      
@@ -33,9 +36,23 @@
               <%
               for ( var i = 0; i < listCategories.length; i++ )
               {
-                  var selected = ( listCategories[i]._id.toString() === filters.category ) ? "selected" : "";
+                  var selected = ( listCategories[i].id === filters.category[0] ) ? "selected" : "";
                   
-                  %><option value="<%= listCategories[i]._id %>" <%= selected %>><%= listCategories[i].name %></option><%
+                  %><option value="<%= listCategories[i].id %>" <%= selected %>><%= listCategories[i].name %></option><%
+              }
+              %>
+              </select>
+          </div>
+          <div style="width: 250px;" class="p-2">
+            
+            <select id="author" name="author" class="form-select">
+              <option hidden value="">-Tác giả-</option>
+              <%
+              for ( var i = 0; i < listAuthor.length; i++ )
+              {
+                  var selected = ( listAuthor[i].id === filters.author[0] ) ? "selected" : "";
+                  
+                  %><option value="<%= listAuthor[i].id %>" <%= selected %>><%= listAuthor[i].name %></option><%
               }
               %>
               </select>
@@ -43,18 +60,18 @@
           <div style="width: 250px;" class="p-2">
   
             <select
-              name="star"
-              id="star"
+              name="rate"
+              id="rate"
               class="form-select"
-              aria-label="Select star"
+              aria-label="Select rate"
             >
               <option hidden value="">-Đánh giá-</option>
-              <option value="0" <%= filters.star==='0' ? 'selected' : "" %>>0 sao</option>
-              <option value="1" <%= filters.star==='1' ? 'selected' : "" %>>1 sao</option>
-              <option value="2" <%= filters.star==='2' ? 'selected' : "" %>>2 sao</option>
-              <option value="3" <%= filters.star==='3' ? 'selected' : "" %>>3 sao</option>
-              <option value="4" <%= filters.star==='4' ? 'selected' : "" %>>4 sao</option>
-              <option value="5" <%= filters.star==='5' ? 'selected' : "" %>>5 sao</option>
+              <option value=0 <%= filters.rate===0 ? 'selected' : "" %>>0 sao</option>
+              <option value=1 <%= filters.rate===1 ? 'selected' : "" %>>1 sao</option>
+              <option value=2 <%= filters.rate===2 ? 'selected' : "" %>>2 sao</option>
+              <option value=3 <%= filters.rate===3 ? 'selected' : "" %>>3 sao</option>
+              <option value=4 <%= filters.rate===4 ? 'selected' : "" %>>4 sao</option>
+              <option value=5 <%= filters.rate===5 ? 'selected' : "" %>>5 sao</option>
             </select>
           </div>
         <div class="p-2">
@@ -70,7 +87,7 @@
       </div>
     </form>
   </div>
-  <% if(products.length > 0) { %>
+  <% if(data.length > 0) { %>
   <table class="table table-bordered bg-white mt-3">
     <thead>
       <tr>
@@ -83,7 +100,7 @@
       </tr>
     </thead>
     <tbody>
-      <% products.forEach(function(item, index) { %>
+      <% data.forEach(function(item, index) { %>
       <tr>
         <td class="w-2">
           <img src="<%= item.imageUrl %>" height="50px" width="50px" />
@@ -93,22 +110,24 @@
           class="w-25"
           data-bs-toggle="tooltip"
           data-bs-placement="right"
-          title="<%= item.name %>"
+          title="<%= item.title %>"
         >
           <span class="d-inline-block text-truncate" style="max-width: 200px">
-            <%= item.name %>
+            <%= item.title %>
           </span>
         </td>
-        <td class="w-25"><%= item.catName %></td>
-        <td scope="w-2"><%= item.author %></td>
+        <td class="w-25"><%= item.category.name %></td>
+        <td scope="w-2"><%= item.author.name %></td>
         <td class="w-2">
-          <% for (var j = 0; j < 5; j++){ %> <% if (j < item.rate){ %>
-          <span class="fa fa-star checked"></span>
-          <% } else { %>
-          <span class="fa fa-star"></span>
-          <% } %> <% } %>
+          <% for (var j = 0; j < 5; j++){ %> 
+            <% if (j < item.rate){ %>
+              <i class="bi bi-star-fill" style="color: gold;"></i>
+            <% } else { %>
+              <span class="fa fa-star"></span>
+            <% } %> 
+          <% } %>
         </td>
-        <td class="w-2"><%= item.price %> $</td>
+        <td class="w-2"><%= item.price %> VND</td>
         <td class="w-2">
           <button
             data-bs-toggle="modal"
@@ -172,7 +191,7 @@
       <% for(var i=1; i <= pages; i++) { %>
         <% var isActived = ( i === currentPage ) ? "active" : ""; %>
       <li class="page-item <%= isActived %>">
-        <a class="page-link" href="/admin/products/list?page=<%= i %>"
+        <a class="page-link" href="/admin/book?page=<%= i %>"
           ><%= i %></a
         >
       </li>

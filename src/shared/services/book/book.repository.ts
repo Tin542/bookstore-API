@@ -25,6 +25,7 @@ export class BookRepository {
       orderBy,
       include: {
         category: true,
+        author: true,
       },
     });
   }

@@ -1,63 +1,22 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Prisma } from '@prisma/client';
-import { Type } from 'class-transformer';
-import { IsArray, IsIn, IsNumber, IsOptional, IsString, Min } from 'class-validator';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 export class FilterBookDto {
-  @IsOptional()
-  @IsString()
-  @ApiProperty({ required: false, description: 'Title of the book' })
+  @Field(type =>  String, { nullable: true })
   title?: string;
 
-  @IsOptional()
-  @IsNumber()
-  @Min(0)
-  @Type(() => Number)  // Transform string to number
-  @ApiProperty({ required: false, type: Number, description: 'Minimum price of the book' })
-  minPrice?: number;
-
-  @IsOptional()
-  @IsNumber()
-  @Min(0)
-  @Type(() => Number)  // Transform string to number
-  @ApiProperty({ required: false, type: Number, description: 'Maximum price of the book' })
-  maxPrice?: number;
-
-  @IsOptional()
-  @IsNumber()
-  @Type(() => Number)  // Transform string to number
-  @ApiProperty({ required: false, description: 'Rating of the book' })
+  @Field(type =>  Int, { nullable: true })
   rate?: number;
 
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  @ApiProperty({ required: false, isArray: true, type: String, description: 'list category id' })
+  @Field(type =>  [String], { nullable: true })
   category?: string[];
 
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  @ApiProperty({ required: false, isArray: true, type: String, description: 'list author id' })
+  @Field(type =>  [String], { nullable: true })
   author?: string[];
 
-  @IsOptional()
-  @IsNumber()
-  @Min(1)
-  @Type(() => Number)  // Transform string to number
-  @ApiProperty({ required: false, description: 'Current page', default: 1})
+  @Field(type =>  Int, { nullable: true })
   page?: number;
 
-  @IsOptional()
-  @IsNumber()
-  @Min(1)
-  @Type(() => Number)  // Transform string to number
-  @ApiProperty({ required: false, description: 'Number of items per page', default: 5})
+  @Field(type =>  Int, { nullable: true })
   limit?: number;
-
-  @IsOptional()
-  @IsString()
-  @IsIn(['asc', 'desc'])
-  @ApiProperty({ required: false, description: 'Sort order', enum: ['asc', 'desc']})
-  sortByCreateDate?: Prisma.SortOrder;
 }
