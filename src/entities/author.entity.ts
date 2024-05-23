@@ -5,15 +5,15 @@ import { Transform } from 'class-transformer';
 import { format } from 'date-fns';
 
 @ObjectType()
-export class AuthorEntity implements Author {
+export class AuthorEntity {
   @Field(() => String)
-  id: string;
+  id: Author['id'];
 
   @Field(() => String)
-  name: string;
+  name: Author['name'];
 
   @Field(() => Boolean)
-  isActive: boolean;
+  isActive: Author['isActive'];
 
   @Transform(({ value }) => {
     if (value) {
@@ -24,8 +24,8 @@ export class AuthorEntity implements Author {
     }
     return value;
   })
-  @Field(() => Date)
-  createdAt: Date;
+  @Field(() => String)
+  createdAt: Author['createdAt'];
 
   @Transform(({ value }) => {
     if (value) {
@@ -36,7 +36,7 @@ export class AuthorEntity implements Author {
     }
     return value;
   })
-  @Field(() => Date)
-  updatedAt: Date;
+  @Field(() => String)
+  updatedAt: Author['updatedAt'];
 
 }

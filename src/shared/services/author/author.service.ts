@@ -9,11 +9,12 @@ import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class AuthorService {
-
   constructor(private authorRepository: AuthorRepository) {}
 
   async create(createAuthorDto: CreateAuthorDto) {
-    const result = await this.authorRepository.create({data: createAuthorDto});
+    const result = await this.authorRepository.create({
+      data: createAuthorDto,
+    });
     return result;
   }
 
@@ -55,27 +56,45 @@ export class AuthorService {
     };
   }
 
+  async findAllForFilter() {
+    const result = await this.authorRepository.findMany({
+      where: {
+        isActive: true,
+      },
+    });
+    return plainToInstance(AuthorEntity, result);
+  }
+
   async findOne(id: string) {
-    const result = await this.authorRepository.findOne({id: id});
+    const result = await this.authorRepository.findOne({ id: id });
     return plainToInstance(AuthorEntity, result);
   }
 
   async update(id: string, updateAuthorDto: UpdateAuthorDto) {
-    const result = await this.authorRepository.update({id: {id}, data: updateAuthorDto});
+    const result = await this.authorRepository.update({
+      id: { id },
+      data: updateAuthorDto,
+    });
     return plainToInstance(AuthorEntity, result);
   }
 
   async remove(id: string) {
-    const result = await this.authorRepository.update({id: {id}, data: {
-      isActive: false
-    }});
+    const result = await this.authorRepository.update({
+      id: { id },
+      data: {
+        isActive: false,
+      },
+    });
     return plainToInstance(AuthorEntity, result);
   }
 
   async active(id: string) {
-    const result = await this.authorRepository.update({id: {id}, data: {
-      isActive: true
-    }});
+    const result = await this.authorRepository.update({
+      id: { id },
+      data: {
+        isActive: true,
+      },
+    });
     return plainToInstance(AuthorEntity, result);
   }
 }

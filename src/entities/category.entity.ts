@@ -25,7 +25,7 @@ export class Category {
     }
     return value;
   })
-  @Field(() => Date)
+  @Field(() => String)
   createdAt: categoryDB["createdAt"];
 
   @Transform(({ value }) => {
@@ -37,6 +37,6 @@ export class Category {
     }
     return value;
   })
-  @Field(() => Date)
+  @Field(() => String)
   updatedAt: categoryDB["updatedAt"];
 }

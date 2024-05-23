@@ -59,6 +59,15 @@ export class CategoryService {
     };
   }
 
+  async findAllForFilter(){
+    const result = await this.categoryRepository.findMany({
+      where: {
+        isActive: true
+      }
+    });
+    return plainToInstance(Category, result);
+  }
+
   async findOne(id: string): Promise<Category> {
     const result = await this.categoryRepository.findOne({ id });
     return plainToInstance(Category, result);
