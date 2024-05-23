@@ -1,3 +1,4 @@
+import { Transform, Type } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsString, MinLength } from 'class-validator';
 
 export class CreateBookDto {
@@ -10,11 +11,8 @@ export class CreateBookDto {
 
   @IsNumber()
   @IsNotEmpty({message: 'Price must not empty'})
+  @Type(() => Number)
   price: number;
-
-  @IsNumber()
-  @IsNotEmpty({message: 'Rate must not empty'})
-  rate: number;
 
   @IsString()
   imageUrl: string;

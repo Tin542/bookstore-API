@@ -97,6 +97,7 @@
         <th scope="col">Tác giả</th>
         <th scope="col">Đánh giá</th>
         <th scope="col">Giá</th>
+        <th scope="col">Trạng thái</th>
       </tr>
     </thead>
     <tbody>
@@ -109,7 +110,7 @@
         </td>
         <td
           style="cursor: pointer"
-          class="w-25"
+          class="w-10"
           data-bs-toggle="tooltip"
           data-bs-placement="right"
           title="<%= item.title %>"
@@ -131,52 +132,36 @@
         </td>
         <td class="w-2"><%= item.price %> VND</td>
         <td class="w-2">
+          <% if (item.isActive) { %>
+            <span class="badge bg-success">Đang hoạt động</span>
+          <% } else { %>
+            <span class="badge bg-danger">Đã khóa</span>
+          <% } %>
+          
+        </td>
+        <td class="w-2">
           <button
             data-bs-toggle="modal"
             data-bs-target="#editModal"
             type="button"
             class="btn btn-outline-primary"
-            onclick='editProduct("<%= item._id %>")'
+            onclick='editProduct("<%= item.id %>")'
           >
-            <svg
-              style="cursor: pointer"
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-pencil-square"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
-              />
-              <path
-                fill-rule="evenodd"
-                d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
-              />
-            </svg>
+          <i class="bi bi-pencil-square"></i>
           </button>
           <button
-            onclick='deleteItem("<%= item._id %>")'
+            onclick='deleteBook("<%= item.id %>")'
             type="button"
             class="btn btn-outline-danger"
           >
-            <svg
-              style="cursor: pointer"
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-trash"
-              viewBox="0 0 16 16"
-            >
-              <path
-                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"
-              />
-              <path
-                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"
-              />
-            </svg>
+          <i class="bi bi-shield-lock"></i>
+          </button>
+          <button
+            onclick='activeBook("<%= item.id %>")'
+            type="button"
+            class="btn btn-outline-success"
+          >
+          <i class="bi bi-check-lg"></i>
           </button>
         </td>
       </tr>
@@ -184,7 +169,7 @@
     </tbody>
   </table>
   <nav aria-label="Page navigation example">
-    <ul class="pagination" id="pagination">
+    <ul class="pagination">
       <li class="page-item">
         <a class="page-link" href="#" aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
@@ -193,9 +178,14 @@
       <% for(var i=1; i <= pages; i++) { %>
         <% var isActived = ( i === currentPage ) ? "active" : ""; %>
       <li class="page-item <%= isActived %>">
-        <a class="page-link" href="/admin/book?page=<%= i %>"
-          ><%= i %></a
-        >
+        <form action="/admin/book" method="get">
+          <input type="hidden" name="page" value="<%= i %>"/>
+          <input name="name" type="hidden" value="<%= filters.title %>" />
+          <input name="rate" type="hidden" value="<%= filters.rate %>" />
+          <input name="category" type="hidden" value="<%= filters.category %>" />
+          <input name="author" type="hidden" value="<%= filters.author %>" />
+          <button type="submit" class="btn btn-link page-link"><%= i %></button>
+        </form>
       </li>
       <% }; %>
       <li class="page-item">
@@ -220,6 +210,7 @@
       </div>
     </div>
   <% } %>
+  
   <div
     class="modal fade"
     id="createModal"
@@ -292,7 +283,7 @@
                   <div class="col-6">
                     <label for="category" class="form-label">Danh mục</label>
                     <select
-                      name="categoryId"
+                      name="category"
                       id="category"
                       class="form-select"
                       aria-label="Select ategory"
@@ -305,17 +296,17 @@
                     </select>
                   </div>
                   <div class="col-6">
-                    <label for="category" class="form-label">Danh mục</label>
+                    <label for="author" class="form-label">Tác giả</label>
                     <select
-                      name="categoryId"
-                      id="category"
+                      name="author"
+                      id="author"
                       class="form-select"
-                      aria-label="Select ategory"
+                      aria-label="Select author"
                       required
                     >
                       <option>---</option>
-                      <% listCategories.forEach((item) => { %>
-                      <option value="<%= item._id %>"><%= item.name %></option>
+                      <% listAuthor.forEach((item) => { %>
+                      <option value="<%= item.id %>"><%= item.name %></option>
                       <% }) %>
                     </select>
                   </div>
@@ -351,6 +342,7 @@
       </div>
     </div>
   </div>
+  
   <div
     class="modal fade"
     id="editModal"
@@ -358,10 +350,10 @@
     aria-labelledby="editModal"
     aria-hidden="true"
   >
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editModal">Chỉnh sửa sản phẩm</h5>
+          <h5 class="modal-title" id="editModal">Chỉnh sửa</h5>
           <button
             type="button"
             class="btn-close"
@@ -370,113 +362,122 @@
           ></button>
         </div>
         <div class="modal-body">
-          <input type="file" name="file" id="image_file_edit" />
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-            onclick="uploadImageForEdit()"
-          >
-            Lưu ảnh
-          </button>
-          <form class="row g-3" action="/admin/products/edit" method="post">
-            <div class="col-md-12">
-              <img src="" height="100px" width="100px" id="imageUploadEdit" />
-              <input
-                style="display: none"
-                type="text"
-                class="form-control"
-                name="imageUrl"
-                id="imageUrlEdit"
-                value=""
-              />
-            </div>
-            <div>
-              <input
-                type="hidden"
-                class="form-control"
-                id="_idEdit"
-                name="_id"
-                value=""
-              />
-            </div>
-            <div class="col-md-6">
-              <label for="name" class="form-label">Tên sản phẩm</label>
-              <input
-                type="text"
-                class="form-control"
-                id="nameEdit"
-                name="name"
-                placeholder="Nhập tên"
-                value=""
-                required
-              />
-            </div>
-            <div class="col-6">
-              <label for="price" class="form-label">Giá</label>
-              <input
-                type="number"
-                class="form-control"
-                id="priceEdit"
-                name="price"
-                placeholder="Nhập giá"
-                value=""
-                min="0"
-                required
-              />
-            </div>
-            <div class="col-6">
-              <label for="categoriEdit" class="form-label">Danh mục</label>
-              <select
-                name="categoryId"
-                id="categoriEdit"
-                class="form-select"
-                aria-label="Select ategory"
-                required
-              >
-                <option>---</option>
-                <% listCategories.forEach((item) => { %>
-                <option value="<%= item._id %>"><%= item.name %></option>
-                <% }) %>
-              </select>
-            </div>
-            <div class="col-6">
-              <label for="author" class="form-label">Tác giả</label>
-              <input
-                type="text"
-                class="form-control"
-                id="authorEdit"
-                name="author"
-                placeholder="Nhập tên tác giả"
-                value=""
-                required
-              />
-            </div>
-            <div class="col-12">
-              <label for="descriptionEdit" class="form-label">Mô tả</label>
-              <textarea
-                class="form-control"
-                id="descriptionEdit"
-                name="description"
-                placeholder="Nhập mô tả"
-                rows="3"
-                value=""
-                required
-              ></textarea>
-            </div>
-
-            <div class="col-12">
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Đóng
-                </button>
-                <button type="submit" class="btn btn-primary">Lưu</button>
+          <div class="row">
+            <div class="col">
+              <div class="d-flex flex-column bd-highlight mb-3">
+                <div class="p-2" style="text-align: center;"> <img src="" height="200px" width="200px" id="imageUploadEdit" /></div>
+                <div class="p-2" style="text-align: center;"><input type="file" name="file" id="image_file_edit" />
+                  <button type="button" class="btn btn-outline-primary" onclick="uploadImageForEdit()">
+                    Lưu ảnh
+                  </button>
+                </div>
               </div>
             </div>
-          </form>
+            <div class="col">
+              <form class="row g-3" action="/admin/book/edit" method="post">
+                <div class="col-md-12">
+                  <input
+                    style="display: none"
+                    type="text"
+                    class="form-control"
+                    name="imageUrl"
+                    id="imageUrlEdit"
+                    value=""
+                  />
+                </div>
+                <div>
+                  <input
+                    type="hidden"
+                    class="form-control"
+                    id="_idEdit"
+                    name="id"
+                    value=""
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="name" class="form-label">Tiêu đề</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nameEdit"
+                    name="title"
+                    placeholder="Nhập tên"
+                    value=""
+                    required
+                  />
+                </div>
+                <div class="col-6">
+                  <label for="price" class="form-label">Giá</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="priceEdit"
+                    name="price"
+                    placeholder="Nhập giá"
+                    value=""
+                    min="0"
+                    required
+                  />
+                </div>
+                <div class="col-6">
+                  <label for="categoriEdit" class="form-label">Danh mục</label>
+                  <select
+                    name="category"
+                    id="categoriEdit"
+                    class="form-select"
+                    aria-label="Select category"
+                    required
+                  >
+                    <option>---</option>
+                    <% listCategories.forEach((item) => { %>
+                    <option value="<%= item.id %>"><%= item.name %></option>
+                    <% }) %>
+                  </select>
+                </div>
+                <div class="col-6">
+                  <label for="authorEdit" class="form-label">Tác giả</label>
+                  <select
+                    name="author"
+                    id="authorEdit"
+                    class="form-select"
+                    aria-label="Select author"
+                    required
+                  >
+                    <option>---</option>
+                    <% listAuthor.forEach((item) => { %>
+                    <option value="<%= item.id %>"><%= item.name %></option>
+                    <% }) %>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label for="descriptionEdit" class="form-label">Mô tả</label>
+                  <textarea
+                    class="form-control"
+                    id="descriptionEdit"
+                    name="description"
+                    placeholder="Nhập mô tả"
+                    rows="3"
+                    value=""
+                    required
+                  ></textarea>
+                </div>
+    
+                <div class="col-12">
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Đóng
+                    </button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          
         </div>
       </div>
     </div>

@@ -17,7 +17,7 @@ export class BookService {
         title: createBookDto.title,
         description: createBookDto.description,
         price: createBookDto.price,
-        rate: createBookDto.rate,
+        rate: 0,
         imageUrl: createBookDto.imageUrl,
         category: {
           connect: {
@@ -51,7 +51,7 @@ export class BookService {
         },
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: 'asc',
       },
     });
 
@@ -90,7 +90,6 @@ export class BookService {
         title: updateBookDto.title,
         description: updateBookDto.description,
         price: updateBookDto.price,
-        rate: updateBookDto.rate,
         imageUrl: updateBookDto.imageUrl,
         category: {
           connect: {
@@ -107,7 +106,22 @@ export class BookService {
     return plainToInstance(BookEntity, result);
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} book`;
+  async remove(id: string) {
+    const result = await this.bookRepository.update({
+      id: { id },
+      data: {
+        isActive: false,
+      },
+    });
+    return result;
+  }
+  async active(id: string) {
+    const result = await this.bookRepository.update({
+      id: { id },
+      data: {
+        isActive: true,
+      },
+    });
+    return result;
   }
 }

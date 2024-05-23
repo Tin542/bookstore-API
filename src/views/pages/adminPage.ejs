@@ -74,20 +74,20 @@
       function editProduct(id) {
         $.ajax({
           type: "GET",
-          url: `/admin/products/detail/${id}`,
+          url: `/admin/book/${id}`,
           success: function (rs) {
             if (rs.s === 200) {
               let data = rs.data;
               // set data vừa get đc lên <input>
-              document.getElementById("_idEdit").value = data._id;
-              document.getElementById("nameEdit").value = data.name;
+              document.getElementById("_idEdit").value = data.id;
+              document.getElementById("nameEdit").value = data.title;
               document.getElementById("priceEdit").value = data.price;
               document.getElementById("categoriEdit").value = data.categoryId;
               document.getElementById("descriptionEdit").value =
                 data.description;
               document.getElementById("imageUrlEdit").value = data.imageUrl;
               document.getElementById("imageUploadEdit").src = data.imageUrl;
-              document.getElementById("authorEdit").value = data.author;
+              document.getElementById("authorEdit").value = data.authorId;
             }
           },
         });
@@ -142,12 +142,12 @@
           },
         });
       }
-      function deleteItem(id) {
+      function deleteBook(id) {
         $.ajax({
-          type: "DELETE",
-          url: `/admin/products/delete/${id}`,
+          type: "POST",
+          url: `/admin/book/disable/${id}`,
           success: function (rs) {
-            alert("delete success");
+            alert("disable success");
             window.location.reload();
           },
         });
@@ -163,17 +163,6 @@
           },
         });
       }
-      function activeCategory(id) {
-        $.ajax({
-          type: "POST",
-          url: `/admin/category/active/${id}`,
-          success: function (rs) {
-            console.log('rs', rs);
-            alert("active success");
-            window.location.reload();
-          },
-        });
-      }
       function deleteAuthor(id) {
         $.ajax({
           type: "POST",
@@ -185,23 +174,42 @@
           },
         });
       }
-      function activeAuthor(id) {
-        $.ajax({
-          type: "POST",
-          url: `/admin/author/active/${id}`,
-          success: function (rs) {
-            console.log('rs', rs);
-            alert("active success");
-            window.location.reload();
-          },
-        });
-      }
       function deletePromotion(id) {
         $.ajax({
           type: "DELETE",
           url: `/admin/promotion/delete/${id}`,
           success: function (rs) {
             alert("delete success");
+            window.location.reload();
+          },
+        });
+      }
+      function activeCategory(id) {
+        $.ajax({
+          type: "POST",
+          url: `/admin/category/active/${id}`,
+          success: function (rs) {
+            alert("active success");
+            window.location.reload();
+          },
+        });
+      }
+      function activeAuthor(id) {
+        $.ajax({
+          type: "POST",
+          url: `/admin/author/active/${id}`,
+          success: function (rs) {
+            alert("active success");
+            window.location.reload();
+          },
+        });
+      }
+      function activeBook(id) {
+        $.ajax({
+          type: "POST",
+          url: `/admin/book/active/${id}`,
+          success: function (rs) {
+            alert("active success");
             window.location.reload();
           },
         });
@@ -241,16 +249,16 @@
         formData.append("file", file);
 
         $.ajax({
-          url: "/admin/products/upload-image",
+          url: "/admin/book/image",
           type: "POST",
           data: formData,
           processData: false,
           contentType: false,
           success: function (response) {
             document.getElementById("imageUploadEdit").src =
-              response.urlUploaded;
+              response.response.secure_url;
             document.getElementById("imageUrlEdit").value =
-              response.urlUploaded;
+              response.response.secure_url;
           },
           error: function (xhr, status, error) {
             // Xử lý lỗi

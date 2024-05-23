@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsString, MinLength } from 'class-validator';
 
 export class UpdateBookDto {
@@ -11,11 +12,8 @@ export class UpdateBookDto {
   
     @IsNumber()
     @IsNotEmpty()
+    @Type(() => Number)
     price: number;
-  
-    @IsNumber()
-    @IsNotEmpty()
-    rate: number;
   
     @IsString()
     @IsNotEmpty()

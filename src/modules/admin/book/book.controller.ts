@@ -42,12 +42,11 @@ export class BookController {
   async create(@Req() req: Request, @Res() res: Response) {
     this.logger.log('Create book');
     try {
-      console.log('body', req.body);
       let createData = plainToInstance(CreateBookDto, req.body);
       await this.bookService.create(createData);
       return res.redirect('/admin/book');
     } catch (error) {
-      return { errMessage: error };
+      console.log('errro create book', error);
     }
   }
 
@@ -80,7 +79,7 @@ export class BookController {
         module: 'book',
         data: result.list,
         pages: result.totalPages,
-        currentPage: page,
+        currentPage: filter.page,
         listCategories: listcategory,
         listAuthor: listAuthor,
         filters: filter,
@@ -91,25 +90,58 @@ export class BookController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string, @Res() res: Response) {
     this.logger.log('Find one book');
-    return 'find one book';
+    try {
+      const result = await this.bookService.findOne(id);
+      return res.send({ data: result, s: 200 });
+    } catch (error) {
+      return console.log(error);
+    }
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
-    this.logger.log('Update one book');
-    return this.bookService.update(id, updateBookDto);
+  @Post('edit')
+  async update(@Req() req: Request, @Res() res: Response) {
+    try {
+      let id = req.body.id;
+      let data = plainToInstance(UpdateBookDto, req.body);
+      await this.bookService.update(id, data);
+      return res.redirect('/admin/book');
+    } catch (error) {
+      return console.log(error);
+    }
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.bookService.remove(id);
+  @Post('disable/:id')
+  async disable(@Req() req: Request, @Res() res: Response) {
+    this.logger.log('Disable Book');
+    try {
+      let id = req.params.id;
+      await this.bookService.remove(id);
+      return res.redirect('/admin/book');
+    } catch (error) {
+      return res.send({ errMessage: error });
+    }
+  }
+  @Post('active/:id')
+  async acive(@Req() req: Request, @Res() res: Response) {
+    this.logger.log('Active Book');
+    try {
+      let id = req.params.id;
+      await this.bookService.active(id);
+      return res.redirect('/admin/book');
+    } catch (error) {
+      return res.send({ errMessage: error });
+    }
   }
 
   @Post('image')
   @UseInterceptors(FileInterceptor('file'))
   uploadImage(@UploadedFile() file: Express.Multer.File) {
-    return this.cloudinaryService.uploadFile(file);
+    try {
+      return this.cloudinaryService.uploadFile(file);
+    } catch (error) {
+      console.log('upload error: ', error);
+    }
   }
 }
