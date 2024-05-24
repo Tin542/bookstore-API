@@ -1,47 +1,42 @@
 import { Book } from '@prisma/client';
 
-import { Category } from './category.entity';
-import { AuthorEntity } from './author.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class BookEntity implements Book {
+export class BookEntity {
   @Field(() => String)
-  id: string;
+  id: Book['id'];
 
   @Field(() => String)
-  title: string;
+  title: Book['title'];
 
   @Field(() => String)
-  description: string;
+  description: Book['description'];
 
   @Field(() => Number)
-  price: number;
+  price: Book['price'];
 
   @Field(() => Number)
-  rate: number;
-
-  @Field(() => Number)
-  quantity: number;
+  rate: Book['rate'];
 
   @Field(() => String)
-  imageUrl: string;
+  imageUrl: Book['imageUrl'];
 
   @Field(() => Boolean)
-  isActive: boolean;
+  isActive: Book['isActive'];
 
   @Field(() => Boolean)
-  isOutofStock: boolean;
+  isOutofStock: Book['isOutofStock'];
 
   @Field(() => String)
-  categoryId: string;
+  categoryId: Book['categoryId'];
 
   @Field(() => String)
-  authorId: string;
+  authorId: Book['authorId'];
 
   @Field(() => Date)
-  createdAt: Date;
+  createdAt: Book['createdAt'];
 
   @Field(() => Date)
-  updatedAt: Date;
+  updatedAt: Book['updatedAt'];
 }

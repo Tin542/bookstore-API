@@ -10,6 +10,22 @@ type AuthorEntity {
   updatedAt: String!
 }
 
+type BookEntity {
+  author: AuthorEntity!
+  authorId: String!
+  categoryId: String!
+  createdAt: DateTime!
+  description: String!
+  id: String!
+  imageUrl: String!
+  isActive: Boolean!
+  isOutofStock: Boolean!
+  price: Float!
+  rate: Float!
+  title: String!
+  updatedAt: DateTime!
+}
+
 type Category {
   createdAt: String!
   description: String!
@@ -19,7 +35,28 @@ type Category {
   updatedAt: String!
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input FilterBookDto {
+  author: [String!]
+  category: [String!]
+  limit: Int
+  page: Int
+  rate: Int
+  title: String
+}
+
 type Query {
   findAllAuthors: [AuthorEntity!]!
+  findAllBooks(filter: FilterBookDto!): ResponseBookDto!
   findAllCategories: [Category!]!
+}
+
+type ResponseBookDto {
+  currentPage: Float!
+  data: [BookEntity!]!
+  pages: Float!
 }

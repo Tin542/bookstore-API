@@ -46,8 +46,8 @@ export class BookService {
         AND: {
           title: filter.title ? { contains: filter.title } : {},
           rate: filter.rate ? { equals: filter.rate } : {},
-          categoryId: filter.category.length > 0 ? { in: filter.category } : {},
-          authorId: filter.author.length > 0 ? { in: filter.author } : {},
+          categoryId: filter.category && filter.category.length > 0 ? { in: filter.category } : {},
+          authorId: filter.author && filter.author.length > 0 ? { in: filter.author } : {},
         },
       },
       orderBy: {
@@ -60,8 +60,8 @@ export class BookService {
         AND: {
           title: filter.title ? { contains: filter.title } : {},
           rate: filter.rate ? { equals: filter.rate } : {},
-          categoryId: filter.category.length > 0 ? { in: filter.category } : {},
-          authorId: filter.author.length > 0 ? { in: filter.author } : {},
+          categoryId: filter.category && filter.category.length > 0 ? { in: filter.category } : {},
+          authorId: filter.author && filter.author.length > 0 ? { in: filter.author } : {},
         },
       },
     });
