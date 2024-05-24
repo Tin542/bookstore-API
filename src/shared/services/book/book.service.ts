@@ -51,7 +51,7 @@ export class BookService {
         },
       },
       orderBy: {
-        createdAt: 'asc',
+        createdAt: 'desc',
       },
     });
 

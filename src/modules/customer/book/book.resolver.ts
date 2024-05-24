@@ -14,7 +14,7 @@ export class BookResolver {
   constructor(
     private readonly bookService: BookService,
     private readonly categoryService: CategoryService,
-    private readonly authorService: AuthorService
+    private readonly authorService: AuthorService,
   ) {}
 
   @Query(() => ResponseBookDto)
@@ -22,11 +22,9 @@ export class BookResolver {
     console.log('Searching', requestData);
     try {
       const result = await this.bookService.findAll(requestData);
-      return {
-        data: result.list,
-        pages: result.totalPages,
-        currentPage: result.currentPage,
-      };
+      const response = plainToInstance(ResponseBookDto, result);
+
+      return response;
     } catch (error) {
       console.error(error);
       throw new Error('Failed to fetch books');
@@ -35,6 +33,6 @@ export class BookResolver {
   @ResolveField(() => AuthorEntity)
   async author(@Parent() book: BookEntity) {
     const author = await this.authorService.findOne(book.authorId);
-    return author.name;  // Adjust based on your author entity structure
+    return author.name; // Adjust based on your author entity structure
   }
 }

@@ -56,7 +56,9 @@ type Query {
 }
 
 type ResponseBookDto {
-  currentPage: Float!
-  data: [BookEntity!]!
-  pages: Float!
+  currentPage: Int!
+  limit: Int!
+  list: [BookEntity!]!
+  totalPages: Int!
+  totalProducts: Int!
 }
