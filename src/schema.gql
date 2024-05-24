@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AboutEntity {
+  content: String!
+  id: String!
+}
+
 type AuthorEntity {
   createdAt: String!
   id: String!
@@ -53,6 +58,7 @@ type Query {
   findAllAuthors: [AuthorEntity!]!
   findAllBooks(filter: FilterBookDto!): ResponseBookDto!
   findAllCategories: [Category!]!
+  findOneAbout(id: String!): [AboutEntity!]!
 }
 
 type ResponseBookDto {

@@ -23,7 +23,6 @@ export class BookResolver {
     try {
       const result = await this.bookService.findAll(requestData);
       const response = plainToInstance(ResponseBookDto, result);
-
       return response;
     } catch (error) {
       console.error(error);
@@ -33,6 +32,6 @@ export class BookResolver {
   @ResolveField(() => AuthorEntity)
   async author(@Parent() book: BookEntity) {
     const author = await this.authorService.findOne(book.authorId);
-    return author.name; // Adjust based on your author entity structure
+    return author.name; // Adjust based on author entity structure
   }
 }

@@ -11,6 +11,8 @@ import { AuthorModule } from './author/author.module';
 import { AuthorResolver } from './author/author.resolver';
 import { BookModule } from './book/book.module';
 import { BookResolver } from './book/book.resolver';
+import { AboutModule } from './about/about.module';
+import { AboutResolver } from './about/about.resolver';
 
 @Module({
   imports: [
@@ -18,7 +20,6 @@ import { BookResolver } from './book/book.resolver';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
-      context: ({ req }) => ({ request: req }),
     }),
     JwtModule.register({
       global: true,
@@ -28,9 +29,10 @@ import { BookResolver } from './book/book.resolver';
     PrismaModule,
     CategoryModule,
     AuthorModule,
-    BookModule
+    BookModule,
+    AboutModule
   ],
-  providers: [CategoryResolver, AuthorResolver, BookResolver],
-  exports: [CategoryResolver, AuthorResolver, BookResolver]
+  providers: [CategoryResolver, AuthorResolver, BookResolver, AboutResolver],
+  exports: [CategoryResolver, AuthorResolver, BookResolver, AboutResolver]
 })
 export class CustomerModule {}
