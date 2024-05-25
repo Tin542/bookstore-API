@@ -9,10 +9,10 @@ export class FilterBookDto {
   rate?: number;
 
   @Field(() => [String],{ nullable: true })
-  author?: Array<string>;
+  author?: string[];
 
   @Field(() => [String], { nullable: true })
-  category?: Array<string>;
+  category?: string[];
 
   @Field(() => Int, { nullable: true })
   page?: number;
