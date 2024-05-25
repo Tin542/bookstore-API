@@ -16,7 +16,6 @@ type AuthorEntity {
 }
 
 type BookEntity {
-  author: AuthorEntity!
   authorId: String!
   categoryId: String!
   createdAt: DateTime!
@@ -58,7 +57,7 @@ type Query {
   findAllAuthors: [AuthorEntity!]!
   findAllBooks(filter: FilterBookDto!): ResponseBookDto!
   findAllCategories: [Category!]!
-  findOneAbout(id: String!): [AboutEntity!]!
+  findOneAbout(id: String!): AboutEntity!
 }
 
 type ResponseBookDto {

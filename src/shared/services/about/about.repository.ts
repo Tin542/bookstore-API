@@ -7,7 +7,8 @@ export class AboutRepository {
   constructor(private prisma: PrismaService) {}
 
   async findOne(id: Prisma.AboutWhereUniqueInput): Promise<About | null> {
-    return this.prisma.about.findUnique({ where: id });
+    const result = await this.prisma.about.findUnique({ where: id });
+    return result;
   }
 
   async update(params: {
@@ -15,6 +16,6 @@ export class AboutRepository {
     data: Prisma.AboutUpdateInput;
   }): Promise<About | null> {
     const { id, data } = params;
-    return this.prisma.about.update({ where: id, data: data });
+    return await this.prisma.about.update({ where: id, data: data });
   }
 }

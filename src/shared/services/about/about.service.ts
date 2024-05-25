@@ -9,7 +9,7 @@ import { UpdateAboutDto } from 'src/dtos/about/update-about.dto';
 export class AboutService {
   constructor(private aboutRepository: AboutRepository) {}
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<AboutEntity>  {
     const result = await this.aboutRepository.findOne({ id: id });
     return plainToInstance(AboutEntity, result);
   }

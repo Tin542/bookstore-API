@@ -4,7 +4,7 @@ import { plainToInstance } from 'class-transformer';
 import { BookEntity } from '../../../entities/book.entity';
 import { BookRepository } from './book.repository';
 import { CreateBookDto } from 'src/dtos/book/create-book.dto';
-import { FilterBookDto } from 'src/dtos/book/fillter-book.dto';
+import { FilterBookDto } from 'src/dtos/book/filter-book.dto';
 import { UpdateBookDto } from 'src/dtos/book/update-book.dto';
 
 @Injectable()
@@ -77,6 +77,50 @@ export class BookService {
       limit: itemPerPage,
     };
   }
+
+  // async findAllForCustomer(filter: getBookArgs) {
+  //   let itemPerPage: number = filter.limit ? filter.limit : 5;
+  //   let offset: number = filter.page > 0 ? (filter.page - 1) * filter.limit : 0;
+  //   let currentPage: number = filter.page ? filter.page : 1;
+
+  //   const listBooks = await this.bookRepository.findMany({
+  //     skip: offset,
+  //     take: itemPerPage,
+  //     where: {
+  //       AND: {
+  //         title: filter.title ? { contains: filter.title } : {},
+  //         rate: filter.rate ? { equals: filter.rate } : {},
+  //         categoryId: filter.category && filter.category.length > 0 ? { in: filter.category } : {},
+  //         authorId: filter.author && filter.author.length > 0 ? { in: filter.author } : {},
+  //       },
+  //     },
+  //     orderBy: {
+  //       createdAt: 'desc',
+  //     },
+  //   });
+
+  //   const total = await this.bookRepository.countBook({
+  //     where: {
+  //       AND: {
+  //         title: filter.title ? { contains: filter.title } : {},
+  //         rate: filter.rate ? { equals: filter.rate } : {},
+  //         categoryId: filter.category && filter.category.length > 0 ? { in: filter.category } : {},
+  //         authorId: filter.author && filter.author.length > 0 ? { in: filter.author } : {},
+  //       },
+  //     },
+  //   });
+  //   const result = plainToInstance(BookEntity, listBooks);
+  //   return {
+  //     list: result,
+  //     totalProducts: total,
+  //     totalPages:
+  //       total % itemPerPage !== 0
+  //         ? Math.floor(total / itemPerPage) + 1
+  //         : total / itemPerPage,
+  //     currentPage: currentPage,
+  //     limit: itemPerPage,
+  //   };
+  // }
 
   async findOne(id: string): Promise<BookEntity> {
     const result = await this.bookRepository.findOne({ id });

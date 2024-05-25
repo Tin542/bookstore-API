@@ -16,11 +16,9 @@ import {
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
-import { BookEntity } from '../../../entities/book.entity';
 import { CreateBookDto } from '../../../dtos/book/create-book.dto';
 import { UpdateBookDto } from '../../../dtos/book/update-book.dto';
-import { FilterBookDto } from '../../../dtos/book/fillter-book.dto';
-import { DetailBookDto } from '../../../dtos/book/detail-book.dto';
+import { FilterBookDto } from '../../../dtos/book/filter-book.dto';
 import { BookService } from 'src/shared/services/book/book.service';
 import { Request, Response } from 'express';
 import { CategoryService } from 'src/shared/services/category/category.service';

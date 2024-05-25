@@ -7,9 +7,8 @@ import { AuthorService } from 'src/shared/services/author/author.service';
 export class AboutResolver {
   constructor(private readonly aboutService: AboutService) {}
 
-  @Query(() => [AboutEntity])
-  async findOneAbout(@Args('id', { type: () => String }) id: string) {
-    console.log('ID: ', id);
+  @Query(() => AboutEntity)
+  async findOneAbout(@Args('id') id: string) {
     const result = await this.aboutService.findOne(id);
     return result;
   }
