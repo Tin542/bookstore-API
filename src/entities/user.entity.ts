@@ -10,7 +10,7 @@ export class UserEntity {
   email: User['email'];
 
   @Field(() => String)
-  useranme: User['useranme'];
+  username: User['username'];
 
   @Field(() => String)
   password: User['password'];

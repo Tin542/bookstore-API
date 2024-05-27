@@ -72,12 +72,12 @@ model User {
   id           String     @id @default(uuid())
   email        String     @unique()
   fullName     String
-  useranme     String     @unique()
+  username     String     @unique()
   password     String
   isActive     Boolean    @default(true)
   phoneNumber  String
   address      String
-  avatar       String
+  avatar       String?
   refreshToken String?
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @default(now())

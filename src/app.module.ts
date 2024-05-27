@@ -3,10 +3,26 @@ import { PrismaModule } from './shared/prisma/prisma.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { CustomerModule } from './modules/customer/customer.module';
 import { CloudinaryModule } from './shared/cloudinary/cloudinary.module';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthModule } from './modules/auth/auth.module';
+import { AuthService } from './shared/services/auth/auth.service';
+import { AuthResolver } from './modules/auth/auth.resolver';
 
 @Module({
-  imports: [PrismaModule, AdminModule, CustomerModule, CloudinaryModule],
-  providers: [],
+  imports: [
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '60s' },
+    }),
+    PrismaModule,
+    AdminModule,
+    CustomerModule,
+    CloudinaryModule,
+    AuthModule,
+  ],
+  providers: [AuthResolver, AuthService],
   controllers: [],
+  exports: [AuthService],
 })
 export class AppModule {}

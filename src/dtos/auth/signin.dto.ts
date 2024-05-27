@@ -1,10 +1,13 @@
+import { ArgsType, Field } from '@nestjs/graphql';
 import { IsEmpty, IsString, MinLength } from 'class-validator';
 
-export class SignUpInputDto {
+@ArgsType()
+export class SignInDto {
   @IsString()
-  @IsEmpty()
+  @Field(() => String)
   username: string;
-
+ 
   @MinLength(6)
+  @Field(() => String)
   password: string;
 }

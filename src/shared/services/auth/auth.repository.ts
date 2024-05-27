@@ -10,4 +10,8 @@ export class AuthRepository {
     const { data } = params;
     return this.prisma.user.create({ data });
   }
+
+  async findOne(username: Prisma.UserWhereUniqueInput): Promise<User | null> {
+    return this.prisma.user.findUnique({ where: username });
+  }
 }
