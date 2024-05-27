@@ -2,6 +2,7 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join, resolve } from 'path';
+import * as cookieParser from 'cookie-parser';
 
 // import { ValidationPipe} from './shared/pipe/validation.pipe';
 import { AppModule } from './app.module';
@@ -10,6 +11,7 @@ import { PrismaService } from './shared/prisma/prisma.service';
 async function bootstrap() {
   // const app = await NestFactory.create(AppModule);
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.use(cookieParser());
 
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);

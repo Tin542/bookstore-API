@@ -13,7 +13,7 @@ import { BookModule } from './book/book.module';
 import { BookResolver } from './book/book.resolver';
 import { AboutModule } from './about/about.module';
 import { AboutResolver } from './about/about.resolver';
-import { BookService } from 'src/shared/services/book/book.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -31,8 +31,15 @@ import { BookService } from 'src/shared/services/book/book.service';
     CategoryModule,
     AuthorModule,
     BookModule,
-    AboutModule
+    AboutModule,
+    AuthModule,
   ],
-  providers: [CategoryResolver, AuthorResolver, BookResolver, AboutResolver, BookService],
+  providers: [
+    CategoryResolver,
+    AuthorResolver,
+    BookResolver,
+    AboutResolver,
+    AuthorResolver,
+  ],
 })
 export class CustomerModule {}
