@@ -50,7 +50,7 @@ type Mutation {
 
 type Query {
   findAllAuthors: [AuthorEntity!]!
-  findAllBooks(author: [String!], category: [String!], limit: Int = 12, page: Int = 1, rate: [Int!], title: String): ResponseBookDto!
+  findAllBooks(author: [String!], category: [String!], isActive: Boolean = true, limit: Int, page: Int, rate: [Int!], title: String): ResponseBookDto!
   findAllCategories: [Category!]!
   findOneAbout(id: String!): AboutEntity!
 }
