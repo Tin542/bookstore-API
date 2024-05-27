@@ -5,14 +5,17 @@ export class FilterBookDto {
   @Field(() => String,{ nullable: true })
   title?: string;
 
-  @Field(() => Int, { nullable: true })
-  rate?: number;
+  @Field(() => [Int], { nullable: true })
+  rate?: number[];
 
   @Field(() => [String],{ nullable: true })
   author?: string[];
 
   @Field(() => [String], { nullable: true })
   category?: string[];
+
+  @Field(() => Boolean, { nullable: true })
+  isActive?: boolean
 
   @Field(() => Int, { nullable: true })
   page?: number;

@@ -45,9 +45,17 @@ export class BookService {
       where: {
         AND: {
           title: filter.title ? { contains: filter.title } : {},
-          rate: filter.rate ? { equals: filter.rate } : {},
-          categoryId: filter.category && (filter.category).length > 0 ? { in: filter.category } : {},
-          authorId: filter.author && (filter.author).length > 0 ? { in: filter.author } : {},
+          rate:
+            filter.rate && filter.rate.length > 0 ? { in: filter.rate } : {},
+          categoryId:
+            filter.category && filter.category.length > 0
+              ? { in: filter.category }
+              : {},
+          authorId:
+            filter.author && filter.author.length > 0
+              ? { in: filter.author }
+              : {},
+          isActive: filter.isActive ? { equals: filter.isActive } : {},
         },
       },
       orderBy: {
@@ -59,9 +67,16 @@ export class BookService {
       where: {
         AND: {
           title: filter.title ? { contains: filter.title } : {},
-          rate: filter.rate ? { equals: filter.rate } : {},
-          categoryId: filter.category && filter.category.length > 0 ? { in: filter.category } : {},
-          authorId: filter.author && filter.author.length > 0 ? { in: filter.author } : {},
+          rate:
+            filter.rate && filter.rate.length > 0 ? { in: filter.rate } : {},
+          categoryId:
+            filter.category && filter.category.length > 0
+              ? { in: filter.category }
+              : {},
+          authorId:
+            filter.author && filter.author.length > 0
+              ? { in: filter.author }
+              : {},
         },
       },
     });

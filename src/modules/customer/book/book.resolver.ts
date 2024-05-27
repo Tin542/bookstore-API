@@ -14,7 +14,7 @@ export class BookResolver {
   @Query(() => ResponseBookDto)
   async findAllBooks(
     @Args('title', { nullable: true }) title?: string,
-    @Args('rate', { nullable: true, type: () => Int }) rate?: number,
+    @Args('rate', { nullable: true, type: () => [Int] }) rate?: number[],
     @Args('author', { nullable: true, type: () => [String] }) author?: string[],
     @Args('category', { nullable: true, type: () => [String] }) category?: string[],
     @Args('page', { nullable: true, type: () => Int, defaultValue: 1} ) page?: number,
@@ -26,6 +26,7 @@ export class BookResolver {
         rate,
         author,
         category,
+        isActive: true,
         page,
         limit
       });

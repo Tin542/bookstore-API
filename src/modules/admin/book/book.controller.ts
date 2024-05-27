@@ -60,9 +60,7 @@ export class BookController {
       let requestData = req.query;
       let filter = plainToInstance(FilterBookDto, {
         title: requestData.title || '',
-        rate: requestData.rate
-          ? parseInt(requestData.rate as string)
-          : undefined,
+        rate: requestData.rate ? [parseInt(requestData.rate as string)] : [],
         author: requestData.author ? [requestData.author] : [],
         category: requestData.category ? [requestData.category] : [],
         page: page ? page : 1,
