@@ -1,12 +1,9 @@
 import { User } from '@prisma/client';
-import { BookEntity } from './book.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Transform } from 'class-transformer';
-import { format } from 'date-fns';
 
 @ObjectType()
 export class UserEntity {
-    @Field(() => String)
+  @Field(() => String)
   id: User['id'];
 
   @Field(() => String)
@@ -27,10 +24,10 @@ export class UserEntity {
   @Field(() => String)
   address: User['address'];
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   avatar: User['avatar'];
 
-  @Field(() => String, {nullable: true})
+  @Field(() => String, { nullable: true })
   refreshToken: User['refreshToken'];
 
   @Field(() => Date)

@@ -1,34 +1,37 @@
 import { ArgsType, Field, InputType } from '@nestjs/graphql';
-import { IsEmail, IsEmpty, IsString, MinLength } from 'class-validator';
-import { UserEntity } from 'src/entities/user.entity';
+import {
+  IsEmail,
+  IsString,
+  MinLength,
+} from 'class-validator';
 
 @ArgsType()
 export class SignUpDto {
   @IsString()
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   fullName: string;
 
   @IsString()
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   address: string;
 
   @IsEmail()
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   email: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   @IsString()
   phoneNumber: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   @IsString()
   username: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   @MinLength(6)
   password: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   @IsString()
   avatar?: string;
 }

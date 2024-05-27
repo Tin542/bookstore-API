@@ -10,7 +10,6 @@ export class AuthResolver {
   @Mutation(() => UserEntity, { nullable: false })
   async registerUser(@Args() args: SignUpDto) {
     try {
-      console.log('register', args)
       const result = await this.authService.signup(args);
       return result;
     } catch (error) {
