@@ -21,7 +21,7 @@ export class UserEntity {
   @Field(() => String)
   phoneNumber: User['phoneNumber'];
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   address: User['address'];
 
   @Field(() => String, { nullable: true })

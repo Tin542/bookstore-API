@@ -15,7 +15,7 @@ export class SignUpDto {
   @Field(() => String)
   address: string;
 
-  @IsEmail()
+  @IsEmail({}, {message: 'Email is invalid'})
   @Field(() => String)
   email: string;
 

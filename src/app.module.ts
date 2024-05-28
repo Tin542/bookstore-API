@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './modules/auth/auth.module';
 import { AuthService } from './shared/services/auth/auth.service';
 import { AuthResolver } from './modules/auth/auth.resolver';
+import { providePrismaClientExceptionFilter } from 'nestjs-prisma';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { AuthResolver } from './modules/auth/auth.resolver';
     CloudinaryModule,
     AuthModule,
   ],
-  providers: [AuthResolver, AuthService],
+  providers: [providePrismaClientExceptionFilter(), AuthResolver, AuthService],
   controllers: [],
   exports: [AuthService],
 })

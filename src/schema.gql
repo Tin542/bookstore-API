@@ -69,7 +69,7 @@ type SignInResponseDto {
 }
 
 type UserEntity {
-  address: String!
+  address: String
   avatar: String
   createdAt: DateTime!
   email: String!
