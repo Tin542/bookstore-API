@@ -6,6 +6,7 @@ import { AuthService } from 'src/shared/services/auth/auth.service';
 import { SignInResponseDto } from 'src/dtos/auth/signin-response.dto';
 import { LocalAuthGuard } from './guard/local.guard';
 import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from './guard/jwt-auth.guard';
 
 @Resolver(() => UserEntity)
 export class AuthResolver {
@@ -17,10 +18,9 @@ export class AuthResolver {
     return result;
   }
 
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => SignInResponseDto, { nullable: false })
-  async login(@Args() args: SignInDto) {
-    console.log('signin', args);
+  async signin(@Args() args: SignInDto) {
     const result = await this.authService.signin(args);
     return result;
   }

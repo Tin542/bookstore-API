@@ -11,6 +11,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { AuthService } from './shared/services/auth/auth.service';
 import { AuthResolver } from './modules/auth/auth.resolver';
 import { LocalStrategy } from './modules/auth/strategies/local.strategy';
+import { JwtStrategy } from './modules/auth/strategies/jwt.strategy';
 
 
 
@@ -28,7 +29,7 @@ import { LocalStrategy } from './modules/auth/strategies/local.strategy';
     CloudinaryModule,
     AuthModule,
   ],
-  providers: [providePrismaClientExceptionFilter(), AuthResolver, AuthService, LocalStrategy],
+  providers: [providePrismaClientExceptionFilter(), AuthResolver, AuthService, LocalStrategy, JwtStrategy],
   controllers: [],
   exports: [AuthService],
 })
