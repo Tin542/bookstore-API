@@ -7,6 +7,9 @@ export class UserEntity {
   id: User['id'];
 
   @Field(() => String)
+  fullName: User['fullName'];
+
+  @Field(() => String)
   email: User['email'];
 
   @Field(() => String)

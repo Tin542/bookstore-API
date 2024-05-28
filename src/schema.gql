@@ -45,7 +45,7 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Mutation {
-  signin(password: String!, username: String!): SignInResponseDto!
+  login(password: String!, username: String!): SignInResponseDto!
   signup(address: String!, avatar: String!, email: String!, fullName: String!, password: String!, phoneNumber: String!, username: String!): UserEntity!
 }
 
@@ -66,6 +66,7 @@ type ResponseBookDto {
 
 type SignInResponseDto {
   accessToken: String!
+  userInfo: UserEntity!
 }
 
 type UserEntity {
@@ -73,6 +74,7 @@ type UserEntity {
   avatar: String
   createdAt: DateTime!
   email: String!
+  fullName: String!
   id: String!
   isActive: Boolean!
   password: String!
