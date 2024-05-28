@@ -1,5 +1,9 @@
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import {
+  BadRequestException,
+  ClassSerializerInterceptor,
+  ValidationPipe,
+} from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join, resolve } from 'path';
 import * as cookieParser from 'cookie-parser';
@@ -20,7 +24,20 @@ async function bootstrap() {
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
 
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (errors) => {
+        const result = {
+          property: errors[0].property,
+          message: errors[0].constraints[Object.keys(errors[0].constraints)[0]],
+        }
+        return new BadRequestException(result);
+      },
+      whitelist: true,
+      transform: true,
+      stopAtFirstError: true,
+    }),
+  );
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   // Read static file in folder views and public
