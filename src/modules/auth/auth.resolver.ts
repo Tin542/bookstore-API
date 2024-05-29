@@ -18,7 +18,6 @@ export class AuthResolver {
     return result;
   }
 
-  // @UseGuards(JwtAuthGuard)
   @Mutation(() => SignInResponseDto, { nullable: false })
   async signin(@Args() args: SignInDto) {
     const result = await this.authService.signin(args);

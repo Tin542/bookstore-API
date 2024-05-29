@@ -21,6 +21,7 @@ export class CartRepository {
     return this.prisma.cartItem.findMany({
       where,
       orderBy,
+      include: {book: true}
     });
   }
 

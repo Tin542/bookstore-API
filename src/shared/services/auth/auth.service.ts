@@ -28,6 +28,9 @@ export class AuthService {
     password: string,
   ): Promise<UserEntity> {
     const user = await this.authRepository.findOne({ username });
+    if (!user){
+      throw new BadRequestException('user is not existed')
+    }
     await this.verifyPlainContentWithHashedContent(password, user.password);
     return plainToInstance(UserEntity, user);
   }
@@ -38,15 +41,19 @@ export class AuthService {
   ) {
     const is_matching = await comparePassword(plain_text, hashed_text);
     if (!is_matching) {
-      throw new BadRequestException();
+      throw new BadRequestException('Password is incorrect');
     }
   }
 
   generateAccessToken(payload: TokenPayload) {
-    return this.jwtService.sign(payload, {
+    const token =  this.jwtService.sign(payload, {
       secret: process.env.JWT_ACCESS_TOKEN_SECRET,
       expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME,
     });
+    if(!token) {
+      throw new BadRequestException('Failed to verify token');
+    }
+    return token;
   }
   
   async signin(signinDto: SignInDto): Promise<SignInResponseDto> {
