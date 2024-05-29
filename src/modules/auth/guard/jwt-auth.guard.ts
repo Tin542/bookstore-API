@@ -30,30 +30,17 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: process.env.JWT_SECRET,
+        secret: process.env.JWT_ACCESS_TOKEN_SECRET,
       });
-      // const userData = await this.authService.findFirst({
-      //   where: { id: { equals: payload.sub ?? '' } },
-      //   include: { role: { include: { permissions: true } } },
-      // });
-      const user = await this.userService.getOneUser(payload.sub)
+
+      const user = await this.userService.getOneUser({id: payload.sub})
       // add user to req so that we can access it later from request
       req.user = user;
       return true;
-    } catch {
-      throw new UnauthorizedException();
+    } catch (err) {
+      console.log(err);
+      throw new UnauthorizedException('canActive Failed');
     }
   }
-  // canActivate(context: ExecutionContext) {
-  //   console.log('can active')
-  //   const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-  //     context.getHandler(),
-  //     context.getClass(),
-  //   ]);
-  //   console.log('can activate', isPublic )
-  //   if (isPublic) {
-  //     return true;
-  //   }
-  //   return super.canActivate(context);
-  // }
+
 }

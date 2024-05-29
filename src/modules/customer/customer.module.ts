@@ -12,6 +12,8 @@ import { BookModule } from './book/book.module';
 import { BookResolver } from './book/book.resolver';
 import { AboutModule } from './about/about.module';
 import { AboutResolver } from './about/about.resolver';
+import { CartModule } from './cart/cart.module';
+import { CartResolver } from './cart/cart.resolver';
 
 @Module({
   imports: [
@@ -26,8 +28,9 @@ import { AboutResolver } from './about/about.resolver';
     AuthorModule,
     BookModule,
     AboutModule,
+    CartModule
   ],
-  providers: [CategoryResolver, AuthorResolver, BookResolver, AboutResolver],
+  providers: [CategoryResolver, AuthorResolver, BookResolver, AboutResolver, CartResolver],
  
 })
 export class CustomerModule {}

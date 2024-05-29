@@ -1,14 +1,14 @@
 import { CartItem, Category as categoryDB } from '@prisma/client';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { Transform } from 'class-transformer';
-import { format } from 'date-fns';
+import { BookEntity } from './book.entity';
+import { IsOptional } from 'class-validator';
 
 @ObjectType()
-export class CartEntity {
+export class CartItemEntity {
   @Field(() => String)
   id: CartItem['id'];
 
-  @Field(() => [String])
+  @Field(() => String)
   bookId: CartItem['bookId'];
 
   @Field(() => Number)
@@ -25,4 +25,7 @@ export class CartEntity {
 
   @Field(() => Number)
   price: CartItem['price'];
+
+  @Field(() => BookEntity, {nullable: true})
+  book: BookEntity
 }
