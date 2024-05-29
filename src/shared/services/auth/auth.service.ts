@@ -51,7 +51,7 @@ export class AuthService {
   
   async signin(signinDto: SignInDto): Promise<SignInResponseDto> {
     const user = await this.getAuthenticatedUser(signinDto.username, signinDto.password);
-    const payload = { sub: user.id, username: user.username };
+    const payload = { sub: user.id, username: user.username, refresh_token: user.refreshToken };
     // create access token
     const accessToken = this.generateAccessToken(payload);
     const result = plainToInstance(SignInResponseDto, {
