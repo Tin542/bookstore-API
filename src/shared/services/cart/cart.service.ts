@@ -30,7 +30,8 @@ export class CartService {
       return plainToInstance(CartItemEntity, result);
     } else {
       const currentQuantity = checkExisted.quantity;
-      return await this.update(checkExisted.id, currentQuantity + createCartItemDTO.quantity);
+      const updatedCart = await this.update(checkExisted.id, currentQuantity + createCartItemDTO.quantity);
+      return updatedCart;
     }
   }
 

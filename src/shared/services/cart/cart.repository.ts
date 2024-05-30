@@ -10,7 +10,7 @@ export class CartRepository {
     data: Prisma.CartItemCreateInput;
   }): Promise<CartItem> {
     const { data } = params;
-    return this.prisma.cartItem.create({ data });
+    return this.prisma.cartItem.create({ data, include: {book: true} });
   }
 
   async findMany(params: {
