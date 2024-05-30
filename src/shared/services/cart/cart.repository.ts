@@ -32,6 +32,16 @@ export class CartRepository {
     });
   }
 
+  async checkCartExisted(params: {
+    where: Prisma.CartItemWhereInput
+  }): Promise<CartItem | null> {
+    const {where} = params;
+    return this.prisma.cartItem.findFirst({
+      where,
+      include: { book: true },
+    });
+  }
+
   async update(params: {
     id: Prisma.CartItemWhereUniqueInput;
     data: Prisma.CartItemUpdateInput;

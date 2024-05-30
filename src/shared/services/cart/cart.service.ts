@@ -10,19 +10,28 @@ export class CartService {
   constructor(private cartRepository: CartRepository) {}
 
   async create(createCartItemDTO: CreateCartItemDto): Promise<CartItemEntity> {
-    const result = await this.cartRepository.createCartItem({
-      data: {
-        book: {
-          connect: { id: createCartItemDTO.bookId },
+    const checkExisted = await this.findOneByUserIdAndBookId(
+      createCartItemDTO.userId,
+      createCartItemDTO.bookId,
+    );
+    if (!checkExisted) {
+      const result = await this.cartRepository.createCartItem({
+        data: {
+          book: {
+            connect: { id: createCartItemDTO.bookId },
+          },
+          User: {
+            connect: { id: createCartItemDTO.userId },
+          },
+          price: createCartItemDTO.price,
+          quantity: createCartItemDTO.quantity,
         },
-        User: {
-          connect: { id: createCartItemDTO.userId },
-        },
-        price: createCartItemDTO.price,
-        quantity: createCartItemDTO.quantity,
-      },
-    });
-    return plainToInstance(CartItemEntity, result);
+      });
+      return plainToInstance(CartItemEntity, result);
+    } else {
+      const currentQuantity = checkExisted.quantity;
+      return await this.update(checkExisted.id, currentQuantity + createCartItemDTO.quantity);
+    }
   }
 
   async findAll(uid: string): Promise<CartItemEntity[]> {
@@ -42,6 +51,21 @@ export class CartService {
     return plainToInstance(CartItemEntity, result);
   }
 
+  async findOneByUserIdAndBookId(
+    userId: string,
+    bookId: string,
+  ): Promise<CartItemEntity> {
+    const result = await this.cartRepository.checkCartExisted({
+      where: {
+        AND: {
+          userId: userId,
+          bookId: bookId,
+        },
+      },
+    });
+    return plainToInstance(CartItemEntity, result);
+  }
+
   async update(id: string, quantity: number): Promise<CartItemEntity> {
     const currentCartItem = await this.findOne(id);
     if (currentCartItem) {
@@ -49,12 +73,12 @@ export class CartService {
         id: { id },
         data: {
           quantity: quantity,
-          price: currentCartItem.book.price * quantity
+          price: currentCartItem.book.price * quantity,
         },
       });
       return plainToInstance(CartItemEntity, result);
     }
-    throw new Error('cartitem not found')
+    throw new Error('cartitem not found');
   }
 
   async remove(id: string): Promise<CartItemEntity> {
