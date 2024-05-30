@@ -21,7 +21,7 @@ export class CartRepository {
     return this.prisma.cartItem.findMany({
       where,
       orderBy,
-      include: {book: true}
+      include: { book: true },
     });
   }
 
@@ -37,7 +37,11 @@ export class CartRepository {
     data: Prisma.CartItemUpdateInput;
   }): Promise<CartItem | null> {
     const { id, data } = params;
-    return this.prisma.cartItem.update({ where: id, data: data });
+    return this.prisma.cartItem.update({
+      where: id,
+      data: data,
+      include: { book: true },
+    });
   }
 
   async delete(params: { id: Prisma.CartItemWhereUniqueInput }) {

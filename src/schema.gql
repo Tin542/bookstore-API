@@ -56,11 +56,11 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Mutation {
-  addToCart(bookId: String!, price: Float!, quantity: Float!, userId: String!): CartItemEntity!
+  addToCart(bookId: String!, price: Float!, quantity: Int!, userId: String!): CartItemEntity!
   removeCart(id: String!): CartItemEntity!
   signin(password: String!, username: String!): SignInResponseDto!
   signup(address: String!, avatar: String!, email: String!, fullName: String!, password: String!, phoneNumber: String!, username: String!): UserEntity!
-  updateCart(id: String!, quantity: Float!): CartItemEntity!
+  updateCart(id: String!, quantity: Int!): CartItemEntity!
 }
 
 type Query {

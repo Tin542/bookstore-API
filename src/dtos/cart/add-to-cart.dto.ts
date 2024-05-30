@@ -12,7 +12,7 @@ export class CreateCartItemDto {
   @IsString({message: 'userId must be a string'})
   userId: string;
 
-  @Field(() => Float)
+  @Field(() => Int)
   @IsNotEmpty({message: "quantity is not empty"})
   @IsNumber({}, {message: 'quantity must be an integer'})
   quantity: number;

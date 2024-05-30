@@ -1,5 +1,5 @@
-import { Field, ArgsType, Float } from '@nestjs/graphql';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { Field, ArgsType, Float, Int } from '@nestjs/graphql';
+import { IsNotEmpty, IsNumber, Min } from 'class-validator';
 
 @ArgsType()
 export class UpdateCartItemDto {
@@ -7,9 +7,10 @@ export class UpdateCartItemDto {
   @IsNotEmpty({message: "id is not empty"})
   id: string;
 
-  @Field(() => Float)
+  @Field(() => Int)
   @IsNotEmpty({message: "quantity is not empty"})
   @IsNumber({}, {message: 'quantity must be an integer'})
+  @Min(1, {message: "quantity must be greater than 0"})
   quantity: number;
 
 }
