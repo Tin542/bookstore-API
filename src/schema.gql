@@ -55,6 +55,23 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type DetailBookDto {
+  author: AuthorEntity!
+  authorId: String!
+  category: Category!
+  categoryId: String!
+  createdAt: DateTime!
+  description: String!
+  id: String!
+  imageUrl: String!
+  isActive: Boolean!
+  isOutofStock: Boolean!
+  price: Float!
+  rate: Float!
+  title: String!
+  updatedAt: DateTime!
+}
+
 type Mutation {
   addToCart(bookId: String!, price: Float!, quantity: Int!, userId: String!): CartItemEntity!
   removeCart(id: String!): CartItemEntity!
@@ -69,6 +86,7 @@ type Query {
   findAllCategories: [Category!]!
   findOneAbout(id: String!): AboutEntity!
   getCart(uid: String!): [CartItemEntity!]!
+  getDetailBook(id: String!): DetailBookDto!
 }
 
 type ResponseBookDto {

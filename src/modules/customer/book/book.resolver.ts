@@ -1,5 +1,6 @@
 import { Resolver, Query, Args, Int } from '@nestjs/graphql';
 import { plainToInstance } from 'class-transformer';
+import { DetailBookDto } from 'src/dtos/book/detail-book.dto';
 
 import { FilterBookDto } from 'src/dtos/book/filter-book.dto';
 import { ResponseBookDto } from 'src/dtos/book/response-book.dto';
@@ -10,7 +11,7 @@ import { BookService } from 'src/shared/services/book/book.service';
 export class BookResolver {
   constructor(private readonly bookService: BookService) {}
 
-@Query(() => ResponseBookDto)
+  @Query(() => ResponseBookDto)
   async findAllBooks(@Args() filter: FilterBookDto) {
     try {
       const result = await this.bookService.findAll(filter);
@@ -19,6 +20,17 @@ export class BookResolver {
     } catch (error) {
       console.error(error);
       throw new Error('Failed to fetch books');
+    }
+  }
+
+  @Query(() => DetailBookDto)
+  async getDetailBook(@Args('id') id: string) {
+    try {
+      const result = await this.bookService.findOne(id);
+      return plainToInstance(DetailBookDto, result);
+    } catch (error) {
+      console.error(error);
+      throw new Error('Failed to fetch book');
     }
   }
 }
