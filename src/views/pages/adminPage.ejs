@@ -30,6 +30,9 @@
           <% if(module==='book') { %>
             <%- include('./productList.ejs') %>
           <% } %>
+          <% if(module==='user') { %>
+            <%- include('./userList.ejs') %>
+          <% } %>
         </div>
       </div>
     </div>
@@ -68,8 +71,29 @@
       }
       function onClickResetUser() {
         document.getElementById("username").value = "";
-        document.getElementById("status").value = "";
+        document.getElementById("isActive").value = "";
         document.getElementById("email").value = "";
+        document.getElementById("fullName").value = "";
+      }
+      function blockUser(id) {
+        $.ajax({
+          type: "POST",
+          url: `/admin/user/disable/${id}`,
+          success: function (rs) {
+            alert("disable success");
+            window.location.reload();
+          },
+        });
+      }
+      function activeUser(id) {
+        $.ajax({
+          type: "POST",
+          url: `/admin/user/active/${id}`,
+          success: function (rs) {
+            alert("active success");
+            window.location.reload();
+          },
+        });
       }
       function editProduct(id) {
         $.ajax({

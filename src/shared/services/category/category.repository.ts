@@ -45,7 +45,7 @@ export class CategoryRepository {
 
   async update(params: {
     id: Prisma.CategoryWhereUniqueInput;
-    data: Prisma.BookUpdateInput;
+    data: Prisma.CategoryUpdateInput;
   }): Promise<Category | null> {
     const { id, data } = params;
     return this.prisma.category.update({ where: id, data: data });
