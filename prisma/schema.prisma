@@ -107,7 +107,7 @@ model Order {
   paymentMethod PaymentMethod
   userId        String
   status        OrderStatus
-  paidAt        DateTime
+  paidAt        DateTime?
   address       String?
   phoneNumber   String?
   customerName  String?

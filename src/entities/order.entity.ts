@@ -16,7 +16,7 @@ export class OrderEntity {
   @Field(() => OrderStatus)
   status: Order['status'];
 
-  @Field(() => Date)
+  @Field(() => Date, {nullable: true})
   paidAt: Order['paidAt'];
 
   @Field(() => String)
