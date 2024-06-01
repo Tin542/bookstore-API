@@ -79,6 +79,7 @@ type DetailBookDto {
 type Mutation {
   addToCart(bookId: String!, price: Float!, quantity: Int!, userId: String!): CartItemEntity!
   createOrder(address: String!, book: [BookInput!]!, customerName: String!, paidAt: DateTime, paymentMethod: PaymentMethod!, phoneNumber: String!, status: OrderStatus!, totalPrice: Float!, userId: String!): OrderEntity!
+  deleteAllCart(uid: String!): Float!
   removeCart(id: String!): CartItemEntity!
   signin(password: String!, username: String!): SignInResponseDto!
   signup(address: String!, avatar: String!, email: String!, fullName: String!, password: String!, phoneNumber: String!, username: String!): UserEntity!

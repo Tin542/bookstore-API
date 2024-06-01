@@ -58,4 +58,9 @@ export class CartRepository {
     const { id } = params;
     return this.prisma.cartItem.delete({ where: id });
   }
+
+  async deleteMany(params: { where: Prisma.CartItemWhereInput }) {
+    const { where } = params;
+    return this.prisma.cartItem.deleteMany({ where });
+  }
 }

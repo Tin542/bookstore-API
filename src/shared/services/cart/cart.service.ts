@@ -30,7 +30,10 @@ export class CartService {
       return plainToInstance(CartItemEntity, result);
     } else {
       const currentQuantity = checkExisted.quantity;
-      const updatedCart = await this.update(checkExisted.id, currentQuantity + createCartItemDTO.quantity);
+      const updatedCart = await this.update(
+        checkExisted.id,
+        currentQuantity + createCartItemDTO.quantity,
+      );
       return updatedCart;
     }
   }
@@ -87,5 +90,12 @@ export class CartService {
       id: { id },
     });
     return plainToInstance(CartItemEntity, result);
+  }
+
+  async deleteMany(uid: string): Promise<Number> {
+    const result = await this.cartRepository.deleteMany({
+      where: { userId: uid },
+    });
+    return result.count;
   }
 }

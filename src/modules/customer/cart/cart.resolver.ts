@@ -38,4 +38,11 @@ export class CartResolver {
     const result = this.cartService.remove(id);
     return result;
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => Number)
+  async deleteAllCart(@Args('uid') uid: string): Promise<Number> {
+    const result = this.cartService.deleteMany(uid);
+    return result;
+  }
 }
