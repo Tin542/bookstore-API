@@ -45,7 +45,6 @@
           <th scope="col">Họ tên</th>
           <th scope="col">Email</th>
           <th scope="col">Tên tài khoản</th>
-          <th scope="col">Tổng số đơn hàng</th>
           <th scope="col">Trạng thái</th>
           <th scope="col">Thao tác</th>
         </tr>
@@ -64,9 +63,6 @@
             </td>
             <td>
               <%= item.username %>
-            </td>
-            <td>
-              <%= item.orders | 0 %>
             </td>
             <td>
               <% if(item.isActive===false) { %>

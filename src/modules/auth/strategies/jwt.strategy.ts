@@ -5,7 +5,7 @@ import { AuthService } from 'src/shared/services/auth/auth.service';
 import { UserEntity } from 'src/entities/user.entity';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(private readonly authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -16,7 +16,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(username: string, password: string): Promise<UserEntity> {
 		const user = await this.authService.getAuthenticatedUser(username, password);
-    console.log('JWT strategy', user)
 		if (!user) {
 			throw new UnauthorizedException();
 		}

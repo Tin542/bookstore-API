@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { providePrismaClientExceptionFilter } from 'nestjs-prisma';
@@ -10,7 +10,7 @@ import { CloudinaryModule } from './shared/cloudinary/cloudinary.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AuthService } from './shared/services/auth/auth.service';
 import { AuthResolver } from './modules/auth/auth.resolver';
-import { LocalStrategy } from './modules/auth/strategies/local.strategy';
+// import { LocalStrategy } from './modules/auth/strategies/local.strategy';
 import { JwtStrategy } from './modules/auth/strategies/jwt.strategy';
 import { UserService } from './shared/services/user/user.service';
 import { UserRepository } from './shared/services/user/user.repository';
@@ -33,7 +33,7 @@ import { UserRepository } from './shared/services/user/user.repository';
     providePrismaClientExceptionFilter(),
     AuthResolver,
     AuthService,
-    LocalStrategy,
+    // LocalStrategy,
     JwtStrategy,
     UserService,
     UserRepository,

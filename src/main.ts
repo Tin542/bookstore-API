@@ -7,11 +7,10 @@ import {
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join, resolve } from 'path';
 import * as cookieParser from 'cookie-parser';
+import { PrismaClientExceptionFilter } from 'nestjs-prisma';
 
-// import { ValidationPipe} from './shared/pipe/validation.pipe';
 import { AppModule } from './app.module';
 import { PrismaService } from './shared/prisma/prisma.service';
-import { PrismaClientExceptionFilter } from 'nestjs-prisma';
 
 async function bootstrap() {
   // const app = await NestFactory.create(AppModule);
@@ -30,7 +29,7 @@ async function bootstrap() {
         const result = {
           property: errors[0].property,
           message: errors[0].constraints[Object.keys(errors[0].constraints)[0]],
-        }
+        };
         return new BadRequestException(result);
       },
       whitelist: true,
@@ -46,15 +45,6 @@ async function bootstrap() {
   app.setViewEngine('ejs');
 
   app.enableCors();
-
-  // const config = new DocumentBuilder()
-  //   .setTitle('BOOKSTORE API')
-  //   .setDescription('API for book store project')
-  //   .setVersion('0.1')
-  //   .build();
-
-  // const document = SwaggerModule.createDocument(app, config);
-  // SwaggerModule.setup('api', app, document);
 
   await app.listen(3000);
 }

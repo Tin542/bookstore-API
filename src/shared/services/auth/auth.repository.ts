@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, User } from '@prisma/client';
+import { Admin, Prisma, User } from '@prisma/client';
 import { PrismaService } from '../../../shared/prisma/prisma.service';
 
 @Injectable()
@@ -13,5 +13,9 @@ export class AuthRepository {
 
   async findOne(username: Prisma.UserWhereUniqueInput): Promise<User | null> {
     return this.prisma.user.findUnique({ where: username });
+  }
+
+  async findOneAdmin(username: Prisma.AdminWhereUniqueInput): Promise<Admin | null>{
+    return this.prisma.admin.findUnique({ where: username });
   }
 }

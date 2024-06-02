@@ -16,6 +16,8 @@ import {
 import { SignInDto } from 'src/dtos/auth/signin.dto';
 import { SignInResponseDto } from 'src/dtos/auth/signin-response.dto';
 import { TokenPayload } from 'src/dtos/auth/token-payload.dto';
+import { AdminEntity } from 'src/entities/admin.entity';
+import { SignInAdminDto } from 'src/dtos/auth/signin-admin.dto';
 
 @Injectable()
 export class AuthService {
@@ -28,8 +30,8 @@ export class AuthService {
     password: string,
   ): Promise<UserEntity> {
     const user = await this.authRepository.findOne({ username });
-    if (!user){
-      throw new BadRequestException('user is not existed')
+    if (!user) {
+      throw new BadRequestException('user is not existed');
     }
     await this.verifyPlainContentWithHashedContent(password, user.password);
     return plainToInstance(UserEntity, user);
@@ -46,24 +48,59 @@ export class AuthService {
   }
 
   generateAccessToken(payload: TokenPayload) {
-    const token =  this.jwtService.sign(payload, {
+    const token = this.jwtService.sign(payload, {
       secret: process.env.JWT_ACCESS_TOKEN_SECRET,
       expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME,
     });
-    if(!token) {
+    if (!token) {
       throw new BadRequestException('Failed to verify token');
     }
     return token;
   }
-  
+
   async signin(signinDto: SignInDto): Promise<SignInResponseDto> {
-    const user = await this.getAuthenticatedUser(signinDto.username, signinDto.password);
-    const payload = { sub: user.id, username: user.username, refresh_token: user.refreshToken };
+    const user = await this.getAuthenticatedUser(
+      signinDto.username,
+      signinDto.password,
+    );
+    const payload = {
+      sub: user.id,
+      username: user.username,
+      refresh_token: user.refreshToken,
+    };
     // create access token
     const accessToken = this.generateAccessToken(payload);
     const result = plainToInstance(SignInResponseDto, {
       accessToken,
       userInfo: user,
+    });
+    return result;
+  }
+
+  async validateAdmin(username: string, pass: string): Promise<any> {
+    const admin = await this.authRepository.findOneAdmin({ username });
+    await this.verifyPlainContentWithHashedContent(pass, admin.password);
+    const { password, ...result } = admin;
+    return result;
+  }
+
+  async signinAdmin(
+    username: string,
+    passwsord: string,
+  ): Promise<SignInResponseDto> {
+    const admin = await this.validateAdmin(username, passwsord);
+
+    const payload = {
+      sub: admin.id,
+      username: admin.username,
+      role: 'admin',
+    };
+    // create access token
+    const accessToken = this.generateAccessToken(payload);
+
+    const result = plainToInstance(SignInResponseDto, {
+      accessToken,
+      userInfo: admin,
     });
     return result;
   }
