@@ -15,14 +15,27 @@ export class OrderRepository {
   }
 
   async findMany(params: {
+    skip?: number;
+    take?: number;
     where?: Prisma.OrderWhereInput;
     orderBy?: Prisma.OrderOrderByWithRelationInput;
   }) {
-    const { where, orderBy } = params;
+    const { where, orderBy, skip, take } = params;
     return this.prisma.order.findMany({
+      skip,
+      take,
       where,
       orderBy,
-      include: { OrderDetail: { include: { book: true } } },
+      include: { OrderDetail: { include: { book: true } }, user: true },
+    });
+  }
+
+  async countOrder(params: {
+    where?: Prisma.OrderWhereInput;
+  }): Promise<number> {
+    const { where } = params;
+    return this.prisma.order.count({
+      where,
     });
   }
 

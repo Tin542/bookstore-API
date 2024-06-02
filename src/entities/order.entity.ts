@@ -1,6 +1,7 @@
-
 import { Field, Float, ObjectType } from '@nestjs/graphql';
 import { Order, OrderStatus, PaymentMethod } from '@prisma/client';
+import { Transform } from 'class-transformer';
+import { format } from 'date-fns';
 
 @ObjectType()
 export class OrderEntity {
@@ -16,7 +17,16 @@ export class OrderEntity {
   @Field(() => OrderStatus)
   status: Order['status'];
 
-  @Field(() => Date, {nullable: true})
+  @Transform(({ value }) => {
+    if (value) {
+      const date = new Date(value);
+      if (!isNaN(date.getTime())) {
+        return format(date, 'dd/MM/yyyy');
+      }
+    }
+    return value;
+  })
+  @Field(() => String, { nullable: true })
   paidAt: Order['paidAt'];
 
   @Field(() => String)
@@ -30,4 +40,28 @@ export class OrderEntity {
 
   @Field(() => PaymentMethod)
   paymentMethod: Order['paymentMethod'];
+
+  @Transform(({ value }) => {
+    if (value) {
+      const date = new Date(value);
+      if (!isNaN(date.getTime())) {
+        return format(date, 'dd/MM/yyyy');
+      }
+    }
+    return value;
+  })
+  @Field(() => String)
+  createdAt: Order['createdAt'];
+
+  @Transform(({ value }) => {
+    if (value) {
+      const date = new Date(value);
+      if (!isNaN(date.getTime())) {
+        return format(date, 'dd/MM/yyyy');
+      }
+    }
+    return value;
+  })
+  @Field(() => String)
+  updatedAt: Order['updatedAt'];
 }

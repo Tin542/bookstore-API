@@ -88,13 +88,15 @@ type Mutation {
 
 type OrderEntity {
   address: String!
+  createdAt: String!
   customerName: String!
   id: String!
-  paidAt: DateTime
+  paidAt: String
   paymentMethod: PaymentMethod!
   phoneNumber: String!
   status: OrderStatus!
   totalPrice: Float!
+  updatedAt: String!
   userId: String!
 }
 

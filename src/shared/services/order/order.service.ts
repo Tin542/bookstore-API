@@ -3,6 +3,7 @@ import { plainToInstance } from 'class-transformer';
 import { OrderRepository } from './order.repository';
 import { CreateOrderDto } from 'src/dtos/order/create-order.dto';
 import { OrderEntity } from 'src/entities/order.entity';
+import { FilterOrderkDto } from 'src/dtos/order/filter-order.dto';
 
 @Injectable()
 export class OrderService {
@@ -38,20 +39,56 @@ export class OrderService {
     return plainToInstance(OrderEntity, result);
   }
 
-//   async findAll(uid: string): Promise<CartItemEntity[]> {
-//     const result = await this.cartRepository.findMany({
-//       where: {
-//         userId: uid,
-//       },
-//       orderBy: {
-//         createdAt: Prisma.SortOrder.desc,
-//       },
-//     });
-//     return plainToInstance(CartItemEntity, result);
-//   }
+  async findAll(filter: FilterOrderkDto) {
+    const itemPerPage: number = filter.limit || 5;
+    const offset: number = filter.page && filter.page > 0 ? (filter.page - 1) * itemPerPage : 0;
+    const currentPage: number = filter.page || 1;
 
-//   async findOne(id: string): Promise<CartItemEntity> {
-//     const result = await this.cartRepository.findOne({ id });
-//     return plainToInstance(CartItemEntity, result);
-//   }
+    const whereCondition: any = {
+      AND: [],
+    };
+
+    if (filter.id) {
+      whereCondition.AND.push({ id: filter.id });
+    }
+
+    if (filter.status) {
+      whereCondition.AND.push({ status: filter.status });
+    }
+
+    if (filter.isPaid !== undefined) {
+      whereCondition.AND.push({
+        paidAt: filter.isPaid ? { not: null } : null,
+      });
+    }
+
+    const [list, total] = await Promise.all([
+      this.orderRepository.findMany({
+        skip: offset,
+        take: itemPerPage,
+        where: whereCondition,
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }),
+      this.orderRepository.countOrder({
+        where: whereCondition,
+      }),
+    ]);
+
+    const result = plainToInstance(OrderEntity, list);
+
+    return {
+      list: result,
+      totalProducts: total,
+      totalPages: Math.ceil(total / itemPerPage),
+      currentPage: currentPage,
+      limit: itemPerPage,
+    };
+  }
+
+  async findOne(id: string): Promise<OrderEntity> {
+    const result = await this.orderRepository.findOne({ id });
+    return plainToInstance(OrderEntity, result);
+  }
 }

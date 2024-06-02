@@ -8,7 +8,6 @@ import {
   IsOptional,
   ValidateIf,
 } from 'class-validator';
-import { BookEntity } from 'src/entities/book.entity';
 import { BookInput } from '../book/list-input-book.dto';
 
 registerEnumType(PaymentMethod, {
