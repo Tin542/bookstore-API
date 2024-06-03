@@ -150,6 +150,7 @@ type ReviewEntity {
   id: String!
   rate: Int!
   updatedAt: String!
+  user: UserEntity!
   userId: String!
 }
 

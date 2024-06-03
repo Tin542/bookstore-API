@@ -2,6 +2,7 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Review } from '@prisma/client';
 import { Transform } from 'class-transformer';
 import { format } from 'date-fns';
+import { UserEntity } from './user.entity';
 
 @ObjectType()
 export class ReviewEntity {
@@ -43,4 +44,7 @@ export class ReviewEntity {
   })
   @Field(() => String)
   updatedAt: Review['updatedAt'];
+
+  @Field(() => UserEntity)
+  user: UserEntity;
 }
