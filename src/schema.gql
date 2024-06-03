@@ -75,6 +75,7 @@ type DetailBookDto {
 type Mutation {
   addToCart(bookId: String!, price: Float!, quantity: Int!, userId: String!): CartItemEntity!
   createOrder(address: String!, customerName: String!, orderItem: [OrderItemInput!]!, paidAt: DateTime, paymentMethod: PaymentMethod!, phoneNumber: String!, status: OrderStatus!, totalPrice: Float!, userId: String!): OrderEntity!
+  createReview(bookId: String!, content: String!, rate: Int!, userId: String!): ReviewEntity!
   deleteAllCart(uid: String!): Float!
   removeCart(id: String!): CartItemEntity!
   signin(password: String!, username: String!): SignInResponseDto!
@@ -121,6 +122,7 @@ type Query {
   findAllBooks(author: [String!], category: [String!], isActive: Boolean = true, limit: Int, page: Int, rate: [Int!], title: String): ResponseBookDto!
   findAllCategories: [Category!]!
   findOneAbout(id: String!): AboutEntity!
+  getAllReview(limit: Int, page: Int, rate: [Int!]): ResponseReviewDto!
   getCart(uid: String!): [CartItemEntity!]!
   getDetailBook(id: String!): DetailBookDto!
 }
@@ -131,6 +133,24 @@ type ResponseBookDto {
   list: [BookEntity!]!
   totalPages: Int!
   totalProducts: Int!
+}
+
+type ResponseReviewDto {
+  currentPage: Int!
+  limit: Int!
+  list: [ReviewEntity!]!
+  totalPages: Int!
+  totalProducts: Int!
+}
+
+type ReviewEntity {
+  bookId: String!
+  content: String!
+  createdAt: String!
+  id: String!
+  rate: Int!
+  updatedAt: String!
+  userId: String!
 }
 
 type SignInResponseDto {
