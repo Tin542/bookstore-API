@@ -5,12 +5,15 @@ import {
   Render,
   Req,
   Query,
+  Post,
+  Res,
 } from '@nestjs/common';
-import { Request } from 'express';
+import { Request, Response, json } from 'express';
 
 import { OrderService } from 'src/shared/services/order/order.service';
 import { FilterOrderkDto } from 'src/dtos/order/filter-order.dto';
 import { OrderStatus } from '@prisma/client';
+import { UpdateStatusOrderDto } from 'src/dtos/order/update-order-status.dto';
 
 @Controller('admin/order')
 export class OrderController {
@@ -58,7 +61,6 @@ export class OrderController {
     try {
       const oid = req.params.id;
       const result = await this.orderService.findOne(oid);
-      console.log('details', result);
       return {
         module: 'orderDetail',
         data: result
@@ -66,6 +68,29 @@ export class OrderController {
     } catch (error) {
       this.logger.error(
         `Failed to retrieve order detail: ${error.message}`,
+        error.stack,
+      );
+      return { errMessage: error.message };
+    }
+  }
+
+  @Post('update-status')
+  async acive(@Req() req: Request, @Res() res: Response)  {
+    this.logger.log('update-status');
+    try {
+      let dataReq = req.body;
+      if(dataReq.status ==="DONE" && dataReq.paidAt==="false") {
+        return res.json({message: "Đơn hàng chưa được thanh toán !"})
+      }
+      const dataUpdate: UpdateStatusOrderDto = {
+        status: dataReq.status,
+        paidAt: dataReq.paidAt==="true" ? new Date() : null,
+      } 
+      await this.orderService.upateStatus(dataReq.oid, dataUpdate);
+      return res.redirect(`/admin/order/detail/${dataReq.oid}`);
+    } catch (error) {
+      this.logger.error(
+        `Failed to update order detail: ${error.message}`,
         error.stack,
       );
       return { errMessage: error.message };

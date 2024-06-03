@@ -4,6 +4,7 @@ import { OrderRepository } from './order.repository';
 import { CreateOrderDto } from 'src/dtos/order/create-order.dto';
 import { OrderEntity } from 'src/entities/order.entity';
 import { FilterOrderkDto } from 'src/dtos/order/filter-order.dto';
+import { UpdateStatusOrderDto } from 'src/dtos/order/update-order-status.dto';
 
 @Injectable()
 export class OrderService {
@@ -92,6 +93,11 @@ export class OrderService {
 
   async findOne(id: string): Promise<OrderEntity> {
     const result = await this.orderRepository.findOne({ id });
+    return plainToInstance(OrderEntity, result);
+  }
+
+  async upateStatus(id: string, data: UpdateStatusOrderDto): Promise<OrderEntity> {
+    const result = await this.orderRepository.updateOne({ id }, data);
     return plainToInstance(OrderEntity, result);
   }
 }

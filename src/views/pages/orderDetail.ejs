@@ -32,26 +32,28 @@
                   data.id %>
                 </div>
                 <div>
-                  <strong>Khách hàng:</strong> <%= data.fullname %>
+                  <strong>Khách hàng:</strong> <%= data.customerName %>
                 </div>
                 <div>
                   <strong>Trạng thái đơn hàng: </strong>
-                  <% if(data.status === 'pending') { %>
-                  <span class="badge bg-warning">Đang xác thực</span>
-                  <% } %> <% if(data.status === 'approved') { %>
-                  <span class="badge bg-info">Đã xác thực</span>
-                  <% } %> <% if(data.status === 'rejected') { %>
-                  <span class="badge bg-danger">Đã hủy</span>
-                  <% } %> <% if(data.status === 'delivering') { %>
-                  <span class="badge bg-primary">Đang giao hàng</span>
-                  <% } %> <% if(data.status === 'success') { %>
-                  <span class="badge bg-success">Đã hoàn thành</span>
-                  <% } %>
+                  <% if(data.status === 'INIT') { %>
+                    <span class="badge bg-warning">Đã đặt hàng</span>
+                    <% } %> <% if(data.status === 'APPROVED') { %>
+                    <span class="badge bg-info">Đã chấp nhận</span>
+                    <% } %> <% if(data.status === 'REJECTED') { %>
+                    <span class="badge bg-danger">Đã hủy</span>
+                    <% } %> <% if(data.status === 'SHIPING') { %>
+                    <span class="badge bg-primary">Đang giao hàng</span>
+                    <% } %> <% if(data.status === 'DONE') { %>
+                    <span class="badge bg-success">Đã hoàn thành</span>
+                    <% } %><% if(data.status === 'INPROGRESS') { %>
+                    <span class="badge bg-warning">Đang đợi lấy hàng</span>
+                    <% } %> 
                 </div>
               </div>
               <div class="col lh-lg">
                 <div>
-                  <strong>Số điện thoại:</strong> <%= data.phone %>
+                  <strong>Số điện thoại:</strong> <%= data.phoneNumber %>
                 </div>
                 <div><strong>Địa chỉ:</strong> <%= data.address %></div>
               </div>
@@ -116,13 +118,13 @@
           <div class="card-header bg-danger text-white">
             <div class="d-flex justify-content-between">
               <h5>Thành tiền</h5>
-              <div><%= data.totalPrice %> $</div>
+              
             </div>
           </div>
           <div class="card-body">
             <h5 class="card-title">
               <div class="d-flex justify-content-between">
-                <div>Tổng số tiền (gồm VAT)</div>
+                <div>Tổng số tiền</div>
                 <div class="text-danger"><%= data.totalPrice %> $</div>
               </div>
             </h5>
@@ -133,12 +135,10 @@
                 data.paymentMethod %>
               </div>
               <div class="lh-lg">
-                <strong>Trạng thái thanh toán: </strong>
-                <% if(data.isPaid == false) { %>
-                <span class="badge bg-warning">Chờ thanh toán</span>
-                <% } %> <% if(data.isPaid == true) { %>
-                <span class="badge bg-success">Đã thanh toán</span>
-                <% } %>
+                <strong>Ngày thanh toán: </strong>
+                <% if(data.paidAt) { %>
+                  <span class="badge bg-success"><%= data.paidAt %></span>
+                  <% } %>
               </div>
             </div>
           </div>
@@ -150,26 +150,30 @@
               <div class="mb-3">
                 <label for="status" style="font-weight: 500;">Trạng thái đơn hàng: </label> 
                 <select id="status" name="status" class="form-select" aria-label="status select" placeholder="Trạng thái đơn hàng">
-                  <option hidden value="" <%= data.status==='' ? 'selected' : "" %>>Trạng thái đơn hàng</option>
-                  <option value="peding" <%= data.status==='pending' ? 'selected' : "" %>>Đang xác thực</option>
-                  <option value="approved" <%= data.status==='approved' ? 'selected' : "" %>>Đã xác thực</option>
-                  <option value="rejected" <%= data.status==='rejected' ? 'selected' : "" %>>Đã hủy</option>
-                  <option value="delivering" <%= data.status==='delivering' ? 'selected' : "" %>>Đang giao hàng</option>
-                  <option value="success" <%= data.status==='success' ? 'selected' : "" %>>Đã hoàn thành</option>
-                </select>             
+                  <option value="INIT" <%= data.status==='INIT' ? 'selected' : "" %>>Đã đặt hàng</option>
+                  <option value="INPROGRESS" <%= data.status==='INPROGRESS' ? 'selected' : "" %>>Đang đợi lấy hàng</option>
+                  <option value="APPROVED" <%= data.status==='APPROVED' ? 'selected' : "" %>>Đã chấp nhận</option>
+                  <option value="REJECTED" <%= data.status==='REJECTED' ? 'selected' : "" %>>Đã hủy</option>
+                  <option value="SHIPING" <%= data.status==='SHIPING' ? 'selected' : "" %>>Đang giao hàng</option>
+                  <option value="DONE" <%= data.status==='DONE' ? 'selected' : "" %>>Đã hoàn thành</option>
+                </select>     
               </div>
               <div>
                 <label for="paid" style="font-weight: 500;">Trạng thái thanh toán: </label>      
-                <select id="paid" name="isPaid" class="form-select" aria-label="payment status select">
-                  <option hidden value="" <%= data.isPaid==='' ? 'selected' : "" %>>Trạng thái thanh toán</option>
-                  <option value="true" <%= data.isPaid===true ? 'selected' : "" %>>Đã thanh toán</option>
-                  <option value="false" <%= data.isPaid===false ? 'selected' : "" %>>Chờ thanh toán</option>
+                <select id="paid" name="paidAt" class="form-select" aria-label="payment status select">
+                  <option value="true" <%= data.paidAt!==null ? 'selected' : "" %>>Đã thanh toán</option>
+                  <option value="false" <%= data.paidAt===null ? 'selected' : "" %>>Chờ thanh toán</option>
                 </select>          
               </div>
-              <input type="hidden" name="oid" value="<%= data._id %>"/>
+              <input type="hidden" name="oid" value="<%= data.id %>"/>
               <hr/>
               <div class="d-grid gap-2">
-                <button class="btn btn-primary" type="submit">Cập nhật</button>
+                <% if(data.status === 'DONE' || data.status === 'REJECTED') { %>
+                  <button disabled class="btn btn-primary" type="submit">Cập nhật</button>
+                <% } else { %>
+                  <button class="btn btn-primary" type="submit">Cập nhật</button>
+                <% } %>
+                
               </div>
             </form>
           </div>

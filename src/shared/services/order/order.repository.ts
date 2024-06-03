@@ -45,4 +45,8 @@ export class OrderRepository {
       include: { OrderDetail: { include: { book: true } } },
     });
   }
+
+  async updateOne (id: Prisma.OrderWhereUniqueInput, data: Prisma.OrderUpdateInput): Promise<Order | null> {
+    return this.prisma.order.update({where: id, data: data});
+  }
 }

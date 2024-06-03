@@ -8,7 +8,6 @@ import {
   IsOptional,
   ValidateIf,
 } from 'class-validator';
-import { CreateCartItemDto } from '../cart/add-to-cart.dto';
 import { OrderItemInput } from '../cart/order-item-input.sto';
 
 registerEnumType(PaymentMethod, {
