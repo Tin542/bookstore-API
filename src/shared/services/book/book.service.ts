@@ -39,55 +39,49 @@ export class BookService {
     let offset: number = filter.page > 0 ? (filter.page - 1) * filter.limit : 0;
     let currentPage: number = filter.page ? filter.page : 1;
 
-    const listBooks = await this.bookRepository.findMany({
-      skip: offset,
-      take: itemPerPage,
-      where: {
-        AND: {
-          title: filter.title ? { contains: filter.title } : {},
-          rate:
-            filter.rate && filter.rate.length > 0 ? { in: filter.rate } : {},
-          categoryId:
-            filter.category && filter.category.length > 0
-              ? { in: filter.category }
-              : {},
-          authorId:
-            filter.author && filter.author.length > 0
-              ? { in: filter.author }
-              : {},
-          isActive: filter.isActive ? { equals: filter.isActive } : {},
-        },
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+    const whereCondition: any = {
+      AND: [],
+    };
 
-    const total = await this.bookRepository.countBook({
-      where: {
-        AND: {
-          title: filter.title ? { contains: filter.title } : {},
-          rate:
-            filter.rate && filter.rate.length > 0 ? { in: filter.rate } : {},
-          categoryId:
-            filter.category && filter.category.length > 0
-              ? { in: filter.category }
-              : {},
-          authorId:
-            filter.author && filter.author.length > 0
-              ? { in: filter.author }
-              : {},
+    if (filter.title) {
+      whereCondition.AND.push({ title: { contains: filter.title } });
+    }
+
+    if (filter.rate && filter.rate.length > 0) {
+      whereCondition.AND.push({ rate: { in: filter.rate } });
+    }
+
+    if (filter.category && filter.category.length > 0) {
+      whereCondition.AND.push({ categoryId: { in: filter.category } });
+    }
+
+    if (filter.author && filter.author.length > 0) {
+      whereCondition.AND.push({ authorId: { in: filter.author } });
+    }
+
+    if (filter.isActive) {
+      whereCondition.AND.push({ isActive: { equals: filter.isActive } });
+    }
+
+    const [list, total] = await Promise.all([
+      this.bookRepository.findMany({
+        skip: offset,
+        take: itemPerPage,
+        where: whereCondition,
+        orderBy: {
+          createdAt: 'desc',
         },
-      },
-    });
-    const result = plainToInstance(BookEntity, listBooks);
+      }),
+      this.bookRepository.countBook({
+        where: whereCondition,
+      }),
+    ]);
+
+    const result = plainToInstance(BookEntity, list);
     return {
       list: result,
       totalProducts: total,
-      totalPages:
-        total % itemPerPage !== 0
-          ? Math.floor(total / itemPerPage) + 1
-          : total / itemPerPage,
+      totalPages: Math.ceil(total / itemPerPage),
       currentPage: currentPage,
       limit: itemPerPage,
     };
