@@ -10,7 +10,7 @@
   >
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="/admin/order/list">Quản lí đơn hàng</a>
+        <a href="/admin/order">Quản lí đơn hàng</a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
         Chi tiết đơn hàng
@@ -29,31 +29,31 @@
               <div class="col lh-lg">
                 <div>
                   <strong style="color: red">Mã đơn hàng:</strong> <%=
-                  orderDetail._id %>
+                  data.id %>
                 </div>
                 <div>
-                  <strong>Khách hàng:</strong> <%= orderDetail.fullname %>
+                  <strong>Khách hàng:</strong> <%= data.fullname %>
                 </div>
                 <div>
                   <strong>Trạng thái đơn hàng: </strong>
-                  <% if(orderDetail.status === 'pending') { %>
+                  <% if(data.status === 'pending') { %>
                   <span class="badge bg-warning">Đang xác thực</span>
-                  <% } %> <% if(orderDetail.status === 'approved') { %>
+                  <% } %> <% if(data.status === 'approved') { %>
                   <span class="badge bg-info">Đã xác thực</span>
-                  <% } %> <% if(orderDetail.status === 'rejected') { %>
+                  <% } %> <% if(data.status === 'rejected') { %>
                   <span class="badge bg-danger">Đã hủy</span>
-                  <% } %> <% if(orderDetail.status === 'delivering') { %>
+                  <% } %> <% if(data.status === 'delivering') { %>
                   <span class="badge bg-primary">Đang giao hàng</span>
-                  <% } %> <% if(orderDetail.status === 'success') { %>
+                  <% } %> <% if(data.status === 'success') { %>
                   <span class="badge bg-success">Đã hoàn thành</span>
                   <% } %>
                 </div>
               </div>
               <div class="col lh-lg">
                 <div>
-                  <strong>Số điện thoại:</strong> <%= orderDetail.phone %>
+                  <strong>Số điện thoại:</strong> <%= data.phone %>
                 </div>
-                <div><strong>Địa chỉ:</strong> <%= orderDetail.address %></div>
+                <div><strong>Địa chỉ:</strong> <%= data.address %></div>
               </div>
             </div>
           </div>
@@ -74,35 +74,36 @@
               </tr>
             </thead>
             <tbody>
-              <% listProduct.forEach(function(item, index) { %>
+              <% data.OrderDetail.forEach(function(item, index) { %>
               <tr>
                 <th scope="row"><%= index+1 %></th>
                 <td class="d-flex">
                   <img
-                    src="<%= item.productImg %>"
+                    src="<%= item.book.imageUrl %>"
                     height="60px"
                     width="60px"
                   />
                   <div
                     data-bs-toggle="tooltip"
                     data-bs-placement="right"
-                    title="Thám Tử Lừng Danh Conan - Tập 96"
+                    title="<%= item.book.title %>"
                     class="d-block"
+                    style="margin-left: 10px;"
                   >
                     <span
                       class="d-inline-block text-truncate"
                       style="max-width: 200px"
                     >
-                      <%= item.productName %>
+                    <%= item.book.title %>
                     </span>
-                    <div class="fw-bold"><%= item.productPrice %> $</div>
+                    <div class="fw-bold">$ <%= item.book.price %></div>
                   </div>
                 </td>
                 <td class="text-center">
                   <div class="fw-bold"><%= item.quantity %></div>
                 </td>
                 <td style="color: red" class="w-2 fw-bold text-center">
-                  <%= item.productPrice * item.quantity %> $
+                  <%= item.price %> $
                 </td>
               </tr>
               <% }); %>
@@ -115,27 +116,27 @@
           <div class="card-header bg-danger text-white">
             <div class="d-flex justify-content-between">
               <h5>Thành tiền</h5>
-              <div><%= orderDetail.totalPrice %> $</div>
+              <div><%= data.totalPrice %> $</div>
             </div>
           </div>
           <div class="card-body">
             <h5 class="card-title">
               <div class="d-flex justify-content-between">
                 <div>Tổng số tiền (gồm VAT)</div>
-                <div class="text-danger"><%= orderDetail.totalPrice %> $</div>
+                <div class="text-danger"><%= data.totalPrice %> $</div>
               </div>
             </h5>
             <hr />
             <div>
               <div>
                 <strong>Hình thức thanh toán: </strong><%=
-                orderDetail.paymentMethod %>
+                data.paymentMethod %>
               </div>
               <div class="lh-lg">
                 <strong>Trạng thái thanh toán: </strong>
-                <% if(orderDetail.isPaid == false) { %>
+                <% if(data.isPaid == false) { %>
                 <span class="badge bg-warning">Chờ thanh toán</span>
-                <% } %> <% if(orderDetail.isPaid == true) { %>
+                <% } %> <% if(data.isPaid == true) { %>
                 <span class="badge bg-success">Đã thanh toán</span>
                 <% } %>
               </div>
@@ -149,23 +150,23 @@
               <div class="mb-3">
                 <label for="status" style="font-weight: 500;">Trạng thái đơn hàng: </label> 
                 <select id="status" name="status" class="form-select" aria-label="status select" placeholder="Trạng thái đơn hàng">
-                  <option hidden value="" <%= orderDetail.status==='' ? 'selected' : "" %>>Trạng thái đơn hàng</option>
-                  <option value="peding" <%= orderDetail.status==='pending' ? 'selected' : "" %>>Đang xác thực</option>
-                  <option value="approved" <%= orderDetail.status==='approved' ? 'selected' : "" %>>Đã xác thực</option>
-                  <option value="rejected" <%= orderDetail.status==='rejected' ? 'selected' : "" %>>Đã hủy</option>
-                  <option value="delivering" <%= orderDetail.status==='delivering' ? 'selected' : "" %>>Đang giao hàng</option>
-                  <option value="success" <%= orderDetail.status==='success' ? 'selected' : "" %>>Đã hoàn thành</option>
+                  <option hidden value="" <%= data.status==='' ? 'selected' : "" %>>Trạng thái đơn hàng</option>
+                  <option value="peding" <%= data.status==='pending' ? 'selected' : "" %>>Đang xác thực</option>
+                  <option value="approved" <%= data.status==='approved' ? 'selected' : "" %>>Đã xác thực</option>
+                  <option value="rejected" <%= data.status==='rejected' ? 'selected' : "" %>>Đã hủy</option>
+                  <option value="delivering" <%= data.status==='delivering' ? 'selected' : "" %>>Đang giao hàng</option>
+                  <option value="success" <%= data.status==='success' ? 'selected' : "" %>>Đã hoàn thành</option>
                 </select>             
               </div>
               <div>
                 <label for="paid" style="font-weight: 500;">Trạng thái thanh toán: </label>      
                 <select id="paid" name="isPaid" class="form-select" aria-label="payment status select">
-                  <option hidden value="" <%= orderDetail.isPaid==='' ? 'selected' : "" %>>Trạng thái thanh toán</option>
-                  <option value="true" <%= orderDetail.isPaid===true ? 'selected' : "" %>>Đã thanh toán</option>
-                  <option value="false" <%= orderDetail.isPaid===false ? 'selected' : "" %>>Chờ thanh toán</option>
+                  <option hidden value="" <%= data.isPaid==='' ? 'selected' : "" %>>Trạng thái thanh toán</option>
+                  <option value="true" <%= data.isPaid===true ? 'selected' : "" %>>Đã thanh toán</option>
+                  <option value="false" <%= data.isPaid===false ? 'selected' : "" %>>Chờ thanh toán</option>
                 </select>          
               </div>
-              <input type="hidden" name="oid" value="<%= orderDetail._id %>"/>
+              <input type="hidden" name="oid" value="<%= data._id %>"/>
               <hr/>
               <div class="d-grid gap-2">
                 <button class="btn btn-primary" type="submit">Cập nhật</button>

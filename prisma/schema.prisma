@@ -102,7 +102,7 @@ model Admin {
 }
 
 model Order {
-  id            String      @id @default(uuid())
+  id            String        @id @default(uuid())
   totalPrice    Float
   paymentMethod PaymentMethod
   userId        String
@@ -111,20 +111,21 @@ model Order {
   address       String?
   phoneNumber   String?
   customerName  String?
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @default(now())
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now())
   OrderDetail   OrderItem[]
 
   user User @relation(fields: [userId], references: [id])
 }
 
 model OrderItem {
-  id      String @id @default(uuid())
-  orderId String
-  bookId  String
-
-  book  Book  @relation(fields: [bookId], references: [id])
-  order Order @relation(fields: [orderId], references: [id])
+  id       String @id @default(uuid())
+  orderId  String
+  bookId   String
+  quantity Int
+  price    Float?
+  book     Book   @relation(fields: [bookId], references: [id])
+  order    Order  @relation(fields: [orderId], references: [id])
 }
 
 model CartItem {

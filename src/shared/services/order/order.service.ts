@@ -19,12 +19,14 @@ export class OrderService {
           },
         },
         OrderDetail: {
-          create: createOrderDTO.book.map((item) => ({
+          create: createOrderDTO.orderItem.map((item) => ({
             book: {
               connect: {
-                id: item.id,
-              },
+                id: item.bookId
+              }
             },
+            quantity: item.quantity,
+            price: item.price
           })),
         },
 
@@ -41,7 +43,8 @@ export class OrderService {
 
   async findAll(filter: FilterOrderkDto) {
     const itemPerPage: number = filter.limit || 5;
-    const offset: number = filter.page && filter.page > 0 ? (filter.page - 1) * itemPerPage : 0;
+    const offset: number =
+      filter.page && filter.page > 0 ? (filter.page - 1) * itemPerPage : 0;
     const currentPage: number = filter.page || 1;
 
     const whereCondition: any = {

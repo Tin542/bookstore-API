@@ -30,10 +30,6 @@ type BookEntity {
   updatedAt: DateTime!
 }
 
-input BookInput {
-  id: String!
-}
-
 type CartItemEntity {
   book: BookEntity
   bookId: String!
@@ -78,7 +74,7 @@ type DetailBookDto {
 
 type Mutation {
   addToCart(bookId: String!, price: Float!, quantity: Int!, userId: String!): CartItemEntity!
-  createOrder(address: String!, book: [BookInput!]!, customerName: String!, paidAt: DateTime, paymentMethod: PaymentMethod!, phoneNumber: String!, status: OrderStatus!, totalPrice: Float!, userId: String!): OrderEntity!
+  createOrder(address: String!, customerName: String!, orderItem: [OrderItemInput!]!, paidAt: DateTime, paymentMethod: PaymentMethod!, phoneNumber: String!, status: OrderStatus!, totalPrice: Float!, userId: String!): OrderEntity!
   deleteAllCart(uid: String!): Float!
   removeCart(id: String!): CartItemEntity!
   signin(password: String!, username: String!): SignInResponseDto!
@@ -98,6 +94,12 @@ type OrderEntity {
   totalPrice: Float!
   updatedAt: String!
   userId: String!
+}
+
+input OrderItemInput {
+  bookId: String!
+  price: Float!
+  quantity: Int!
 }
 
 enum OrderStatus {

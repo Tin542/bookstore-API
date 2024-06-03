@@ -8,7 +8,8 @@ import {
   IsOptional,
   ValidateIf,
 } from 'class-validator';
-import { BookInput } from '../book/list-input-book.dto';
+import { CreateCartItemDto } from '../cart/add-to-cart.dto';
+import { OrderItemInput } from '../cart/order-item-input.sto';
 
 registerEnumType(PaymentMethod, {
   name: 'PaymentMethod',
@@ -54,7 +55,7 @@ export class CreateOrderDto {
   @IsNotEmpty({ message: 'customer name must not be empty' })
   customerName: string;
 
-  @Field(() => [BookInput])
+  @Field(() => [OrderItemInput])
   @IsArray()
-  book: BookInput[];
+  orderItem: OrderItemInput[];
 }

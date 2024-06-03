@@ -1,28 +1,13 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
   Logger,
   Render,
   Req,
-  Res,
-  Redirect,
   Query,
-  ParseIntPipe,
-  HttpStatus,
 } from '@nestjs/common';
-import { Response, Request } from 'express';
+import { Request } from 'express';
 
-import { CategoryService } from '../../../shared/services/category/category.service';
-import { CreateCategoryDto } from '../../../dtos/category/create-category.dto';
-import { UpdateCategoryDto } from '../../../dtos/category/update-category.dto';
-import { Category } from '../../../entities/category.entity';
-import { plainToInstance } from 'class-transformer';
-import { FilterCategoryDto } from 'src/dtos/category/filter-category.dto';
 import { OrderService } from 'src/shared/services/order/order.service';
 import { FilterOrderkDto } from 'src/dtos/order/filter-order.dto';
 import { OrderStatus } from '@prisma/client';
@@ -41,16 +26,14 @@ export class OrderController {
   ) {
     this.logger.log('find all Order');
     try {
-        let requestData = req.query;
-      console.log('params: ', requestData);
+      let requestData = req.query;
       let filters: FilterOrderkDto = {
         id: requestData.id as string,
         status: requestData.status as OrderStatus,
         isPaid: requestData.isPaid ? requestData.isPaid === 'true' : undefined,
         page: page ? parseInt(page.toString(), 10) : 1,
         limit: limit ? parseInt(limit.toString(), 10) : 5,
-
-      }
+      };
       const result = await this.orderService.findAll(filters);
       return {
         module: 'order',
@@ -60,8 +43,32 @@ export class OrderController {
         data: result.list,
       };
     } catch (error) {
-        this.logger.error(`Failed to retrieve orders: ${error.message}`, error.stack);
-        return { errMessage: error.message };
+      this.logger.error(
+        `Failed to retrieve orders: ${error.message}`,
+        error.stack,
+      );
+      return { errMessage: error.message };
+    }
+  }
+
+  @Get('detail/:id')
+  @Render('adminPage')
+  async getDetail(@Req() req: Request) {
+    this.logger.log('Detail Order');
+    try {
+      const oid = req.params.id;
+      const result = await this.orderService.findOne(oid);
+      console.log('details', result);
+      return {
+        module: 'orderDetail',
+        data: result
+      }
+    } catch (error) {
+      this.logger.error(
+        `Failed to retrieve order detail: ${error.message}`,
+        error.stack,
+      );
+      return { errMessage: error.message };
     }
   }
 }
