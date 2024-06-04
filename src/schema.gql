@@ -122,7 +122,7 @@ type Query {
   findAllBooks(author: [String!], category: [String!], isActive: Boolean = true, limit: Int, page: Int, rate: [Int!], title: String): ResponseBookDto!
   findAllCategories: [Category!]!
   findOneAbout(id: String!): AboutEntity!
-  getAllReview(limit: Int, page: Int, rate: [Int!]): ResponseReviewDto!
+  getAllReview(bookId: String, limit: Int, page: Int, rate: [Int!]): ResponseReviewDto!
   getCart(uid: String!): [CartItemEntity!]!
   getDetailBook(id: String!): DetailBookDto!
 }

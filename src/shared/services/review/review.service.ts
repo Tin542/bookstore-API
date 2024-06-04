@@ -5,6 +5,7 @@ import { ReviewsRepository } from './review.repository';
 import { CreateReviewDto } from 'src/dtos/review/create-review.dto';
 import { ReviewEntity } from 'src/entities/review.entity';
 import { FilterReviewDto } from 'src/dtos/review/filter-review.dto';
+import { equal } from 'assert';
 
 @Injectable()
 export class ReviewService {
@@ -39,10 +40,14 @@ export class ReviewService {
     const whereCondition: any = {
       AND: [],
     };
-
-    if (filter.rate !== undefined) {
+    if (filter.bookId) {
       whereCondition.AND.push({
-        rate: { in: filter.rate }
+        bookId: { equals: filter.bookId },
+      });
+    }
+    if (filter.rate && filter.rate.length > 0) {
+      whereCondition.AND.push({
+        rate: { in: filter.rate },
       });
     }
 

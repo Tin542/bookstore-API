@@ -1,16 +1,17 @@
 import { Field, Int, ArgsType } from '@nestjs/graphql';
-import {
-    IsArray,
-  IsNumber,
-  IsOptional,
-} from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 
 @ArgsType()
 export class FilterReviewDto {
-    @Field(() => [Int], { nullable: true })
-    @IsArray()
-    @IsOptional()
-    rate?: number[];
+  @Field(() => String, { nullable: true })
+  @IsString()
+  @IsOptional()
+  bookId?: string;
+
+  @Field(() => [Int], { nullable: true })
+  @IsArray()
+  @IsOptional()
+  rate?: number[];
 
   @Field(() => Int, { nullable: true })
   @IsNumber()

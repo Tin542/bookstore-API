@@ -32,7 +32,7 @@ model Book {
   title         String
   description   String?
   price         Float
-  rate          Int
+  rate          Float
   isOutofStock  Boolean                     @default(false)
   imageUrl      String
   isActive      Boolean                     @default(true)
