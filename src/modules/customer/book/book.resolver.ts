@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Args, Int, Mutation, Float } from '@nestjs/graphql';
 import { plainToInstance } from 'class-transformer';
 import { DetailBookDto } from 'src/dtos/book/detail-book.dto';
 
@@ -32,5 +32,11 @@ export class BookResolver {
       console.error(error);
       throw new Error('Failed to fetch book');
     }
+  }
+
+  @Mutation(() => BookEntity)
+  async updateBookRating(@Args('id') id: string): Promise<BookEntity> {
+    const result = await this.bookService.updateRate(id);
+    return result;
   }
 }

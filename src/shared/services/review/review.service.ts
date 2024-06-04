@@ -31,6 +31,13 @@ export class ReviewService {
     return plainToInstance(ReviewEntity, result);
   }
 
+  async getAllForCalculate(bookId: string) {
+    const response = await this.reviewRepository.findMany({
+      where: { bookId: bookId },
+    });
+    return plainToInstance(ReviewEntity, response);
+  }
+
   async findAll(filter: FilterReviewDto) {
     const itemPerPage: number = filter.limit || 5;
     const offset: number =

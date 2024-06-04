@@ -80,6 +80,7 @@ type Mutation {
   removeCart(id: String!): CartItemEntity!
   signin(password: String!, username: String!): SignInResponseDto!
   signup(address: String!, avatar: String!, email: String!, fullName: String!, password: String!, phoneNumber: String!, username: String!): UserEntity!
+  updateBookRating(id: String!): BookEntity!
   updateCart(id: String!, quantity: Int!): CartItemEntity!
 }
 

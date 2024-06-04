@@ -6,10 +6,14 @@ import { BookRepository } from './book.repository';
 import { CreateBookDto } from 'src/dtos/book/create-book.dto';
 import { FilterBookDto } from 'src/dtos/book/filter-book.dto';
 import { UpdateBookDto } from 'src/dtos/book/update-book.dto';
+import { ReviewService } from '../review/review.service';
 
 @Injectable()
 export class BookService {
-  constructor(private bookRepository: BookRepository) {}
+  constructor(
+    private bookRepository: BookRepository,
+    private reviewService: ReviewService,
+  ) {}
 
   async create(createBookDto: CreateBookDto) {
     const result = await this.bookRepository.create({
@@ -89,6 +93,16 @@ export class BookService {
   async findOne(id: string): Promise<BookEntity> {
     const result = await this.bookRepository.findOne({ id });
     return plainToInstance(BookEntity, result);
+  }
+
+  async updateRate(id: string): Promise<BookEntity>  {
+    const allReviews = await this.reviewService.getAllForCalculate(id);
+    let rate = 0;
+    const totalRate = allReviews.forEach((item) => {
+      rate = rate + item.rate;
+    })
+    const bookRate = this.bookRepository.update({id: {id}, data: {rate: Number((rate / allReviews.length).toFixed(1))}})
+    return bookRate
   }
 
   async update(id: string, updateBookDto: UpdateBookDto) {
