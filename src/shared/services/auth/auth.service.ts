@@ -33,6 +33,9 @@ export class AuthService {
     if (!user) {
       throw new BadRequestException('user is not existed');
     }
+    if(!user.isActive){
+      throw new BadRequestException('This account has been blocked');
+    }
     await this.verifyPlainContentWithHashedContent(password, user.password);
     return plainToInstance(UserEntity, user);
   }

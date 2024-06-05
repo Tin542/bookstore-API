@@ -1,0 +1,115 @@
+import { Injectable } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
+import { PromotionRepository } from './promotion.repository';
+import { CreatePromotionDto } from 'src/dtos/promotion/create-promotion.dto';
+import { PromotionEntity } from 'src/entities/promotion.entity';
+import {
+  FilterPromotionDto,
+  statusPromotion,
+} from 'src/dtos/promotion/filter-promotion.dto';
+
+@Injectable()
+export class PromotionService {
+  constructor(private promotionRepository: PromotionRepository) {}
+
+  async create(
+    createPromotionDTO: CreatePromotionDto,
+  ): Promise<PromotionEntity> {
+    const result = await this.promotionRepository.create({
+      data: {
+        title: createPromotionDTO.title,
+        description: createPromotionDTO.description,
+        discountPercents: createPromotionDTO.discountPercent,
+        isActive: true,
+        startDate: createPromotionDTO.startDate,
+        expriedDate: createPromotionDTO.endDate,
+        bookPromotion: {
+          create: createPromotionDTO.bookId.map((item) => ({
+            book: {
+              connect: {
+                id: item,
+              },
+            },
+          })),
+        },
+      },
+    });
+    return plainToInstance(PromotionEntity, result);
+  }
+
+  async findAll(filter: FilterPromotionDto) {
+    const itemPerPage: number = filter.limit || 5;
+    const offset: number =
+      filter.page && filter.page > 0 ? (filter.page - 1) * itemPerPage : 0;
+    const currentPage: number = filter.page || 1;
+
+    const whereCondition: any = {
+      AND: [],
+    };
+
+    if (filter.title) {
+      whereCondition.AND.push({ title: { contains: filter.title } });
+    }
+
+    if (filter.status) {
+      const currentDate = new Date();
+      const threeDaysFromNow = new Date(currentDate);
+      threeDaysFromNow.setDate(currentDate.getDate() + 3);
+
+      switch (filter.status) {
+        case statusPromotion.ON_DATE:
+          whereCondition.AND.push({
+            startDate: { lte: currentDate },
+            expriedDate: { gte: currentDate },
+          });
+          break;
+        case statusPromotion.OUT_DATE:
+          whereCondition.AND.push({
+            expriedDate: { lt: currentDate },
+          });
+          break;
+        case statusPromotion.SOON:
+          whereCondition.AND.push({
+            startDate: { lte: threeDaysFromNow, gte: currentDate },
+          });
+          break;
+        default:
+          break;
+      }
+    }
+
+    const [list, total] = await Promise.all([
+      this.promotionRepository.findMany({
+        skip: offset,
+        take: itemPerPage,
+        where: whereCondition,
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }),
+      this.promotionRepository.countPromotion({
+        where: whereCondition,
+      }),
+    ]);
+
+    const result = plainToInstance(PromotionEntity, list);
+
+    return {
+      list: result,
+      totalProducts: total,
+      totalPages: Math.ceil(total / itemPerPage),
+      currentPage: currentPage,
+      limit: itemPerPage,
+    };
+  }
+
+  //   async findOne(id: string): Promise<OrderEntity> {
+  //     const result = await this.orderRepository.findOne({ id });
+  //     return plainToInstance(OrderEntity, result);
+  //   }
+
+  //   async upateStatus(id: string, data: UpdateStatusOrderDto): Promise<OrderEntity> {
+  //     const result = await this.orderRepository.updateOne({ id }, data);
+  //     return plainToInstance(OrderEntity, result);
+  //   }
+}

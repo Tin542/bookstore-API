@@ -143,6 +143,7 @@ model CartItem {
 
 model Promotion {
   id               String   @id @default(uuid())
+  title            String
   description      String
   startDate        DateTime
   expriedDate      DateTime

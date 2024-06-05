@@ -38,6 +38,11 @@ export class BookService {
     return plainToInstance(BookEntity, result);
   }
 
+  async findAllWithoutPagination () {
+    const result = await this.bookRepository.findMany({});
+      return plainToInstance(BookEntity, result);
+    
+  }
   async findAll(filter: FilterBookDto) {
     let itemPerPage: number = filter.limit ? filter.limit : 5;
     let offset: number = filter.page > 0 ? (filter.page - 1) * filter.limit : 0;
