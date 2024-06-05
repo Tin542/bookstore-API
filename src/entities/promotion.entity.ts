@@ -1,7 +1,6 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
 import { Promotion } from '@prisma/client';
 import { Transform } from 'class-transformer';
-import { format } from 'date-fns';
 import * as moment from "moment"; 
 
 import { BookEntity } from './book.entity';
@@ -28,7 +27,7 @@ export class PromotionEntity {
     if (value) {
       const date = new Date(value);
       if (!isNaN(date.getTime())) {
-        return moment(date).format("MM/DD/YYYY");
+        return moment(date).format("LL");
       }
     }
     return value;
@@ -40,7 +39,7 @@ export class PromotionEntity {
     if (value) {
       const date = new Date(value);
       if (!isNaN(date.getTime())) {
-        return moment(date).format("MM/DD/YYYY");
+        return moment(date).format("LL");
       }
     }
     return value;
@@ -51,7 +50,7 @@ export class PromotionEntity {
     if (value) {
       const date = new Date(value);
       if (!isNaN(date.getTime())) {
-        return moment(date).format("MM/DD/YYYY");
+        return moment(date).format("LL");
       }
     }
     return value;
@@ -63,7 +62,7 @@ export class PromotionEntity {
     if (value) {
       const date = new Date(value);
       if (!isNaN(date.getTime())) {
-        return moment(date).format("MM/DD/YYYY");
+        return moment(date).format("LL");
       }
     }
     return value;

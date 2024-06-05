@@ -1,7 +1,7 @@
 import { Field, Float, ObjectType } from '@nestjs/graphql';
 import { Order, OrderStatus, PaymentMethod } from '@prisma/client';
 import { Transform } from 'class-transformer';
-import { format } from 'date-fns';
+import * as moment from "moment"; 
 
 @ObjectType()
 export class OrderEntity {
@@ -21,7 +21,7 @@ export class OrderEntity {
     if (value) {
       const date = new Date(value);
       if (!isNaN(date.getTime())) {
-        return format(date, 'dd/MM/yyyy');
+        return moment(date).format("LL");
       }
     }
     return value;
@@ -45,7 +45,7 @@ export class OrderEntity {
     if (value) {
       const date = new Date(value);
       if (!isNaN(date.getTime())) {
-        return format(date, 'dd/MM/yyyy');
+        return moment(date).format("LL");
       }
     }
     return value;
@@ -57,7 +57,7 @@ export class OrderEntity {
     if (value) {
       const date = new Date(value);
       if (!isNaN(date.getTime())) {
-        return format(date, 'dd/MM/yyyy');
+        return moment(date).format("LL");
       }
     }
     return value;

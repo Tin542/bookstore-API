@@ -1,7 +1,7 @@
 import { Category as categoryDB } from '@prisma/client';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
-import { format } from 'date-fns';
+import * as moment from "moment"; 
 @ObjectType()
 export class Category {
   @Field(() => String)
@@ -20,7 +20,7 @@ export class Category {
     if (value) {
       const date = new Date(value);
       if (!isNaN(date.getTime())) {
-        return format(date, 'dd/MM/yyyy');
+        return moment(date).format("LL");
       }
     }
     return value;
@@ -32,7 +32,7 @@ export class Category {
     if (value) {
       const date = new Date(value);
       if (!isNaN(date.getTime())) {
-        return format(date, 'dd/MM/yyyy');
+        return moment(date).format("LL");
       }
     }
     return value;

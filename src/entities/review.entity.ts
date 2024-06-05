@@ -1,7 +1,7 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Review } from '@prisma/client';
 import { Transform } from 'class-transformer';
-import { format } from 'date-fns';
+import * as moment from "moment"; 
 import { UserEntity } from './user.entity';
 
 @ObjectType()
@@ -25,7 +25,7 @@ export class ReviewEntity {
     if (value) {
       const date = new Date(value);
       if (!isNaN(date.getTime())) {
-        return format(date, 'dd/MM/yyyy');
+        return moment(date).format("LL");
       }
     }
     return value;
@@ -37,7 +37,7 @@ export class ReviewEntity {
     if (value) {
       const date = new Date(value);
       if (!isNaN(date.getTime())) {
-        return format(date, 'dd/MM/yyyy');
+        return moment(date).format("LL");
       }
     }
     return value;
