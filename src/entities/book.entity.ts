@@ -1,6 +1,8 @@
 import { Book } from '@prisma/client';
 
 import { Field, ObjectType } from '@nestjs/graphql';
+import { PromotionEntity } from './promotion.entity';
+import { BookPromotionEntity } from './bookPromotion.entity';
 
 @ObjectType()
 export class BookEntity {
@@ -39,4 +41,7 @@ export class BookEntity {
 
   @Field(() => Date)
   updatedAt: Book['updatedAt'];
+
+  @Field(() => [BookPromotionEntity], {nullable: true})
+  bookPromotion: BookPromotionEntity;
 }

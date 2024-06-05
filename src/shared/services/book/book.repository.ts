@@ -26,6 +26,7 @@ export class BookRepository {
       include: {
         category: true,
         author: true,
+        bookPromotion: { include: { promotion: true } },
       },
     });
   }
@@ -40,7 +41,11 @@ export class BookRepository {
   async findOne(id: Prisma.BookWhereUniqueInput): Promise<Book | null> {
     return this.prisma.book.findUnique({
       where: id,
-      include: { category: true, author: true },
+      include: {
+        category: true,
+        author: true,
+        bookPromotion: { include: { promotion: true } },
+      },
     });
   }
 

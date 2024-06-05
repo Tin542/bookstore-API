@@ -16,7 +16,7 @@ export class PromotionEntity {
   @Field(() => Boolean)
   isActive: Promotion['isActive'];
 
-  @Field(() => Int)
+  @Field(() => Int, {nullable: true})
   discountPercents: Promotion['discountPercents'];
 
   @Field(() => [BookEntity])

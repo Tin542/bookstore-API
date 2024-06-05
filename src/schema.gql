@@ -17,6 +17,7 @@ type AuthorEntity {
 
 type BookEntity {
   authorId: String!
+  bookPromotion: [BookPromotionEntity!]
   categoryId: String!
   createdAt: DateTime!
   description: String!
@@ -28,6 +29,13 @@ type BookEntity {
   rate: Float!
   title: String!
   updatedAt: DateTime!
+}
+
+type BookPromotionEntity {
+  bookId: String!
+  id: String!
+  promotion: PromotionEntity!
+  promotionId: String!
 }
 
 type CartItemEntity {
@@ -58,6 +66,7 @@ scalar DateTime
 type DetailBookDto {
   author: AuthorEntity!
   authorId: String!
+  bookPromotion: [BookPromotionEntity!]
   category: Category!
   categoryId: String!
   createdAt: DateTime!
@@ -116,6 +125,18 @@ enum OrderStatus {
 enum PaymentMethod {
   COD
   ONLINE_BANKING
+}
+
+type PromotionEntity {
+  book: [BookEntity!]!
+  createdAt: String!
+  description: String!
+  discountPercents: Int
+  expriedDate: String!
+  id: String!
+  isActive: Boolean!
+  startDate: String!
+  updatedAt: String!
 }
 
 type Query {

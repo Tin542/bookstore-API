@@ -38,10 +38,9 @@ export class BookService {
     return plainToInstance(BookEntity, result);
   }
 
-  async findAllWithoutPagination () {
+  async findAllWithoutPagination() {
     const result = await this.bookRepository.findMany({});
-      return plainToInstance(BookEntity, result);
-    
+    return plainToInstance(BookEntity, result);
   }
   async findAll(filter: FilterBookDto) {
     let itemPerPage: number = filter.limit ? filter.limit : 5;
@@ -100,14 +99,17 @@ export class BookService {
     return plainToInstance(BookEntity, result);
   }
 
-  async updateRate(id: string): Promise<BookEntity>  {
+  async updateRate(id: string): Promise<BookEntity> {
     const allReviews = await this.reviewService.getAllForCalculate(id);
     let rate = 0;
     const totalRate = allReviews.forEach((item) => {
       rate = rate + item.rate;
-    })
-    const bookRate = this.bookRepository.update({id: {id}, data: {rate: Number((rate / allReviews.length).toFixed(1))}})
-    return bookRate
+    });
+    const bookRate = this.bookRepository.update({
+      id: { id },
+      data: { rate: Number((rate / allReviews.length).toFixed(1)) },
+    });
+    return plainToInstance(BookEntity, bookRate);
   }
 
   async update(id: string, updateBookDto: UpdateBookDto) {
