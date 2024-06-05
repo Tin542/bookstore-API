@@ -4,7 +4,7 @@ import { plainToInstance } from 'class-transformer';
 import { BookEntity } from '../../../entities/book.entity';
 import { BookRepository } from './book.repository';
 import { CreateBookDto } from 'src/dtos/book/create-book.dto';
-import { FilterBookDto } from 'src/dtos/book/filter-book.dto';
+import { FilterBookDto, SortBookByEnum } from 'src/dtos/book/filter-book.dto';
 import { UpdateBookDto } from 'src/dtos/book/update-book.dto';
 import { ReviewService } from '../review/review.service';
 
@@ -51,6 +51,26 @@ export class BookService {
       AND: [],
     };
 
+    if (filter.sortByEnum) {
+      switch (filter.sortByEnum) {
+        case SortBookByEnum.ON_SALE:
+          whereCondition.AND.push({
+            bookPromotion: {
+              some: {},
+            },
+          });
+          break;
+        case SortBookByEnum.POPULAR:
+          whereCondition.AND.push({});
+          break;
+        case SortBookByEnum.RECOMMENDED:
+          whereCondition.AND.push({});
+          break;
+        default:
+          break;
+      }
+    }
+
     if (filter.title) {
       whereCondition.AND.push({ title: { contains: filter.title } });
     }
@@ -76,6 +96,7 @@ export class BookService {
         skip: offset,
         take: itemPerPage,
         where: whereCondition,
+
         orderBy: {
           createdAt: 'desc',
         },
