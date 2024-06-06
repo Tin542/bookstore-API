@@ -30,7 +30,6 @@ export class UserController {
     try {
       
       let requestData = req.query;
-      console.log(requestData.isActive)
       let filter = plainToInstance(FilterUserDto, {
         fullName: requestData.fullName || '',
         username: requestData.username || '',

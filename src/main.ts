@@ -11,6 +11,7 @@ import { PrismaClientExceptionFilter } from 'nestjs-prisma';
 
 import { AppModule } from './app.module';
 import { PrismaService } from './shared/prisma/prisma.service';
+import * as session from 'express-session';
 
 async function bootstrap() {
   // const app = await NestFactory.create(AppModule);
@@ -22,7 +23,14 @@ async function bootstrap() {
 
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
-
+  app.use(
+    session({
+      secret: process.env.JWT_ACCESS_TOKEN_SECRET, // Chuỗi bí mật để ký và mã hóa session ID
+      resave: false, // Không lưu lại session nếu không có sự thay đổi
+      saveUninitialized: false, // Không lưu session nếu không có dữ liệu
+      cookie: { maxAge: 3600000 }, // Cấu hình cookie session với thời gian sống là 1 giờ
+    }),
+  );
   app.useGlobalPipes(
     new ValidationPipe({
       exceptionFactory: (errors) => {

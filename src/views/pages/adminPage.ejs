@@ -113,7 +113,6 @@
           success: function (rs) {
             if (rs.s === 200) {
               let data = rs.data;
-              console.log(rs.data)
               // set data vừa get đc lên <input>
               document.getElementById("_idEdit").value = data.id;
               document.getElementById("nameEdit").value = data.title;
@@ -129,7 +128,6 @@
         });
       }
       function editPromotion(id) {
-        console.log("id: ", id);
         $.ajax({
           type: "GET",
           url: `/admin/promotion/detail/${id}`,
@@ -193,7 +191,6 @@
           type: "POST",
           url: `/admin/category/disable/${id}`,
           success: function (rs) {
-            console.log('rs', rs);
             alert("disable success");
             window.location.reload();
           },
@@ -204,7 +201,6 @@
           type: "POST",
           url: `/admin/author/disable/${id}`,
           success: function (rs) {
-            console.log('rs', rs);
             alert("disable success");
             window.location.reload();
           },

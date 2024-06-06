@@ -14,6 +14,7 @@ import { AuthResolver } from './modules/auth/auth.resolver';
 import { JwtStrategy } from './modules/auth/strategies/jwt.strategy';
 import { UserService } from './shared/services/user/user.service';
 import { UserRepository } from './shared/services/user/user.repository';
+import { SessionMiddleware } from './modules/auth/middleware/session.middleware';
 
 @Module({
   imports: [
@@ -33,7 +34,6 @@ import { UserRepository } from './shared/services/user/user.repository';
     providePrismaClientExceptionFilter(),
     AuthResolver,
     AuthService,
-    // LocalStrategy,
     JwtStrategy,
     UserService,
     UserRepository,
@@ -41,4 +41,6 @@ import { UserRepository } from './shared/services/user/user.repository';
   controllers: [],
   exports: [AuthService],
 })
-export class AppModule {}
+export class AppModule {
+
+}

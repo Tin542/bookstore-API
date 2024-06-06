@@ -4,7 +4,6 @@
     url: `/admin/dashboard/chart`,
     success: function (rs) {
       let data = rs.data;
-      console.log("rs", rs);
       const ctx = document.getElementById("myChart");
       new Chart(ctx, {
         type: "bar",
