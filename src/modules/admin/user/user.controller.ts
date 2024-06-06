@@ -28,13 +28,14 @@ export class UserController {
   ) {
     this.logger.log('Find all users');
     try {
+      
       let requestData = req.query;
-      var regexPattern = new RegExp('true');
+      console.log(requestData.isActive)
       let filter = plainToInstance(FilterUserDto, {
         fullName: requestData.fullName || '',
         username: requestData.username || '',
         email: requestData.email || '',
-        isActive: regexPattern.test(requestData.isActive as string) || '',
+        isActive: requestData.isActive,
         page: page ? page : 1,
         limit: limit ? limit : 5,
       });

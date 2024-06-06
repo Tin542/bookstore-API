@@ -5,14 +5,13 @@ import { UserRepository } from './user.repository';
 import { Prisma } from '@prisma/client';
 import { UserEntity } from 'src/entities/user.entity';
 import { FilterUserDto } from 'src/dtos/user/filter-user.dto';
+import { contains } from 'class-validator';
 
 @Injectable()
 export class UserService {
   constructor(private userRepository: UserRepository) {}
 
-  async getOneUser(
-    id: Prisma.UserWhereUniqueInput,
-  ): Promise<UserEntity> {
+  async getOneUser(id: Prisma.UserWhereUniqueInput): Promise<UserEntity> {
     const user = await this.userRepository.findOne(id);
     return plainToInstance(UserEntity, user);
   }
@@ -22,31 +21,39 @@ export class UserService {
     let offset: number = filter.page > 0 ? (filter.page - 1) * filter.limit : 0;
     let currentPage: number = filter.page ? filter.page : 1;
 
+    const whereCondition = {
+      AND: [],
+    };
+
+    if (filter.fullName) {
+      whereCondition.AND.push({
+        fullName: { contains: filter.fullName },
+      });
+    }
+
+    if (filter.email) {
+      whereCondition.AND.push({
+        email: { contains: filter.email },
+      });
+    }
+
+    if (filter.username) {
+      whereCondition.AND.push({
+        username: { contains: filter.username },
+      });
+    }
+
     const list = await this.userRepository.findMany({
       skip: offset,
       take: itemPerPage,
-      where: {
-        AND: {
-          fullName: filter.fullName ? { contains: filter.fullName } : {},
-          username: filter.username ? { contains: filter.username } : {},
-          email: filter.email ? { contains: filter.email } : {},
-          isActive: filter.isActive ? true : {},
-        },
-      },
+      where: whereCondition,
       orderBy: {
         createdAt: 'desc',
       },
     });
 
     const total = await this.userRepository.countUser({
-      where: {
-        AND: {
-          fullName: filter.fullName ? { contains: filter.fullName } : {},
-          username: filter.username ? { contains: filter.username } : {},
-          email: filter.email ? { contains: filter.email } : {},
-          isActive: filter.isActive ? filter.isActive : {},
-        },
-      },
+      where: whereCondition,
     });
     const result = plainToInstance(UserEntity, list);
     return {
