@@ -50,21 +50,24 @@ export class BookService {
     const whereCondition: any = {
       AND: [],
     };
+    let sortCondition: any = {
+
+    }
 
     if (filter.sortByEnum) {
       switch (filter.sortByEnum) {
         case SortBookByEnum.ON_SALE:
           whereCondition.AND.push({
             bookPromotion: {
-              some: {},
+              some: {promotion: {isActive: true}},
             },
           });
           break;
         case SortBookByEnum.POPULAR:
           whereCondition.AND.push({});
           break;
-        case SortBookByEnum.RECOMMENDED:
-          whereCondition.AND.push({});
+        case SortBookByEnum.NEW:
+          sortCondition = {createdAt: 'desc',}
           break;
         default:
           break;
@@ -96,10 +99,7 @@ export class BookService {
         skip: offset,
         take: itemPerPage,
         where: whereCondition,
-
-        orderBy: {
-          createdAt: 'desc',
-        },
+        orderBy: sortCondition,
       }),
       this.bookRepository.countBook({
         where: whereCondition,

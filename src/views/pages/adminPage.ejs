@@ -113,6 +113,7 @@
           success: function (rs) {
             if (rs.s === 200) {
               let data = rs.data;
+              console.log(rs.data)
               // set data vừa get đc lên <input>
               document.getElementById("_idEdit").value = data.id;
               document.getElementById("nameEdit").value = data.title;
@@ -211,10 +212,20 @@
       }
       function deletePromotion(id) {
         $.ajax({
-          type: "DELETE",
-          url: `/admin/promotion/delete/${id}`,
+          type: "POST",
+          url: `/admin/promotion/disable/${id}`,
           success: function (rs) {
-            alert("delete success");
+            alert("díable success");
+            window.location.reload();
+          },
+        });
+      }
+      function activePromotion(id) {
+        $.ajax({
+          type: "POST",
+          url: `/admin/promotion/active/${id}`,
+          success: function (rs) {
+            alert("active success");
             window.location.reload();
           },
         });
@@ -265,7 +276,6 @@
           processData: false,
           contentType: false,
           success: function (response) {
-            console.log('rsp', response);
             document.getElementById("imageUpload").src = response.secure_url;
             document.getElementById("imageUrl").value = response.secure_url;
           },
@@ -291,9 +301,9 @@
           contentType: false,
           success: function (response) {
             document.getElementById("imageUploadEdit").src =
-              response.response.secure_url;
+              response.secure_url;
             document.getElementById("imageUrlEdit").value =
-              response.response.secure_url;
+              response.secure_url;
           },
           error: function (xhr, status, error) {
             // Xử lý lỗi

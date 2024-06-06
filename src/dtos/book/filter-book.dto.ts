@@ -12,6 +12,7 @@ export enum SortBookByEnum {
   ON_SALE = 'ON_SALE',
   POPULAR = 'POPULAR',
   RECOMMENDED = 'RECOMMENDED',
+  NEW = 'NEW',
 }
 @ArgsType()
 export class FilterBookDto {

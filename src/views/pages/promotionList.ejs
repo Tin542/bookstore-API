@@ -24,8 +24,7 @@
           <th scope="col-2">Mã chương trình</th>
           <th scope="col-2">Tiêu đề chương trình</th>
           <th scope="col-1">Giảm giá</th>
-          <th scope="col-2">Thời gian bắt đầu</th>
-          <th scope="col-2">Thời gian kết thúc</th>
+          <th scope="col-2">Trạng thái</th>
         </tr>
       </thead>
       <tbody>
@@ -42,25 +41,26 @@
             <td scope="w-2">
               <%= item.discountPercents %>%
             </td>
-            <td scope="w-2">
-              <%= item.startDate %>
-            </td>
-            <td scope="w-2">
-              <%= item.expriedDate %>
+       
+            <td class="w-2">
+              <% if (item.isActive) { %>
+                <span class="badge bg-success">Đang kích hoạt</span>
+              <% } else { %>
+                <span class="badge bg-danger">Đang khóa</span>
+              <% } %>
+              
             </td>
 
             <td class="w-2">
               <button
-              data-bs-toggle="modal"
-              data-bs-target="#editModal"
+              onclick='activePromotion("<%= item.id %>")'
               type="button"
-              class="btn btn-outline-primary"
-              onclick='editcategory("<%= item.id %>")'
+              class="btn btn-outline-success"
             >
-            <i class="bi bi-pencil-square"></i>
+            <i class="bi bi-check-lg"></i>
             </button>
             <button
-            onclick='deletecategory("<%= item.id %>")'
+            onclick='deletePromotion("<%= item.id %>")'
             type="button"
             class="btn btn-outline-danger"
           >

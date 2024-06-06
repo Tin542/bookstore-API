@@ -43,7 +43,11 @@ export class PromotionRepository {
     });
   }
 
-  async updateOne (id: Prisma.PromotionWhereUniqueInput, data: Prisma.PromotionUpdateInput): Promise<Promotion | null> {
-    return this.prisma.promotion.update({where: id, data: data});
+  async update(params: {
+    id: Prisma.PromotionWhereUniqueInput;
+    data: Prisma.PromotionUpdateInput;
+  }): Promise<Promotion | null> {
+    const { id, data } = params;
+    return this.prisma.promotion.update({ where: id, data: data });
   }
 }

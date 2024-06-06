@@ -119,7 +119,7 @@
             <%= item.title %>
           </span>
         </td>
-        <td class="w-25"><%= item.category.name %></td>
+        <td class="w-2"><%= item.category.name %></td>
         <td scope="w-2"><%= item.author.name %></td>
         <td class="w-2">
           <% for (var j = 0; j < 5; j++){ %> 
@@ -130,7 +130,7 @@
             <% } %> 
           <% } %>
         </td>
-        <td class="w-2"><%= item.price %> VND</td>
+        <td class="w-2">$ <%= item.price %></td>
         <td class="w-2">
           <% if (item.isActive) { %>
             <span class="badge bg-success">Đang hoạt động</span>

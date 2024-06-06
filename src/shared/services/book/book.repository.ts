@@ -26,7 +26,10 @@ export class BookRepository {
       include: {
         category: true,
         author: true,
-        bookPromotion: { include: { promotion: true } },
+        bookPromotion: {
+          where: { promotion: { isActive: true } },
+          include: { promotion: true },
+        },
       },
     });
   }
@@ -44,7 +47,10 @@ export class BookRepository {
       include: {
         category: true,
         author: true,
-        bookPromotion: { include: { promotion: true } },
+        bookPromotion: {
+          where: { promotion: { isActive: true } },
+          include: { promotion: true },
+        },
       },
     });
   }

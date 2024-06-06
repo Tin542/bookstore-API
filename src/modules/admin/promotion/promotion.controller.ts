@@ -8,12 +8,10 @@ import {
   Post,
   Res,
 } from '@nestjs/common';
-import { Request, Response, json } from 'express';
+import { Request, Response } from 'express';
 import { PromotionService } from 'src/shared/services/promotion/promotion.service';
 import { CreatePromotionDto } from 'src/dtos/promotion/create-promotion.dto';
-import { plainToInstance } from 'class-transformer';
 import { BookService } from 'src/shared/services/book/book.service';
-import { FilterBookDto } from 'src/dtos/book/filter-book.dto';
 import { FilterPromotionDto, statusPromotion } from 'src/dtos/promotion/filter-promotion.dto';
 
 @Controller('admin/promotion')
@@ -88,47 +86,27 @@ export class PromotionController {
       return { errMessage: error.message };
     }
   }
+  @Post('disable/:id')
+  async disable(@Req() req: Request, @Res() res: Response) {
+    this.logger.log('Disable Promotion');
+    try {
+      let id = req.params.id;
+      await this.promotionService.disable(id);
+      return res.redirect('/admin/promotion');
+    } catch (error) {
+      return res.send({ errMessage: error });
+    }
+  }
+  @Post('active/:id')
+  async active(@Req() req: Request, @Res() res: Response) {
+    this.logger.log('Active Promotion');
+    try {
+      let id = req.params.id;
+      await this.promotionService.active(id);
+      return res.redirect('/admin/promotion');
+    } catch (error) {
+      return res.send({ errMessage: error });
+    }
+  }
 
-  // @Get('detail/:id')
-  // @Render('adminPage')
-  // async getDetail(@Req() req: Request) {
-  //   this.logger.log('Detail Order');
-  //   try {
-  //     const oid = req.params.id;
-  //     const result = await this.orderService.findOne(oid);
-  //     return {
-  //       module: 'orderDetail',
-  //       data: result
-  //     }
-  //   } catch (error) {
-  //     this.logger.error(
-  //       `Failed to retrieve order detail: ${error.message}`,
-  //       error.stack,
-  //     );
-  //     return { errMessage: error.message };
-  //   }
-  // }
-
-  // @Post('update-status')
-  // async acive(@Req() req: Request, @Res() res: Response)  {
-  //   this.logger.log('update-status');
-  //   try {
-  //     let dataReq = req.body;
-  //     if(dataReq.status ==="DONE" && dataReq.paidAt==="false") {
-  //       return res.json({message: "Đơn hàng chưa được thanh toán !"})
-  //     }
-  //     const dataUpdate: UpdateStatusOrderDto = {
-  //       status: dataReq.status,
-  //       paidAt: dataReq.paidAt==="true" ? new Date() : null,
-  //     }
-  //     await this.orderService.upateStatus(dataReq.oid, dataUpdate);
-  //     return res.redirect(`/admin/order/detail/${dataReq.oid}`);
-  //   } catch (error) {
-  //     this.logger.error(
-  //       `Failed to update order detail: ${error.message}`,
-  //       error.stack,
-  //     );
-  //     return { errMessage: error.message };
-  //   }
-  // }
 }

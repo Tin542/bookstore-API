@@ -18,7 +18,7 @@ import { plainToInstance } from 'class-transformer';
 
 import { CreateBookDto } from '../../../dtos/book/create-book.dto';
 import { UpdateBookDto } from '../../../dtos/book/update-book.dto';
-import { FilterBookDto } from '../../../dtos/book/filter-book.dto';
+import { FilterBookDto, SortBookByEnum } from '../../../dtos/book/filter-book.dto';
 import { BookService } from 'src/shared/services/book/book.service';
 import { Request, Response } from 'express';
 import { CategoryService } from 'src/shared/services/category/category.service';
@@ -63,6 +63,7 @@ export class BookController {
         rate: requestData.rate ? [parseInt(requestData.rate as string)] : [],
         author: requestData.author ? [requestData.author] : [],
         category: requestData.category ? [requestData.category] : [],
+        sortByEnum: SortBookByEnum.NEW, 
         page: page ? page : 1,
         limit: limit ? limit : 5,
       });

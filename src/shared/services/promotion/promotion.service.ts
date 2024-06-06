@@ -102,14 +102,22 @@ export class PromotionService {
       limit: itemPerPage,
     };
   }
-
-  //   async findOne(id: string): Promise<OrderEntity> {
-  //     const result = await this.orderRepository.findOne({ id });
-  //     return plainToInstance(OrderEntity, result);
-  //   }
-
-  //   async upateStatus(id: string, data: UpdateStatusOrderDto): Promise<OrderEntity> {
-  //     const result = await this.orderRepository.updateOne({ id }, data);
-  //     return plainToInstance(OrderEntity, result);
-  //   }
+  async active(id: string) {
+    const result = await this.promotionRepository.update({
+      id: { id },
+      data: {
+        isActive: true,
+      },
+    });
+    return result;
+  }
+  async disable(id: string) {
+    const result = await this.promotionRepository.update({
+      id: { id },
+      data: {
+        isActive: false,
+      },
+    });
+    return result;
+  }
 }
