@@ -7,6 +7,7 @@ import { CreateBookDto } from 'src/dtos/book/create-book.dto';
 import { FilterBookDto, SortBookByEnum } from 'src/dtos/book/filter-book.dto';
 import { UpdateBookDto } from 'src/dtos/book/update-book.dto';
 import { ReviewService } from '../review/review.service';
+import { OrderStatus } from '@prisma/client';
 
 @Injectable()
 export class BookService {
@@ -50,24 +51,35 @@ export class BookService {
     const whereCondition: any = {
       AND: [],
     };
-    let sortCondition: any = {
-
-    }
+    let sortCondition: any = {};
 
     if (filter.sortByEnum) {
       switch (filter.sortByEnum) {
         case SortBookByEnum.ON_SALE:
           whereCondition.AND.push({
             bookPromotion: {
-              some: {promotion: {isActive: true}},
+              some: { promotion: { isActive: true } },
             },
           });
           break;
         case SortBookByEnum.POPULAR:
-          whereCondition.AND.push({});
+          whereCondition.AND.push({
+            orderDetail: {
+              some: {
+                order: {
+                  status: OrderStatus.DONE,
+                },
+              },
+            },
+          });
+          sortCondition = {
+            orderDetail: {
+              _count: 'desc',
+            },
+          };
           break;
         case SortBookByEnum.NEW:
-          sortCondition = {createdAt: 'desc',}
+          sortCondition = { createdAt: 'desc' };
           break;
         default:
           break;
