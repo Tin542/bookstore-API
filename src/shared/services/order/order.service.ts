@@ -5,6 +5,8 @@ import { CreateOrderDto } from 'src/dtos/order/create-order.dto';
 import { OrderEntity } from 'src/entities/order.entity';
 import { FilterOrderkDto } from 'src/dtos/order/filter-order.dto';
 import { UpdateStatusOrderDto } from 'src/dtos/order/update-order-status.dto';
+import * as moment from "moment"; 
+import { OrderStatus } from '@prisma/client';
 
 @Injectable()
 export class OrderService {
@@ -23,11 +25,11 @@ export class OrderService {
           create: createOrderDTO.orderItem.map((item) => ({
             book: {
               connect: {
-                id: item.bookId
-              }
+                id: item.bookId,
+              },
             },
             quantity: item.quantity,
-            price: item.price
+            price: item.price,
           })),
         },
 
@@ -96,8 +98,41 @@ export class OrderService {
     return plainToInstance(OrderEntity, result);
   }
 
-  async upateStatus(id: string, data: UpdateStatusOrderDto): Promise<OrderEntity> {
+  async upateStatus(
+    id: string,
+    data: UpdateStatusOrderDto,
+  ): Promise<OrderEntity> {
     const result = await this.orderRepository.updateOne({ id }, data);
     return plainToInstance(OrderEntity, result);
+  }
+
+  async laodForAdmin() {
+    const result = await this.orderRepository.loadTotalForAdmin();
+    return plainToInstance(OrderEntity, result);
+  }
+
+  async getRevenueInMonth(month: string, year: string) {
+    try {
+      let totalDayinMonth = moment(`${year}-${month}`, 'YYYY-MM').daysInMonth(); // get total date in 1 month
+
+      let startDateOfMonth = `${year}-${month}-01`;
+      let endDateOfMonth = `${year}-${month}-${totalDayinMonth}`;
+      const result = await this.orderRepository.findMany({
+        where: {
+          createdAt: {
+            gte: new Date(`${startDateOfMonth}T00:00:00`),
+            lte: new Date(`${endDateOfMonth}T23:59:59`),
+          },
+          status: OrderStatus.DONE,
+        },
+      });
+      const totalPriceInMonth = result.reduce(
+        (accumulator, currentValue) => accumulator + currentValue.totalPrice,
+        0,
+      );
+      return totalPriceInMonth.toFixed(2);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

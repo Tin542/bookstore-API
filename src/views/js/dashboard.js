@@ -3,34 +3,34 @@
     type: "GET",
     url: `/admin/dashboard/chart`,
     success: function (rs) {
-      let data = rs.data;
-      const ctx = document.getElementById("myChart");
-      new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: data.map((el) => el.time),
-          datasets: [
-            {
-              label: "Tổng doanh thu trong tháng",
-              data: data.map((el) => el.revenue),
-              borderWidth: 1,
+      if (rs && rs.data) {
+        let data = rs.data;
+        console.log('rs', rs);
+
+        const ctx = document.getElementById("myChart");
+        if (ctx) {
+          new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: data.map((el) => el.time),
+              datasets: [
+                {
+                  label: "Tổng doanh thu trong tháng",
+                  data: data.map((el) => el.revenue),
+                  borderWidth: 1,
+                },
+              ],
             },
-          ],
-        },
-      });
+          });
+        } else {
+          console.error("Canvas element with id 'myChart' not found.");
+        }
+      } else {
+        console.error("Invalid data format:", rs);
+      }
     },
-  });
-})();
-(function renderSummary() {
-  $.ajax({
-    type: "GET",
-    url: `/admin/dashboard/summary`,
-    success: function (rs) {
-      let data = rs.data;
-      document.getElementById("revernue").innerHTML = data.revenue;
-      document.getElementById("order").innerHTML = data.order;
-      document.getElementById("user").innerHTML = data.user;
-      document.getElementById("product").innerHTML = data.product;
-    },
+    error: function(error) {
+      console.error('Error fetching chart data:', error);
+    }
   });
 })();

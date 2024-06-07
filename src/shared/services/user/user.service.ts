@@ -87,4 +87,9 @@ export class UserService {
     });
     return result;
   }
+
+  async loadForDashboard() {
+    const result = await this.userRepository.countUser({where: {isActive: true}});
+    return result
+  }
 }

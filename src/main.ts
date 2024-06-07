@@ -49,6 +49,9 @@ async function bootstrap() {
 
   // Read static file in folder views and public
   app.useStaticAssets(resolve('./src/views/assets'));
+  app.useStaticAssets(join(__dirname, '..', 'src', 'views', 'js'), {
+    prefix: '/js/', // Serve files under /js path
+  });
   app.setBaseViewsDir(resolve('./src/views/pages'));
   app.setViewEngine('ejs');
 

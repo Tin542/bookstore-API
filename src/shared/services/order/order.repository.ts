@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, Order } from '@prisma/client';
+import { Prisma, Order, OrderStatus } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
@@ -46,7 +46,18 @@ export class OrderRepository {
     });
   }
 
-  async updateOne (id: Prisma.OrderWhereUniqueInput, data: Prisma.OrderUpdateInput): Promise<Order | null> {
-    return this.prisma.order.update({where: id, data: data});
+  async updateOne(
+    id: Prisma.OrderWhereUniqueInput,
+    data: Prisma.OrderUpdateInput,
+  ): Promise<Order | null> {
+    return this.prisma.order.update({ where: id, data: data });
+  }
+
+  async loadTotalForAdmin() {
+    return this.prisma.order.findMany({
+      where: {
+        status: OrderStatus.DONE,
+      },
+    });
   }
 }

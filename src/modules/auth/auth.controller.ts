@@ -26,7 +26,7 @@ export class AuthController {
         throw new Error('Session is not initialized');
       }
       req.session.admin = admin;
-      return res.redirect('/admin/book'); 
+      return res.redirect('/admin/dashboard'); 
     } else {
       return res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Invalid credentials' });
     }

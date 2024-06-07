@@ -193,4 +193,8 @@ export class BookService {
     });
     return result;
   }
+
+  async loadForDashboardAdmin() {
+    return this.bookRepository.countBook({where: {isActive: true}});
+  }
 }

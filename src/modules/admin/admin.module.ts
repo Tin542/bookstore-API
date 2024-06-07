@@ -8,6 +8,7 @@ import { OrderModule } from './order/order.module';
 import { PromotionModule } from './promotion/promotion.module';
 import { SessionMiddleware } from '../auth/middleware/session.middleware';
 import { AuthMiddleware } from '../auth/middleware/auth.middleware';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AuthMiddleware } from '../auth/middleware/auth.middleware';
     UserModule,
     OrderModule,
     PromotionModule,
+    DashboardModule
   ],
   providers: [],
   controllers: [],

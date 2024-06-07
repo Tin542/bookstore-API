@@ -59,11 +59,11 @@ export class CategoryService {
     };
   }
 
-  async findAllForFilter(){
+  async findAllForFilter() {
     const result = await this.categoryRepository.findMany({
       where: {
-        isActive: true
-      }
+        isActive: true,
+      },
     });
     return plainToInstance(Category, result);
   }
@@ -101,5 +101,27 @@ export class CategoryService {
       },
     });
     return result;
+  }
+
+  async loadForDashboard(id: string[]) {
+    let arrResult = [];
+    let listCategories = [];
+    for (let i = 0; i < id.length; i++) {
+      let idx = arrResult.findIndex((el) => el.cid === id[i]);
+      if (idx > -1) {
+        arrResult[idx]['count'] += 1;
+      } else {
+        arrResult.push({
+          cid: id[i],
+          count: 1,
+        });
+      }
+    }
+    arrResult.sort((a, b) => b.count - a.count).slice(0, 3);
+    for (let i = 0; i < arrResult.length; i++) {
+      let category = await this.findOne(arrResult[i].cid);
+      listCategories.push({ category: category, count: arrResult[i].count });
+    }
+    return listCategories;
   }
 }
