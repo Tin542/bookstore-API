@@ -18,6 +18,7 @@ export class BookRepository {
     orderBy?: Prisma.BookOrderByWithRelationInput;
   }): Promise<Book[]> {
     const { skip, take, where, orderBy } = params;
+    const currentDate = new Date();
     return this.prisma.book.findMany({
       skip,
       take,
@@ -27,7 +28,15 @@ export class BookRepository {
         category: true,
         author: true,
         bookPromotion: {
-          where: { promotion: { isActive: true } },
+          where: {
+            promotion: {
+              AND: {
+                isActive: true,
+                startDate: { lte: currentDate },
+                expriedDate: { gte: currentDate },
+              },
+            },
+          },
           include: { promotion: true },
         },
       },
@@ -42,13 +51,20 @@ export class BookRepository {
   }
 
   async findOne(id: Prisma.BookWhereUniqueInput): Promise<Book | null> {
+    const currentDate = new Date();
     return this.prisma.book.findUnique({
       where: id,
       include: {
         category: true,
         author: true,
         bookPromotion: {
-          where: { promotion: { isActive: true } },
+          where: {
+            promotion: {
+              isActive: true,
+              startDate: { gte: currentDate },
+              expriedDate: { lte: currentDate },
+            },
+          },
           include: { promotion: true },
         },
       },

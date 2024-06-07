@@ -54,11 +54,18 @@ export class BookService {
     let sortCondition: any = {};
 
     if (filter.sortByEnum) {
+      const currentDate = new Date();
       switch (filter.sortByEnum) {
         case SortBookByEnum.ON_SALE:
           whereCondition.AND.push({
             bookPromotion: {
-              some: { promotion: { isActive: true } },
+              some: {
+                promotion: {
+                  isActive: true,
+                  startDate: { lte: currentDate },
+                  expriedDate: { gte: currentDate },
+                },
+              },
             },
           });
           break;

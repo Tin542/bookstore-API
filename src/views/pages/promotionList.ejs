@@ -23,6 +23,8 @@
         <tr>
           <th scope="col-2">Mã chương trình</th>
           <th scope="col-2">Tiêu đề chương trình</th>
+          <th scope="col-2">Start</th>
+          <th scope="col-2">End</th>
           <th scope="col-1">Giảm giá</th>
           <th scope="col-2">Trạng thái</th>
         </tr>
@@ -37,6 +39,12 @@
               <span class="d-inline-block text-truncate" style="max-width: 200px">
                 <%= item.title %>
               </span>
+            </td>
+            <td scope="w-2">
+              <%= item.startDate %>
+            </td>
+            <td scope="w-2">
+              <%= item.expriedDate %>
             </td>
             <td scope="w-2">
               <%= item.discountPercents %>%
