@@ -5,7 +5,6 @@
     success: function (rs) {
       if (rs && rs.data) {
         let data = rs.data;
-        console.log('rs', rs);
 
         const ctx = document.getElementById("myChart");
         if (ctx) {
