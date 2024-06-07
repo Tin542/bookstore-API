@@ -72,12 +72,13 @@ export class CartService {
 
   async update(id: string, quantity: number): Promise<CartItemEntity> {
     const currentCartItem = await this.findOne(id);
+    console.log('cure', currentCartItem);
     if (currentCartItem) {
       const result = await this.cartRepository.update({
         id: { id },
         data: {
           quantity: quantity,
-          price: currentCartItem.book.price * quantity,
+          price: (currentCartItem.price / currentCartItem.quantity) * quantity,
         },
       });
       return plainToInstance(CartItemEntity, result);

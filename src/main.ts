@@ -45,7 +45,7 @@ async function bootstrap() {
       stopAtFirstError: true,
     }),
   );
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  // app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   // Read static file in folder views and public
   app.useStaticAssets(resolve('./src/views/assets'));

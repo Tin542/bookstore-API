@@ -61,8 +61,8 @@ export class BookRepository {
           where: {
             promotion: {
               isActive: true,
-              startDate: { gte: currentDate },
-              expriedDate: { lte: currentDate },
+              startDate: { lte: currentDate },
+              expriedDate: { gte: currentDate },
             },
           },
           include: { promotion: true },
