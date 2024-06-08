@@ -2,6 +2,7 @@ import { Field, Float, ObjectType } from '@nestjs/graphql';
 import { Order, OrderStatus, PaymentMethod } from '@prisma/client';
 import { Transform } from 'class-transformer';
 import * as moment from "moment"; 
+import { OrderItemEntity } from './orderItem.entity';
 
 @ObjectType()
 export class OrderEntity {
@@ -64,4 +65,7 @@ export class OrderEntity {
   })
   @Field(() => String)
   updatedAt: Order['updatedAt'];
+
+  @Field(() => [OrderItemEntity])
+  OrderDetail: OrderItemEntity[];
 }

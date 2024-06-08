@@ -95,6 +95,7 @@ type Mutation {
 }
 
 type OrderEntity {
+  OrderDetail: [OrderItemEntity!]!
   address: String!
   createdAt: String!
   customerName: String!
@@ -106,6 +107,15 @@ type OrderEntity {
   totalPrice: Float!
   updatedAt: String!
   userId: String!
+}
+
+type OrderItemEntity {
+  book: BookEntity!
+  bookId: String!
+  id: String!
+  orderId: String!
+  price: Float!
+  quantity: Int!
 }
 
 input OrderItemInput {
@@ -149,6 +159,7 @@ type Query {
   getCart(uid: String!): [CartItemEntity!]!
   getDetailBook(id: String!): DetailBookDto!
   getOrder(limit: Int, page: Int, userId: String): [OrderEntity!]!
+  getOrderDetail(oid: String!): OrderEntity!
   getUser(id: String!): UserEntity!
 }
 

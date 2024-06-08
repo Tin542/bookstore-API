@@ -30,4 +30,17 @@ export class OrderResolver {
       throw new Error('Failed to fetch order');
     }
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => OrderEntity)
+  async getOrderDetail(@Args('oid') oid: string) {
+    try {
+      const result = await this.orderService.findOne(oid);
+      const response = plainToInstance(OrderEntity, result);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw new Error('Failed to fetch order');
+    }
+  }
 }
