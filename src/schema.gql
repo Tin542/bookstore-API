@@ -91,6 +91,7 @@ type Mutation {
   signup(address: String!, avatar: String!, email: String!, fullName: String!, password: String!, phoneNumber: String!, username: String!): UserEntity!
   updateBookRating(id: String!): BookEntity!
   updateCart(id: String!, quantity: Int!): CartItemEntity!
+  updateInfo(address: String!, avatar: String!, email: String!, fullName: String!, id: String!, phoneNumber: String!): UserEntity!
 }
 
 type OrderEntity {
@@ -147,6 +148,7 @@ type Query {
   getAllReview(bookId: String, limit: Int, page: Int, rate: [Int!]): ResponseReviewDto!
   getCart(uid: String!): [CartItemEntity!]!
   getDetailBook(id: String!): DetailBookDto!
+  getUser(id: String!): UserEntity!
 }
 
 type ResponseBookDto {

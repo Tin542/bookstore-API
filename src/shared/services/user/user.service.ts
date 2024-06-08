@@ -16,6 +16,14 @@ export class UserService {
     return plainToInstance(UserEntity, user);
   }
 
+  async udateInfo(data: Prisma.UserUpdateInput ,id: string) {
+    const result = await this.userRepository.update({
+      id: { id },
+      data: data,
+    });
+    return result;
+  }
+
   async findAll(filter: FilterUserDto) {
     let itemPerPage: number = filter.limit ? filter.limit : 5;
     let offset: number = filter.page > 0 ? (filter.page - 1) * filter.limit : 0;
