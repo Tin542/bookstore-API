@@ -1,6 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { plainToInstance } from 'class-transformer';
+import { UpdateUserPasswordDto } from 'src/dtos/user/update-password-user.dto';
 import { UpdateUserDto } from 'src/dtos/user/update-user.dto';
 import { UserEntity } from 'src/entities/user.entity';
 import { JwtAuthGuard } from 'src/modules/auth/guard/jwt-auth.guard';
@@ -8,9 +9,7 @@ import { UserService } from 'src/shared/services/user/user.service';
 
 @Resolver(() => UserEntity)
 export class UserResolver {
-  constructor(
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @UseGuards(JwtAuthGuard)
   @Mutation(() => UserEntity)
@@ -30,5 +29,14 @@ export class UserResolver {
       console.error(error);
       throw new Error('Failed to fetch user');
     }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => UserEntity)
+  async updatePassword(
+    @Args() data: UpdateUserPasswordDto,
+  ): Promise<UserEntity> {
+    const result = this.userService.updatePassword(data);
+    return result;
   }
 }

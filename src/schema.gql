@@ -92,6 +92,7 @@ type Mutation {
   updateBookRating(id: String!): BookEntity!
   updateCart(id: String!, quantity: Int!): CartItemEntity!
   updateInfo(address: String!, avatar: String!, email: String!, fullName: String!, id: String!, phoneNumber: String!): UserEntity!
+  updatePassword(currentPassword: String!, id: String!, newPassword: String!): UserEntity!
 }
 
 type OrderEntity {

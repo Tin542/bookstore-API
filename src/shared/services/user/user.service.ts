@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
 import { UserRepository } from './user.repository';
@@ -6,6 +6,8 @@ import { Prisma } from '@prisma/client';
 import { UserEntity } from 'src/entities/user.entity';
 import { FilterUserDto } from 'src/dtos/user/filter-user.dto';
 import { contains } from 'class-validator';
+import { comparePassword, hashPassword } from 'src/shared/utils/hashPassword.util';
+import { UpdateUserPasswordDto } from 'src/dtos/user/update-password-user.dto';
 
 @Injectable()
 export class UserService {
@@ -16,10 +18,32 @@ export class UserService {
     return plainToInstance(UserEntity, user);
   }
 
-  async udateInfo(data: Prisma.UserUpdateInput ,id: string) {
+  async udateInfo(data: Prisma.UserUpdateInput, id: string) {
     const result = await this.userRepository.update({
       id: { id },
       data: data,
+    });
+    return result;
+  }
+
+  async updatePassword(data: UpdateUserPasswordDto) {
+    const currentUser = await this.userRepository.findOne({ id: data.id });
+    if (!currentUser) {
+      throw new BadRequestException('Cannot find user');
+    }
+    const checkPassword = await comparePassword(
+      data.currentPassword,
+      currentUser.password,
+    );
+    if (!checkPassword) {
+      throw new BadRequestException('Wrong password');
+    }
+    const hashedNewPassword = await hashPassword(data.newPassword)
+    const result = await this.userRepository.update({
+      id: { id: data.id },
+      data: {
+        password: hashedNewPassword,
+      },
     });
     return result;
   }
@@ -97,7 +121,9 @@ export class UserService {
   }
 
   async loadForDashboard() {
-    const result = await this.userRepository.countUser({where: {isActive: true}});
-    return result
+    const result = await this.userRepository.countUser({
+      where: { isActive: true },
+    });
+    return result;
   }
 }
