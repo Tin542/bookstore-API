@@ -5,8 +5,9 @@ import { CreateOrderDto } from 'src/dtos/order/create-order.dto';
 import { OrderEntity } from 'src/entities/order.entity';
 import { FilterOrderkDto } from 'src/dtos/order/filter-order.dto';
 import { UpdateStatusOrderDto } from 'src/dtos/order/update-order-status.dto';
-import * as moment from "moment"; 
+import * as moment from 'moment';
 import { OrderStatus } from '@prisma/client';
+import { equals } from 'class-validator';
 
 @Injectable()
 export class OrderService {
@@ -44,6 +45,15 @@ export class OrderService {
     return plainToInstance(OrderEntity, result);
   }
 
+  async findAllForUser(uid: string) {
+    const result = await this.orderRepository.findMany({
+      where: {
+        userId: { equals: uid },
+      },
+    });
+    return result;
+  }
+
   async findAll(filter: FilterOrderkDto) {
     const itemPerPage: number = filter.limit || 5;
     const offset: number =
@@ -53,6 +63,10 @@ export class OrderService {
     const whereCondition: any = {
       AND: [],
     };
+
+    if (filter.userId) {
+      whereCondition.AND.push({ userId: { equals: filter.userId } });
+    }
 
     if (filter.id) {
       whereCondition.AND.push({ id: filter.id });

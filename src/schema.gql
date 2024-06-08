@@ -148,6 +148,7 @@ type Query {
   getAllReview(bookId: String, limit: Int, page: Int, rate: [Int!]): ResponseReviewDto!
   getCart(uid: String!): [CartItemEntity!]!
   getDetailBook(id: String!): DetailBookDto!
+  getOrder(limit: Int, page: Int, userId: String): [OrderEntity!]!
   getUser(id: String!): UserEntity!
 }
 

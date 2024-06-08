@@ -1,6 +1,8 @@
 import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import { plainToInstance } from 'class-transformer';
 import { CreateOrderDto } from 'src/dtos/order/create-order.dto';
+import { FilterOrderkDto } from 'src/dtos/order/filter-order.dto';
 import { OrderEntity } from 'src/entities/order.entity';
 import { JwtAuthGuard } from 'src/modules/auth/guard/jwt-auth.guard';
 import { OrderService } from 'src/shared/services/order/order.service';
@@ -16,4 +18,16 @@ export class OrderResolver {
     return result;
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Query(() => [OrderEntity])
+  async getOrder(@Args() data: FilterOrderkDto) {
+    try {
+      const result = await this.orderService.findAll(data);
+      const response = plainToInstance(OrderEntity, result.list);
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw new Error('Failed to fetch order');
+    }
+  }
 }
