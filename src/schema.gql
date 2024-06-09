@@ -25,6 +25,7 @@ type BookEntity {
   imageUrl: String!
   isActive: Boolean!
   isOutofStock: Boolean!
+  limitDiscount: Int!
   price: Float!
   rate: Float!
   title: String!
@@ -75,6 +76,7 @@ type DetailBookDto {
   imageUrl: String!
   isActive: Boolean!
   isOutofStock: Boolean!
+  limitDiscount: Int!
   price: Float!
   rate: Float!
   title: String!

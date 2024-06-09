@@ -63,7 +63,7 @@ export class BookController {
         rate: requestData.rate ? [parseInt(requestData.rate as string)] : [],
         author: requestData.author ? [requestData.author] : [],
         category: requestData.category ? [requestData.category] : [],
-        sortByEnum: SortBookByEnum.NEW, 
+        sortByEnum: SortBookByEnum.NEW,
         page: page ? page : 1,
         limit: limit ? limit : 5,
       });

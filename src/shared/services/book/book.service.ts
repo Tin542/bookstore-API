@@ -23,6 +23,7 @@ export class BookService {
         description: createBookDto.description,
         price: createBookDto.price,
         rate: 0,
+        limitDiscount: createBookDto.limitDiscount,
         imageUrl: createBookDto.imageUrl,
         category: {
           connect: {
@@ -156,6 +157,7 @@ export class BookService {
     const result = await this.bookRepository.update({
       id: { id },
       data: {
+        limitDiscount: updateBookDto.limitDiscount,
         title: updateBookDto.title,
         description: updateBookDto.description,
         price: updateBookDto.price,

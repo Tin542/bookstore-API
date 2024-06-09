@@ -1,6 +1,6 @@
 import { Book } from '@prisma/client';
 
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { PromotionEntity } from './promotion.entity';
 import { BookPromotionEntity } from './bookPromotion.entity';
 
@@ -35,6 +35,9 @@ export class BookEntity {
 
   @Field(() => String)
   authorId: Book['authorId'];
+
+  @Field(() => Int)
+  limitDiscount: Book['limitDiscount'];
 
   @Field(() => Date)
   createdAt: Book['createdAt'];

@@ -24,6 +24,10 @@ export class CreateBookDto {
   @IsNotEmpty({message: 'Author must not empty'})
   author: string;
 
+  @IsNumber()
+  @Type(() => Number)
+  limitDiscount: number;
+
   @IsNotEmpty()
   createdAt: Date;
 

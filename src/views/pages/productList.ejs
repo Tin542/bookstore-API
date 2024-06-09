@@ -311,6 +311,18 @@
                     </select>
                   </div>
                   <div class="col-12">
+                    <label for="limitDiscount" class="form-label">Gía giảm tối thiểu</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="limitDiscount"
+                      name="limitDiscount"
+                      placeholder="Nhập giá"
+                      min="0"
+                      required
+                    />
+                  </div>
+                  <div class="col-12">
                     <label for="description" class="form-label">Mô tả</label>
                     <textarea
                       class="form-control"
@@ -448,6 +460,19 @@
                     <option value="<%= item.id %>"><%= item.name %></option>
                     <% }) %>
                   </select>
+                </div>
+                <div class="col-12">
+                  <label for="price" class="form-label">Gía giảm tối thiểu</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="limitDiscountEdit"
+                    name="limitDiscount"
+                    placeholder="Nhập giá"
+                    min="0"
+                    required
+                    value=""
+                  />
                 </div>
                 <div class="col-12">
                   <label for="descriptionEdit" class="form-label">Mô tả</label>

@@ -14,6 +14,11 @@ export class UpdateBookDto {
     @IsNotEmpty()
     @Type(() => Number)
     price: number;
+
+    @IsNumber()
+    @IsNotEmpty()
+    @Type(() => Number)
+    limitDiscount: number;
   
     @IsString()
     @IsNotEmpty()

@@ -38,6 +38,7 @@ model Book {
   isActive      Boolean                     @default(true)
   categoryId    String
   authorId      String
+  limitDiscount Int?                        @default(10)
   createdAt     DateTime                    @default(now())
   updatedAt     DateTime                    @default(now()) @updatedAt
   cartDetail    CartItem[]
