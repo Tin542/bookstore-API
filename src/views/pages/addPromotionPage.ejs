@@ -1,6 +1,6 @@
 <div class="bg-light p-3">
-
-  <nav style="
+  <div class="container mt-3 p-3">
+    <nav style="
         --bs-breadcrumb-divider: url(
           &#34;data:image/svg + xml,
           %3Csvgxmlns='http://www.w3.org/2000/svg'width='8'height='8'%3E%3Cpathd='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z'fill='currentColor'/%3E%3C/svg%3E&#34;
@@ -15,10 +15,6 @@
       </li>
     </ol>
   </nav>
-
-
-
-  <div class="container mt-3 p-3">
     <div class="card p-3 mb-3">
       <div class="d-flex bd-highlight">
         <div class="me-auto p-2 bd-highlight">
@@ -28,18 +24,27 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-6">
+        <form action="/admin/promotion/add" method="get">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search for book title..." aria-label="Book title" name="title" value="<%= searchValue %>" aria-describedby="button-addon2">
+            <button class="btn btn-primary" type="submit" id="button-addon2">Tìm kiếm</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <form action="/admin/promotion/create" method="post">
       <div class="row">
         <div class="col">
-
           <div class="card">
             <div class="card-header bg-danger text-white">
               <div class="d-flex justify-content-between">
                 <h5>Sản phẩm áp dụng</h5>
               </div>
             </div>
-            <input type="text" name="searchName" class="form-control" id="searchInput"
-              placeholder="Search for books..." />
+
             <ul class="list-group" id="bookList" style="max-height: 400px; overflow: scroll;">
               <% listBook.forEach(function(item, index) { %>
                 <li class="list-group-item d-flex book-item">

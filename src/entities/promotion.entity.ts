@@ -4,6 +4,7 @@ import { Transform } from 'class-transformer';
 import * as moment from "moment"; 
 
 import { BookEntity } from './book.entity';
+import { BookPromotionEntity } from './bookPromotion.entity';
 
 @ObjectType()
 export class PromotionEntity {
@@ -69,4 +70,7 @@ export class PromotionEntity {
   })
   @Field(() => String)
   updatedAt: Promotion['updatedAt'];
+
+  @Field(() => [BookPromotionEntity])
+  bookPromotions: BookPromotionEntity[]
 }

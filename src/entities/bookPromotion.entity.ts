@@ -3,6 +3,7 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
 import * as moment from "moment"; 
 import { PromotionEntity } from './promotion.entity';
+import { BookEntity } from './book.entity';
 @ObjectType()
 export class BookPromotionEntity {
   @Field(() => String)
@@ -16,5 +17,8 @@ export class BookPromotionEntity {
 
   @Field(() => PromotionEntity)
   promotion: PromotionEntity;
+
+  @Field(() => BookEntity)
+  book: BookEntity;
 
 }

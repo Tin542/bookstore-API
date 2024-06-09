@@ -36,7 +36,6 @@ export class PromotionService {
     });
     return plainToInstance(PromotionEntity, result);
   }
-
   async findAll(filter: FilterPromotionDto) {
     const itemPerPage: number = filter.limit || 5;
     const offset: number =
@@ -119,5 +118,12 @@ export class PromotionService {
       },
     });
     return result;
+  }
+
+  async getDetail(id: string): Promise<PromotionEntity> {
+    const result = await this.promotionRepository.findOne({
+      id
+    });
+    return plainToInstance(PromotionEntity, result);
   }
 }

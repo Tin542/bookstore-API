@@ -8,6 +8,7 @@ import { FilterBookDto, SortBookByEnum } from 'src/dtos/book/filter-book.dto';
 import { UpdateBookDto } from 'src/dtos/book/update-book.dto';
 import { ReviewService } from '../review/review.service';
 import { OrderStatus } from '@prisma/client';
+import { contains } from 'class-validator';
 
 @Injectable()
 export class BookService {
@@ -40,8 +41,10 @@ export class BookService {
     return plainToInstance(BookEntity, result);
   }
 
-  async findAllWithoutPagination() {
-    const result = await this.bookRepository.findMany({});
+  async findAllWithoutPagination(title: string) {
+    const result = await this.bookRepository.findMany({
+      where: { title: {contains: title} }
+    });
     return plainToInstance(BookEntity, result);
   }
   async findAll(filter: FilterBookDto) {

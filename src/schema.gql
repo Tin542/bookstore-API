@@ -33,6 +33,7 @@ type BookEntity {
 }
 
 type BookPromotionEntity {
+  book: BookEntity!
   bookId: String!
   id: String!
   promotion: PromotionEntity!
@@ -144,6 +145,7 @@ enum PaymentMethod {
 
 type PromotionEntity {
   book: [BookEntity!]!
+  bookPromotions: [BookPromotionEntity!]!
   createdAt: String!
   description: String!
   discountPercents: Int

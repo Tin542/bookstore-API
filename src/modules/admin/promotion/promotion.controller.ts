@@ -13,6 +13,8 @@ import { PromotionService } from 'src/shared/services/promotion/promotion.servic
 import { CreatePromotionDto } from 'src/dtos/promotion/create-promotion.dto';
 import { BookService } from 'src/shared/services/book/book.service';
 import { FilterPromotionDto, statusPromotion } from 'src/dtos/promotion/filter-promotion.dto';
+import { plainToClass, plainToInstance } from 'class-transformer';
+import { PromotionEntity } from 'src/entities/promotion.entity';
 
 @Controller('admin/promotion')
 export class PromotionController {
@@ -27,12 +29,35 @@ export class PromotionController {
   async loadAddPromotionPage(
     @Req() req: Request,
   ) {
-    
-    const result = await this.bookService.findAllWithoutPagination();
+    let title: string = req.query.title as string;
+    const result = await this.bookService.findAllWithoutPagination(title);
     return {
       module: 'addPromotionPage',
       listBook: result,
+      searchValue: title
     };
+  }
+
+  
+  @Get(':id')
+  @Render('adminPage')
+  async getDetail(@Req() req: Request, @Res() res: Response) {
+    this.logger.log('Detail Promotion');
+    try {
+      let id = req.params.id;
+      let title: string = req.query.title as string;
+      const result = await this.promotionService.getDetail(id);
+      const listBook = await this.bookService.findAllWithoutPagination(title);
+      return {
+        module: "detailPromotion",
+        data: result,
+        listBook: listBook,
+        searchValue: title
+      }
+      // return res.redirect('/admin/promotion');
+    } catch (error) {
+      return res.send({ errMessage: error });
+    }
   }
 
   @Post('create')
@@ -71,12 +96,20 @@ export class PromotionController {
         limit: limit ? parseInt(limit.toString(), 10) : 5,
       };
       const result = await this.promotionService.findAll(filters);
+      const listData = result.list.map((item) => {
+        const expDate = new Date(item.expriedDate);
+        const currentDate = new Date();
+        const isExp: boolean = currentDate > expDate ? true : false;
+        return {
+          ...item, isExp: isExp,
+        }
+      });
       return {
         module: 'promotion',
         pages: result.totalPages,
         currentPage: result.currentPage,
         filters,
-        data: result.list,
+        data: listData,
       };
     } catch (error) {
       this.logger.error(
@@ -108,5 +141,6 @@ export class PromotionController {
       return res.send({ errMessage: error });
     }
   }
+
 
 }

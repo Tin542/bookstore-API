@@ -27,15 +27,18 @@
           <th scope="col-2">End</th>
           <th scope="col-1">Giảm giá</th>
           <th scope="col-2">Trạng thái</th>
+          <th scope="col-2">Tình trạng</th>
         </tr>
       </thead>
       <tbody>
         <% data.forEach(function(item, index) { %>
           <tr>
             <td scope="w-2">
-              <%= item.id %>
+              <a href="/admin/promotion/<%= item.id %>">
+                <%= item.id %>
+              </a>
             </td>
-            <td style="cursor: pointer" class="w-25" data-bs-toggle="tooltip" data-bs-placement="right">
+            <td style="cursor: pointer" class="w-10" data-bs-toggle="tooltip" data-bs-placement="right">
               <span class="d-inline-block text-truncate" style="max-width: 200px">
                 <%= item.title %>
               </span>
@@ -55,6 +58,14 @@
                 <span class="badge bg-success">Đang kích hoạt</span>
               <% } else { %>
                 <span class="badge bg-danger">Đang khóa</span>
+              <% } %>
+              
+            </td>
+            <td class="w-2">
+              <% if (item.isExp) { %>
+                <span class="badge bg-danger">Hết hạn</span>
+              <% } else { %>
+                <span class="badge bg-success">Còn hạn</span>
               <% } %>
               
             </td>

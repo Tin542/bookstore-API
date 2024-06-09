@@ -6,10 +6,12 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class PromotionRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(params: { data: Prisma.PromotionCreateInput }): Promise<Promotion> {
+  async create(params: {
+    data: Prisma.PromotionCreateInput;
+  }): Promise<Promotion> {
     const { data } = params;
     return this.prisma.promotion.create({
-      data
+      data,
     });
   }
 
@@ -37,9 +39,12 @@ export class PromotionRepository {
     });
   }
 
-  async findOne(id: Prisma.PromotionWhereUniqueInput): Promise<Promotion | null> {
+  async findOne(
+    id: Prisma.PromotionWhereUniqueInput,
+  ): Promise<Promotion | null> {
     return this.prisma.promotion.findUnique({
       where: id,
+      include: { bookPromotion: { include: { book: true } } },
     });
   }
 
