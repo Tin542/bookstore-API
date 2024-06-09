@@ -15,7 +15,31 @@
     </div>
   </div>
   <div class="card p-3 mb-3">
+    <form action="/admin/promotion" method="get">
+      <div class="d-flex justify-content-around align-items-center">
+        <div class="me-auto p-2" style="width: 80%;">
+          <input
+            id="pTitle"
+            name="title"
+            type="text"
+            class="form-control"
+            placeholder="Tiêu đề chương trình..."
+            value="<%= filters.title %>"
+          />
+        </div>
 
+        <div class="p-2">
+          <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            onclick="onClickResetPromotion()"
+          >
+            Reset
+          </button>
+        </div>
+      </div>
+    </form>
   </div>
   <% if(data.length> 0) { %>
     <table class="table table-bordered bg-white mt-3">
@@ -91,25 +115,27 @@
       </tbody>
     </table>
     <nav aria-label="Page navigation example">
-      <ul class="pagination" id="pagination">
+      <ul class="pagination">
         <li class="page-item">
           <a class="page-link" href="#" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
-        <% for(var i=1; i <=pages; i++) { %>
-          <% var isActived=( i===currentPage ) ? "active" : "" ; %>
-            <li class="page-item <%= isActived %>">
-              <a class="page-link" href="/admin/promotion?page=<%= i %>">
-                <%= i %>
-              </a>
-            </li>
-            <% }; %>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
+        <% for(var i=1; i <= pages; i++) { %>
+          <% var isActived = ( i === currentPage ) ? "active" : ""; %>
+        <li class="page-item <%= isActived %>">
+          <form action="/admin/promotion" method="get">
+            <input type="hidden" name="page" value="<%= i %>"/>
+            <input name="title" type="hidden" value="<%= filters.title %>"/>
+            <button type="submit" class="btn btn-link page-link"><%= i %></button>
+          </form>
+        </li>
+        <% }; %>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
       </ul>
     </nav>
     <% } else { %>

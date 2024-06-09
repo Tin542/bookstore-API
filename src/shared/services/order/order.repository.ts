@@ -53,11 +53,4 @@ export class OrderRepository {
     return this.prisma.order.update({ where: id, data: data });
   }
 
-  async loadTotalForAdmin() {
-    return this.prisma.order.findMany({
-      where: {
-        status: OrderStatus.DONE,
-      },
-    });
-  }
 }

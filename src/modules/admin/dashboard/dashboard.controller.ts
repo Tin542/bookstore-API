@@ -23,6 +23,7 @@ export class DashboardController {
     this.logger.log('load dashboard');
     try {
       const orders = await this.orderService.laodForAdmin();
+      const countOrder = await this.orderService.countForAdmin();
       const users = await this.userService.loadForDashboard();
       const product = await this.bookService.loadForDashboardAdmin();
       const topSaler = await this.bookService.findAll({
@@ -41,7 +42,7 @@ export class DashboardController {
         totalPrice: totalPrice,
         count: {
           customer: users,
-          order: orders.length,
+          order: countOrder,
           book: product,
         },
         topSaler: topSaler.list,

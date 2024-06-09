@@ -124,6 +124,9 @@ export class AuthService {
 
   async validateAdmin(username: string, pass: string): Promise<any> {
     const admin = await this.authRepository.findOneAdmin({ username });
+    if(!admin) {
+       throw new BadRequestException('User name invalid');
+    }
     await this.verifyPlainContentWithHashedContent(pass, admin.password);
     const { password, ...result } = admin;
     return result;

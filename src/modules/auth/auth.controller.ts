@@ -17,18 +17,25 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async signIn(@Req() req: Request, @Res() res: Response) {
-    const { username, password } = req.body;
-    const admin = await this.authService.signinAdmin(username, password);
-
-    if (admin) {
-      if (!req.session) {
-        console.error('Session is not initialized');
-        throw new Error('Session is not initialized');
+    try {
+      const { username, password } = req.body;
+      const admin = await this.authService.signinAdmin(username, password);
+      if (admin) {
+        if (!req.session) {
+          console.error('Session is not initialized');
+          throw new Error('Session is not initialized');
+        }
+        req.session.admin = admin;
+        return res.redirect('/admin/dashboard');
+      } else {
+        return res.render('loginPage.ejs', {
+          errorMsg: 'Login Failed',
+        });
       }
-      req.session.admin = admin;
-      return res.redirect('/admin/dashboard'); 
-    } else {
-      return res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Invalid credentials' });
+    } catch (error) {
+      return res.render('loginPage.ejs', {
+        errorMsg: 'username or password is incorrect',
+      });
     }
   }
 
@@ -39,14 +46,16 @@ export class AuthController {
     req.session.destroy((err) => {
       if (err) {
         console.error('Error destroying session:', err);
-        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Failed to sign out' });
+        return res
+          .status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .json({ message: 'Failed to sign out' });
       }
-      return res.redirect('/auth/login'); 
+      return res.redirect('/auth/login');
     });
   }
 
   @Get('login')
   getProfile(@Res() res: Response) {
-    return res.render('loginPage.ejs');
+    return res.render('loginPage.ejs', { errorMsg: '' });
   }
 }

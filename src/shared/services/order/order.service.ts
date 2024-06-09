@@ -121,8 +121,14 @@ export class OrderService {
   }
 
   async laodForAdmin() {
-    const result = await this.orderRepository.loadTotalForAdmin();
+    const result = await this.orderRepository.findMany({where: {
+      status: OrderStatus.DONE
+    }});
     return plainToInstance(OrderEntity, result);
+  }
+
+  async countForAdmin() {
+    return await this.orderRepository.countOrder({});
   }
 
   async getRevenueInMonth(month: string, year: string) {
