@@ -8,15 +8,20 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join, resolve } from 'path';
 import * as cookieParser from 'cookie-parser';
 import { PrismaClientExceptionFilter } from 'nestjs-prisma';
+import * as session from 'express-session';
+import * as dotenv from 'dotenv';
 
 import { AppModule } from './app.module';
 import { PrismaService } from './shared/prisma/prisma.service';
-import * as session from 'express-session';
+
+dotenv.config();
 
 async function bootstrap() {
   // const app = await NestFactory.create(AppModule);
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.use(cookieParser());
+
+  app.setLocal('tinymceApiKey', process.env.TINYMCE_API_KEY);
 
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);

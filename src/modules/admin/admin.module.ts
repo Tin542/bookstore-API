@@ -9,6 +9,7 @@ import { PromotionModule } from './promotion/promotion.module';
 import { SessionMiddleware } from '../auth/middleware/session.middleware';
 import { AuthMiddleware } from '../auth/middleware/auth.middleware';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { AboutModule } from './about/about.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
     UserModule,
     OrderModule,
     PromotionModule,
-    DashboardModule
+    DashboardModule,
+    AboutModule
   ],
   providers: [],
   controllers: [],
@@ -28,6 +30,6 @@ export class AdminModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(SessionMiddleware, AuthMiddleware)
-      .forRoutes('/admin'); // Áp dụng middleware cho tất cả các route
+      .forRoutes('/admin'); // Áp dụng middleware cho tất cả các route admin
   }
 }

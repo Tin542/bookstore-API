@@ -2,10 +2,6 @@ import {
   Controller,
   Get,
   Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
   Render,
   Req,
   Res,
@@ -15,7 +11,6 @@ import {
 import { AuthorService } from '../../../shared/services/author/author.service';
 import { CreateAuthorDto } from '../../../dtos/author/create-author.dto';
 import { UpdateAuthorDto } from '../../../dtos/author/update-author.dto';
-import { AuthorEntity } from '../../../entities/author.entity';
 import { FilterAuthorDto } from 'src/dtos/author/filter-author.dto';
 import { Request, Response } from 'express';
 import { plainToInstance } from 'class-transformer';

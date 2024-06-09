@@ -2,25 +2,17 @@ import {
   Controller,
   Get,
   Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
   Logger,
   Render,
   Req,
   Res,
-  Redirect,
   Query,
-  ParseIntPipe,
-  HttpStatus,
 } from '@nestjs/common';
 import { Response, Request } from 'express';
 
 import { CategoryService } from '../../../shared/services/category/category.service';
 import { CreateCategoryDto } from '../../../dtos/category/create-category.dto';
 import { UpdateCategoryDto } from '../../../dtos/category/update-category.dto';
-import { Category } from '../../../entities/category.entity';
 import { plainToInstance } from 'class-transformer';
 import { FilterCategoryDto } from 'src/dtos/category/filter-category.dto';
 
