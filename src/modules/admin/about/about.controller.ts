@@ -3,20 +3,11 @@ import {
   Get,
   Logger,
   Render,
-  Req,
-  Query,
   Post,
   Res,
   Body,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
-import { PromotionService } from 'src/shared/services/promotion/promotion.service';
-import { CreatePromotionDto } from 'src/dtos/promotion/create-promotion.dto';
-import { BookService } from 'src/shared/services/book/book.service';
-import {
-  FilterPromotionDto,
-  statusPromotion,
-} from 'src/dtos/promotion/filter-promotion.dto';
+import { Response } from 'express';
 import { AboutService } from 'src/shared/services/about/about.service';
 
 @Controller('admin/about')
@@ -26,19 +17,19 @@ export class AboutController {
 
   @Get()
   @Render('adminPage')
-  async loadAboutPage(@Req() req: Request) {
+  async loadAboutPage() {
+    const result = await this.aboutService.findOne(process.env.ABOUTUS_ID);
     return {
       module: 'about',
-      message: 'HELLO WORLD'
+      message: result.content
     };
   }
 
   @Post('submit')
-  @Render('index')
-  submitContent(@Body() body) {
+  async submitContent(@Body() body, @Res() res: Response) {
     const content = body.content;
-    // Bạn có thể lưu hoặc xử lý nội dung tại đây
-    console.log(content);
-    return { message: content };
+    const result = await this.aboutService.update(process.env.ABOUTUS_ID, content);
+    
+    return res.redirect('/admin/about');
   }
 }

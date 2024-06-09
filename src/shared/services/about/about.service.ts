@@ -14,10 +14,12 @@ export class AboutService {
     return plainToInstance(AboutEntity, result);
   }
 
-  async update(id: string, updateAboutDto: UpdateAboutDto) {
+  async update(id: string, updateAboutDto: string) {
     const result = await this.aboutRepository.update({
       id: { id },
-      data: updateAboutDto,
+      data: {
+        content: updateAboutDto
+      },
     });
     return plainToInstance(AboutEntity, result);
   }

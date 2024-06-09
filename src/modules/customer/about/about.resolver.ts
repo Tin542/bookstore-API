@@ -8,8 +8,8 @@ export class AboutResolver {
   constructor(private readonly aboutService: AboutService) {}
 
   @Query(() => AboutEntity)
-  async findOneAbout(@Args('id') id: string) {
-    const result = await this.aboutService.findOne(id);
+  async findOneAbout() {
+    const result = await this.aboutService.findOne(process.env.ABOUTUS_ID);
     return result;
   }
 
