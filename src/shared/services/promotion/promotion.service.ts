@@ -7,6 +7,7 @@ import {
   FilterPromotionDto,
   statusPromotion,
 } from 'src/dtos/promotion/filter-promotion.dto';
+import { UpdatePromotionDto } from 'src/dtos/promotion/edit-promotion.dto';
 
 @Injectable()
 export class PromotionService {
@@ -119,10 +120,31 @@ export class PromotionService {
     });
     return result;
   }
-
   async getDetail(id: string): Promise<PromotionEntity> {
     const result = await this.promotionRepository.findOne({
-      id
+      id,
+    });
+    return plainToInstance(PromotionEntity, result);
+  }
+
+  async edit(id: string, data: UpdatePromotionDto) {
+    const result = await this.promotionRepository.update({
+      id: { id },
+      data: {
+        title: data.title,
+        description: data.description,
+        discountPercents: data.discountPercent,
+        startDate: data.startDate,
+        expriedDate: data.endDate,
+        bookPromotion: {
+          deleteMany: {}, // Remove existing relationships
+          create: data.bookId.map((bookId) => ({
+            book: {
+              connect: { id: bookId },
+            },
+          })),
+        },
+      },
     });
     return plainToInstance(PromotionEntity, result);
   }

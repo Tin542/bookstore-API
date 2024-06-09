@@ -72,5 +72,5 @@ export class PromotionEntity {
   updatedAt: Promotion['updatedAt'];
 
   @Field(() => [BookPromotionEntity])
-  bookPromotions: BookPromotionEntity[]
+  bookPromotion: BookPromotionEntity[]
 }

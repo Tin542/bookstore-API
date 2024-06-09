@@ -145,7 +145,7 @@ enum PaymentMethod {
 
 type PromotionEntity {
   book: [BookEntity!]!
-  bookPromotions: [BookPromotionEntity!]!
+  bookPromotion: [BookPromotionEntity!]!
   createdAt: String!
   description: String!
   discountPercents: Int

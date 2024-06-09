@@ -15,6 +15,7 @@ import { BookService } from 'src/shared/services/book/book.service';
 import { FilterPromotionDto, statusPromotion } from 'src/dtos/promotion/filter-promotion.dto';
 import { plainToClass, plainToInstance } from 'class-transformer';
 import { PromotionEntity } from 'src/entities/promotion.entity';
+import { UpdatePromotionDto } from 'src/dtos/promotion/edit-promotion.dto';
 
 @Controller('admin/promotion')
 export class PromotionController {
@@ -48,11 +49,13 @@ export class PromotionController {
       let title: string = req.query.title as string;
       const result = await this.promotionService.getDetail(id);
       const listBook = await this.bookService.findAllWithoutPagination(title);
+      const listSelectedBook = result.bookPromotion.map((item) => item.bookId);
       return {
         module: "detailPromotion",
         data: result,
         listBook: listBook,
-        searchValue: title
+        searchValue: title,
+        selectedBook: listSelectedBook
       }
       // return res.redirect('/admin/promotion');
     } catch (error) {
@@ -76,6 +79,26 @@ export class PromotionController {
       return res.redirect('/admin/promotion');
     } catch (error) {
       console.log('errro create promotion', error);
+    }
+  }
+
+  @Post('edit/:id')
+  async edit(@Req() req: Request, @Res() res: Response) {
+    this.logger.log('Edit promotion');
+    try {
+      const id = req.params.id;
+      const data: UpdatePromotionDto = {
+        title: req.body.title,
+        bookId: req.body.bookId,
+        description: req.body.description,
+        discountPercent: parseInt(req.body.discountPercent),
+        startDate: new Date(req.body.startDate),
+        endDate: new Date(req.body.endDate)
+      } 
+      await this.promotionService.edit(id, data);
+      return res.redirect('/admin/promotion');
+    } catch (error) {
+      console.log('errro edit promotion', error);
     }
   }
 

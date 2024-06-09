@@ -1,9 +1,4 @@
 <div class="bg-light p-3">
-
-
-
-
-
     <div class="container mt-3 p-3">
         <nav style="
         --bs-breadcrumb-divider: url(
@@ -23,7 +18,7 @@
         <div class="card p-3 mb-3">
             <div class="d-flex bd-highlight">
                 <div class="me-auto p-2 bd-highlight">
-                    <h3>CHỈNH SỬA CHƯƠNG TRÌNH GIẢM GIÁ</h3>
+                    <h3>CHI TIẾT CHƯƠNG TRÌNH GIẢM GIÁ</h3>
                 </div>
                 <div class="p-2 bd-highlight">
                 </div>
@@ -31,7 +26,7 @@
         </div>
         <div class="row">
             <div class="col-6">
-                <form action="/admin/promotion/add" method="get">
+                <form action="/admin/promotion/<%= data.id %>" method="get">
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Search for book title..."
                             aria-label="Book title" name="title" value="<%= searchValue %>"
@@ -42,7 +37,7 @@
             </div>
         </div>
 
-        <form action="/admin/promotion/create" method="post">
+        <form action="/admin/promotion/edit/<%= data.id %>" method="post">
             <div class="row">
                 <div class="col">
                     <div class="card">
@@ -56,7 +51,7 @@
                             <% listBook.forEach(function(item, index) { %>
                                 <li class="list-group-item d-flex book-item">
                                     <input class="form-check-input me-1" name="bookId" type="checkbox"
-                                        value="<%= item.id %>" aria-label="...">
+                                        value="<%= item.id %>" aria-label="..." <%= selectedBook.includes(item.id) ? 'checked' : '' %>>
                                     <div class="d-flex">
                                         <img src="<%= item.imageUrl %>" height="60px" width="60px" />
                                         <div data-bs-toggle="tooltip" data-bs-placement="right"
@@ -88,33 +83,34 @@
                         <div class="card-body">
                             <div class="col-12">
                                 <label for="name" class="form-label">Tiêu đề</label>
-                                <input type="text" class="form-control" id="GiamGia" name="title"
-                                    placeholder="Nhập tiêu đề của chương trình" required />
+                                <input value="<%= data.title %>" type="text" class="form-control" id="GiamGia"
+                                    name="title" placeholder="Nhập tiêu đề của chương trình" required />
                             </div>
                             <div class="col-12">
                                 <label for="name" class="form-label">Giảm giá</label>
-                                <input type="number" class="form-control" id="GiamGia" name="discountPercent"
-                                    placeholder="Nhập số phần trăm giảm giá" required />
+                                <input value="<%= data.discountPercents %>" type="number" class="form-control"
+                                    id="GiamGia" name="discountPercent" placeholder="Nhập số phần trăm giảm giá"
+                                    required />
                             </div>
                             <div class="col-6">
                                 <label for="price" class="form-label">Thời gian bắt đầu</label>
-                                <input type="date" class="form-control" id="startDate" name="startDate" required />
+                                <input type="date" class="form-control" id="startDate"
+                                    name="startDate" required />
                             </div>
                             <div class="col-6">
                                 <label for="price" class="form-label">Thời gian kết thúc</label>
-                                <input type="date" class="form-control" id="endDate" name="endDate" required />
+                                <input type="date" class="form-control" id="endDate"
+                                    name="endDate" required />
                             </div>
 
                             <div class="col-12">
                                 <label for="description" class="form-label">Mô tả</label>
                                 <textarea class="form-control" id="desc" name="description" placeholder="Nhập mô tả"
-                                    rows="3" required></textarea>
+                                    rows="3" required><%= data.description %>"</textarea>
                             </div>
 
                             <div class="col-12">
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">Lưu</button>
-                                </div>
+                                <button style="width: 100%; margin-top: 10px;" type="submit" class="btn btn-primary">Lưu</button>
                             </div>
 
                         </div>
@@ -137,4 +133,16 @@
                 }
             });
         });
+    </script>
+    <script>
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        document.getElementById('startDate').value = formatDate('<%= data.startDate %>');
+        document.getElementById('endDate').value = formatDate('<%= data.expriedDate %>');
     </script>
