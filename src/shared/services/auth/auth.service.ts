@@ -33,7 +33,7 @@ export class AuthService {
     if (!user) {
       throw new BadRequestException('user is not existed');
     }
-    if(!user.isActive){
+    if (!user.isActive) {
       throw new BadRequestException('This account has been blocked');
     }
     await this.verifyPlainContentWithHashedContent(password, user.password);
@@ -61,15 +61,57 @@ export class AuthService {
     return token;
   }
 
+  generateRefreshToken(payload: TokenPayload) {
+    const token = this.jwtService.sign(payload, {
+      secret: process.env.JWT_ACCESS_TOKEN_SECRET,
+      expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION_TIME,
+    });
+    if (!token) {
+      throw new BadRequestException('Failed to verify token');
+    }
+    return token;
+  }
+
+  async refreshAccessToken(refreshToken: string) {
+    try {
+      const payload = await this.jwtService.verify(refreshToken);
+      const user = await this.authRepository.findOne({ username: payload.username });
+      if (!user) {
+        throw new BadRequestException();
+      }
+
+      const newPayload = { username: user.username, sub: user.id };
+      const accessToken = this.generateAccessToken(newPayload);
+      const result = plainToInstance(SignInResponseDto, {
+        accessToken,
+        userInfo: user,
+      });
+      return result;
+    } catch (e) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+  }
+
   async signin(signinDto: SignInDto): Promise<SignInResponseDto> {
     const user = await this.getAuthenticatedUser(
       signinDto.username,
       signinDto.password,
     );
+    let refresh_token = user.refreshToken;
+    if (!refresh_token) {
+      refresh_token = this.generateRefreshToken({
+        sub: user.id,
+        username: user.username,
+      });
+      await this.authRepository.updateRefreshToken(
+        user.username,
+        refresh_token,
+      );
+    }
     const payload = {
       sub: user.id,
       username: user.username,
-      refresh_token: user.refreshToken,
+      refresh_token: refresh_token,
     };
     // create access token
     const accessToken = this.generateAccessToken(payload);

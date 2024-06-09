@@ -5,8 +5,6 @@ import { UserEntity } from 'src/entities/user.entity';
 import { AuthService } from 'src/shared/services/auth/auth.service';
 import { SignInResponseDto } from 'src/dtos/auth/signin-response.dto';
 // import { LocalAuthGuard } from './guard/local.guard';
-import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from './guard/jwt-auth.guard';
 
 @Resolver(() => UserEntity)
 export class AuthResolver {
@@ -21,6 +19,12 @@ export class AuthResolver {
   @Mutation(() => SignInResponseDto, { nullable: false })
   async signin(@Args() args: SignInDto) {
     const result = await this.authService.signin(args);
+    return result;
+  }
+
+  @Mutation(() => SignInResponseDto)
+  async refresh(@Args('refresh_token') refreshToken: string) {
+    const result = await this.authService.refreshAccessToken(refreshToken);
     return result;
   }
 

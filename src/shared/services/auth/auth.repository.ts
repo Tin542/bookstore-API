@@ -11,11 +11,24 @@ export class AuthRepository {
     return this.prisma.user.create({ data });
   }
 
-  async findOne(username: Prisma.UserWhereUniqueInput): Promise<User | null> {
-    return this.prisma.user.findUnique({ where: username });
+  async updateRefreshToken(
+    username: string,
+    refresh_token: string,
+  ): Promise<User | null> {
+    return this.prisma.user.update({
+      where: { username: username },
+      data: { refreshToken: refresh_token },
+    });
   }
 
-  async findOneAdmin(username: Prisma.AdminWhereUniqueInput): Promise<Admin | null>{
+  async findOne(username: Prisma.UserWhereUniqueInput): Promise<User | null> {
+    const result = await this.prisma.user.findUnique({ where: username });
+    return result;
+  }
+
+  async findOneAdmin(
+    username: Prisma.AdminWhereUniqueInput,
+  ): Promise<Admin | null> {
     return this.prisma.admin.findUnique({ where: username });
   }
 }

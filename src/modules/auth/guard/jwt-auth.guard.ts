@@ -38,7 +38,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       return true;
     } catch (err) {
       console.log(err);
-      throw new UnauthorizedException('canActive Failed');
+      throw new UnauthorizedException();
     }
   }
 
