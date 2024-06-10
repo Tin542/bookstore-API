@@ -10,6 +10,7 @@ import { SessionMiddleware } from '../auth/middleware/session.middleware';
 import { AuthMiddleware } from '../auth/middleware/auth.middleware';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AboutModule } from './about/about.module';
+import { ReviewModule } from './review/review.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { AboutModule } from './about/about.module';
     OrderModule,
     PromotionModule,
     DashboardModule,
-    AboutModule
+    AboutModule,
+    ReviewModule
   ],
   providers: [],
   controllers: [],

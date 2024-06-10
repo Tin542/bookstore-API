@@ -47,6 +47,11 @@ export class ReviewService {
     const whereCondition: any = {
       AND: [],
     };
+    if (filter.bookTitle) {
+      whereCondition.AND.push({
+        book: { title: { contains: filter.bookTitle } },
+      });
+    }
     if (filter.bookId) {
       whereCondition.AND.push({
         bookId: { equals: filter.bookId },
@@ -72,7 +77,7 @@ export class ReviewService {
       }),
     ]);
 
-    const result = plainToInstance(OrderEntity, list);
+    const result = plainToInstance(ReviewEntity, list);
 
     return {
       list: result,

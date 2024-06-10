@@ -161,7 +161,7 @@ type Query {
   findAllBooks(author: [String!], category: [String!], isActive: Boolean = true, limit: Int, page: Int, rate: [Int!], sortByEnum: String, title: String): ResponseBookDto!
   findAllCategories: [Category!]!
   findOneAbout: AboutEntity!
-  getAllReview(bookId: String, limit: Int, page: Int, rate: [Int!]): ResponseReviewDto!
+  getAllReview(bookId: String, bookTitle: String, limit: Int, page: Int, rate: [Int!]): ResponseReviewDto!
   getCart(uid: String!): [CartItemEntity!]!
   getDetailBook(id: String!): DetailBookDto!
   getOrder(limit: Int, page: Int, userId: String): [OrderEntity!]!
@@ -186,6 +186,7 @@ type ResponseReviewDto {
 }
 
 type ReviewEntity {
+  book: BookEntity!
   bookId: String!
   content: String!
   createdAt: String!

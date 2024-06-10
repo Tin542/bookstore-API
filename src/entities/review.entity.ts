@@ -3,6 +3,7 @@ import { Review } from '@prisma/client';
 import { Transform } from 'class-transformer';
 import * as moment from "moment"; 
 import { UserEntity } from './user.entity';
+import { BookEntity } from './book.entity';
 
 @ObjectType()
 export class ReviewEntity {
@@ -47,4 +48,7 @@ export class ReviewEntity {
 
   @Field(() => UserEntity)
   user: UserEntity;
+
+  @Field(() => BookEntity)
+  book: BookEntity;
 }

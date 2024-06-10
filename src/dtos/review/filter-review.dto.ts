@@ -8,6 +8,11 @@ export class FilterReviewDto {
   @IsOptional()
   bookId?: string;
 
+  @Field(() => String, { nullable: true })
+  @IsString()
+  @IsOptional()
+  bookTitle?: string;
+
   @Field(() => [Int], { nullable: true })
   @IsArray()
   @IsOptional()

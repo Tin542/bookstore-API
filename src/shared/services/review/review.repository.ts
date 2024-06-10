@@ -25,7 +25,7 @@ export class ReviewsRepository {
       take,
       where,
       orderBy,
-      include: { user: true },
+      include: { user: true, book: true },
     });
   }
 
