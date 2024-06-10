@@ -7,7 +7,6 @@ import { FilterOrderkDto } from 'src/dtos/order/filter-order.dto';
 import { UpdateStatusOrderDto } from 'src/dtos/order/update-order-status.dto';
 import * as moment from 'moment';
 import { OrderStatus } from '@prisma/client';
-import { equals } from 'class-validator';
 
 @Injectable()
 export class OrderService {
