@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, Int, Mutation, Float } from '@nestjs/graphql';
+import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { plainToInstance } from 'class-transformer';
 import { DetailBookDto } from 'src/dtos/book/detail-book.dto';
 

@@ -13,8 +13,6 @@ import { PromotionService } from 'src/shared/services/promotion/promotion.servic
 import { CreatePromotionDto } from 'src/dtos/promotion/create-promotion.dto';
 import { BookService } from 'src/shared/services/book/book.service';
 import { FilterPromotionDto, statusPromotion } from 'src/dtos/promotion/filter-promotion.dto';
-import { plainToClass, plainToInstance } from 'class-transformer';
-import { PromotionEntity } from 'src/entities/promotion.entity';
 import { UpdatePromotionDto } from 'src/dtos/promotion/edit-promotion.dto';
 
 @Controller('admin/promotion')

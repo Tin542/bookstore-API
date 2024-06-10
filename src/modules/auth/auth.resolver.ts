@@ -4,7 +4,6 @@ import { SignUpDto } from 'src/dtos/auth/signup.dto';
 import { UserEntity } from 'src/entities/user.entity';
 import { AuthService } from 'src/shared/services/auth/auth.service';
 import { SignInResponseDto } from 'src/dtos/auth/signin-response.dto';
-// import { LocalAuthGuard } from './guard/local.guard';
 
 @Resolver(() => UserEntity)
 export class AuthResolver {

@@ -8,7 +8,7 @@ import {
   Post,
   Res,
 } from '@nestjs/common';
-import { Request, Response, json } from 'express';
+import { Request, Response } from 'express';
 
 import { OrderService } from 'src/shared/services/order/order.service';
 import { FilterOrderkDto } from 'src/dtos/order/filter-order.dto';

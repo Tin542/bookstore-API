@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { PrismaModule } from 'src/shared/prisma/prisma.module';
 import { BookController } from './book.controller';
 import { BookService } from 'src/shared/services/book/book.service';
@@ -10,7 +10,6 @@ import { AuthorRepository } from 'src/shared/services/author/author.repository';
 import { CloudinaryService } from 'src/shared/cloudinary/cloudinary.service';
 import { ReviewService } from 'src/shared/services/review/review.service';
 import { ReviewsRepository } from 'src/shared/services/review/review.repository';
-import { AuthMiddleware } from 'src/modules/auth/middleware/auth.middleware';
 
 @Module({
   imports: [PrismaModule],

@@ -1,4 +1,4 @@
-import { Resolver, Query, Args } from '@nestjs/graphql';
+import { Resolver, Query } from '@nestjs/graphql';
 import { AboutEntity } from 'src/entities/about.entity';
 import { AboutService } from 'src/shared/services/about/about.service';
 

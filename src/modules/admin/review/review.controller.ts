@@ -1,11 +1,8 @@
 import {
     Controller,
     Get,
-    Post,
     Logger,
     Render,
-    Req,
-    Res,
     Query,
   } from '@nestjs/common';
 
