@@ -38,40 +38,40 @@
         <div class="col bg-light">
           <!-- Content -->
           <% if(module==='author') { %>
-            <%- include('./authorList.ejs') %>
+            <%- include('./components/author/authorList.ejs') %>
           <% } %>
           <% if(module==='category') { %>
-            <%- include('./category.ejs') %>
+            <%- include('./components/category/category.ejs') %>
           <% } %>
           <% if(module==='book') { %>
-            <%- include('./productList.ejs') %>
+            <%- include('./components/product/productList.ejs') %>
           <% } %>
           <% if(module==='user') { %>
-            <%- include('./userList.ejs') %>
+            <%- include('./components/user/userList.ejs') %>
           <% } %>
           <% if(module==='order') { %>
-            <%- include('./orderList.ejs') %>
+            <%- include('./components/order/orderList.ejs') %>
           <% } %>
           <% if(module==='orderDetail') { %>
-            <%- include('./orderDetail.ejs') %>
+            <%- include('./components/order/orderDetail.ejs') %>
           <% } %>
           <% if(module==='promotion') { %>
-            <%- include('./promotionList.ejs') %>
+            <%- include('./components/promotion/promotionList.ejs') %>
           <% } %>
           <% if(module==='addPromotionPage') { %>
-            <%- include('./addPromotionPage.ejs') %>
+            <%- include('./components/promotion/addPromotionPage.ejs') %>
           <% } %>
           <% if(module==='detailPromotion') { %>
-            <%- include('./detailPromotion.ejs') %>
+            <%- include('./components/promotion/detailPromotion.ejs') %>
           <% } %>
           <% if(module==='dashboard') { %>
-            <%- include('./dashboard.ejs') %>
+            <%- include('./components/dashboard/dashboard.ejs') %>
           <% } %>
           <% if(module==='about') { %>
-            <%- include('./about.ejs') %>
+            <%- include('./components/about/about.ejs') %>
           <% } %>
           <% if(module==='review') { %>
-            <%- include('./reviewList.ejs') %>
+            <%- include('./components/review/reviewList.ejs') %>
           <% } %>
         </div>
       </div>
