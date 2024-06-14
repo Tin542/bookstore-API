@@ -18,15 +18,12 @@ services:
     depends_on:
       - postgres
     environment:
-      DB_HOST: postgres
-      DB_PORT: 5433
-      DB_USER: bookstore
-      DB_PASSWORD: 123456
-      DB_DATABASE: bookstore
+      DATABASE_URL: ${DATABASE_URL}
     ports:
       - '3000:3000'
-    volumes:
-      - .:/usr/src/app
     command: npm run start:dev
 volumes:
   postgres:
+networks:
+  booksotre:
+    driver: bridge
