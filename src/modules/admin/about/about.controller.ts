@@ -18,7 +18,7 @@ export class AboutController {
   @Get()
   @Render('adminPage')
   async loadAboutPage() {
-    const result = await this.aboutService.findOne(process.env.ABOUTUS_ID);
+    const result = await this.aboutService.findOne(process.env.ABOUT_US_ID);
     return {
       module: 'about',
       message: result.content
