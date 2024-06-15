@@ -181,6 +181,6 @@ model Review {
 }
 
 model About {
-  id      String @id @default(uuid())
+  id      String @id 
   content String
 }

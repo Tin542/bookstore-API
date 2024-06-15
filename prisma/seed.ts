@@ -26,6 +26,7 @@ async function main() {
 
   const about = await prisma.about.create({
     data: {
+      id: process.env.ABOUT_US_ID,
       content: `<p><span style="font-size: 18pt;"><strong>Welcome to Bookworm</strong></span></p>
 <p><span style="font-size: 14pt;">"Bookworm is an independent New York bookstore and language school with&nbsp;locations in Manhattan and Brooklyn. We specialize in travel books and language&nbsp;classes."</span></p>
 <p><span style="font-size: 18pt;"><strong>Our Story</strong></span></p>
@@ -38,6 +39,7 @@ async function main() {
   });
 
   console.log({ admin, about });
+  console.log('=============init database success============')
 }
 main()
   .then(async () => {
