@@ -8,8 +8,7 @@ export class AboutResolver {
 
   @Query(() => AboutEntity)
   async findOneAbout() {
-    const id = localStorage.getItem(process.env.ABOUT_US_ID);
-    const result = await this.aboutService.findOne(id);
+    const result = await this.aboutService.findOne(process.env.ABOUT_US_ID);
     return result;
   }
 
