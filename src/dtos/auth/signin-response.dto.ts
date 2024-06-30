@@ -8,6 +8,10 @@ export class SignInResponseDto {
   @Field(() => String)
   accessToken: string;
 
+  @IsString()
+  @Field(() => String)
+  refreshToken: string;
+
   @Field(() => UserEntity)
   userInfo: UserEntity;
 }

@@ -4,6 +4,7 @@ import { SignUpDto } from 'src/dtos/auth/signup.dto';
 import { UserEntity } from 'src/entities/user.entity';
 import { AuthService } from 'src/shared/services/auth/auth.service';
 import { SignInResponseDto } from 'src/dtos/auth/signin-response.dto';
+import { LogoutResponseDto } from 'src/dtos/auth/logout.dto';
 
 @Resolver(() => UserEntity)
 export class AuthResolver {
@@ -24,6 +25,12 @@ export class AuthResolver {
   @Mutation(() => SignInResponseDto)
   async refresh(@Args('refresh_token') refreshToken: string) {
     const result = await this.authService.refreshAccessToken(refreshToken);
+    return result;
+  }
+
+  @Mutation(() => UserEntity)
+  async logout(@Args('refresh_token') refreshToken: string) {
+    const result = await this.authService.logout(refreshToken);
     return result;
   }
 

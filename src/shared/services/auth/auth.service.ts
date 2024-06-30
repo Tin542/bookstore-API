@@ -16,8 +16,6 @@ import {
 import { SignInDto } from 'src/dtos/auth/signin.dto';
 import { SignInResponseDto } from 'src/dtos/auth/signin-response.dto';
 import { TokenPayload } from 'src/dtos/auth/token-payload.dto';
-import { AdminEntity } from 'src/entities/admin.entity';
-import { SignInAdminDto } from 'src/dtos/auth/signin-admin.dto';
 
 @Injectable()
 export class AuthService {
@@ -97,8 +95,8 @@ export class AuthService {
       signinDto.username,
       signinDto.password,
     );
-    let refresh_token = user.refreshToken;
-    if (!refresh_token) {
+    let refresh_token = null;
+    if (!user.refreshToken) {
       refresh_token = this.generateRefreshToken({
         sub: user.id,
         username: user.username,
@@ -111,12 +109,12 @@ export class AuthService {
     const payload = {
       sub: user.id,
       username: user.username,
-      refresh_token: refresh_token,
     };
     // create access token
     const accessToken = this.generateAccessToken(payload);
     const result = plainToInstance(SignInResponseDto, {
       accessToken,
+      refreshToken: refresh_token,
       userInfo: user,
     });
     return result;
@@ -167,5 +165,21 @@ export class AuthService {
       },
     });
     return plainToInstance(UserEntity, result);
+  }
+
+  async logout(refreshToken: string): Promise<UserEntity> {
+    try {
+      const payload = await this.jwtService.verify(refreshToken);
+      const user = await this.authRepository.findOne({ username: payload.username });
+      if (!user) {
+        throw new BadRequestException();
+      }
+      const result = await this.authRepository.updateRefreshToken(user.username, null);
+      if(!result) throw new BadRequestException();
+      return plainToInstance(UserEntity, result);
+    } catch (e) {
+      console.log('errr', e);
+      throw new UnauthorizedException('Invalid refresh token');
+    }
   }
 }
