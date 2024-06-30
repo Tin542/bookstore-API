@@ -73,7 +73,9 @@ export class AuthService {
   async refreshAccessToken(refreshToken: string) {
     try {
       const payload = await this.jwtService.verify(refreshToken);
-      const user = await this.authRepository.findOne({ username: payload.username });
+      const user = await this.authRepository.findOne({
+        username: payload.username,
+      });
       if (!user) {
         throw new BadRequestException();
       }
@@ -105,6 +107,8 @@ export class AuthService {
         user.username,
         refresh_token,
       );
+    } else {
+      refresh_token = user.refreshToken;
     }
     const payload = {
       sub: user.id,
@@ -122,8 +126,8 @@ export class AuthService {
 
   async validateAdmin(username: string, pass: string): Promise<any> {
     const admin = await this.authRepository.findOneAdmin({ username });
-    if(!admin) {
-       throw new BadRequestException('User name invalid');
+    if (!admin) {
+      throw new BadRequestException('User name invalid');
     }
     await this.verifyPlainContentWithHashedContent(pass, admin.password);
     const { password, ...result } = admin;
@@ -170,12 +174,17 @@ export class AuthService {
   async logout(refreshToken: string): Promise<UserEntity> {
     try {
       const payload = await this.jwtService.verify(refreshToken);
-      const user = await this.authRepository.findOne({ username: payload.username });
+      const user = await this.authRepository.findOne({
+        username: payload.username,
+      });
       if (!user) {
         throw new BadRequestException();
       }
-      const result = await this.authRepository.updateRefreshToken(user.username, null);
-      if(!result) throw new BadRequestException();
+      const result = await this.authRepository.updateRefreshToken(
+        user.username,
+        null,
+      );
+      if (!result) throw new BadRequestException();
       return plainToInstance(UserEntity, result);
     } catch (e) {
       console.log('errr', e);
