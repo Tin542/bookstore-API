@@ -6,6 +6,7 @@
   + Using JWT token to store access token and user info
   + Refresh access Token
 - Admin (MVC model)
+  + Account: admin/123456
   + Manage Dashboard (top product, top category, chart)
   + Manage product (CRUD)
   + Manage Review (CRUD)
