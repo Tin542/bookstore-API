@@ -22,6 +22,7 @@
   + Post review on product
   + Cart Management (CRUD)
   + place order
+  
 **Database:**
 ![bookstore-ERD-v2](https://github.com/Tin542/bookstore-API/assets/60846693/4a94235b-efc1-4e02-9d2f-8d2f7dbbcdd7)
 
