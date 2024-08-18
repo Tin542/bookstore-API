@@ -89,7 +89,7 @@ type Mutation {
   createOrder(address: String!, customerName: String!, orderItem: [OrderItemInput!]!, paidAt: DateTime, paymentMethod: PaymentMethod!, phoneNumber: String!, status: OrderStatus!, totalPrice: Float!, userId: String!): OrderEntity!
   createReview(bookId: String!, content: String!, rate: Int!, userId: String!): ReviewEntity!
   deleteAllCart(uid: String!): Float!
-  logout(refresh_token: String!): UserEntity!
+  logout(uid: String!): UserEntity!
   refresh(refresh_token: String!): SignInResponseDto!
   removeCart(id: String!): CartItemEntity!
   signin(password: String!, username: String!): SignInResponseDto!

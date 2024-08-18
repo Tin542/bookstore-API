@@ -171,11 +171,10 @@ export class AuthService {
     return plainToInstance(UserEntity, result);
   }
 
-  async logout(refreshToken: string): Promise<UserEntity> {
+  async logout(uid: string): Promise<UserEntity> {
     try {
-      const payload = await this.jwtService.verify(refreshToken);
       const user = await this.authRepository.findOne({
-        username: payload.username,
+        id: uid,
       });
       if (!user) {
         throw new BadRequestException();
@@ -188,7 +187,7 @@ export class AuthService {
       return plainToInstance(UserEntity, result);
     } catch (e) {
       console.log('errr', e);
-      throw new UnauthorizedException('Invalid refresh token');
+      throw new BadRequestException();
     }
   }
 }

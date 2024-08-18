@@ -29,8 +29,8 @@ export class AuthResolver {
   }
 
   @Mutation(() => UserEntity)
-  async logout(@Args('refresh_token') refreshToken: string) {
-    const result = await this.authService.logout(refreshToken);
+  async logout(@Args('uid') uid: string) {
+    const result = await this.authService.logout(uid);
     return result;
   }
 
