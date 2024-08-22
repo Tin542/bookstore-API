@@ -25,10 +25,13 @@
   + place order
   
 **Database:**
-![bookstore-ERD-v2](https://github.com/Tin542/bookstore-API/assets/60846693/4a94235b-efc1-4e02-9d2f-8d2f7dbbcdd7)
+![bookstore-DB](https://github.com/user-attachments/assets/154e3872-9413-41f9-9587-be173dd4e259)
 
 **Admin Page Wirefirm**
 ![bookstore-wirefirm](https://github.com/Tin542/bookstore-API/assets/60846693/c2d47551-6da8-4d17-a022-bbf3474ba0ad)
 
 **Usecase Diagram**
 ![bookstore-usecase-diagram drawio](https://github.com/Tin542/bookstore-API/assets/60846693/02608733-68f3-43fc-871c-c1f6026d9c7c)
+
+**software Architecture**
+![bookstore-software architure v2-software architure drawio](https://github.com/user-attachments/assets/fb769ce6-2a2a-4db4-95fa-f0a503f22b33)
