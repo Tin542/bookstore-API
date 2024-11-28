@@ -48,4 +48,4 @@ WORKDIR /app
 COPY . .
 
 # Define the entrypoint
-ENTRYPOINT ["gitleaks"]
+# ENTRYPOINT ["gitleaks"]
