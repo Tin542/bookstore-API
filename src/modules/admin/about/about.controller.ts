@@ -28,7 +28,7 @@ export class AboutController {
   @Post('submit')
   async submitContent(@Body() body, @Res() res: Response) {
     const content = body.content;
-    const result = await this.aboutService.update(process.env.ABOUTUS_ID, content);
+    const result = await this.aboutService.update(process.env.ABOUT_US_ID, content);
     return res.redirect('/admin/about');
   }
 }
