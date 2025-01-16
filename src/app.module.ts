@@ -15,6 +15,7 @@ import { JwtStrategy } from './modules/auth/strategies/jwt.strategy';
 import { UserService } from './shared/services/user/user.service';
 import { UserRepository } from './shared/services/user/user.repository';
 import { SessionMiddleware } from './modules/auth/middleware/session.middleware';
+import { ChatbotModule } from './modules/chatbox/chatbox.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { SessionMiddleware } from './modules/auth/middleware/session.middleware'
     CustomerModule,
     CloudinaryModule,
     AuthModule,
+    ChatbotModule
   ],
   providers: [
     providePrismaClientExceptionFilter(),
