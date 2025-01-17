@@ -11,6 +11,35 @@ export class BookRepository {
     return this.prisma.book.create({ data });
   }
 
+  async findBooksByKeywords(keywords: string[]): Promise<Book[]> {
+    return this.prisma.book.findMany({
+      where: {
+        OR: keywords.map((keyword) => ({
+          title: { contains: keyword, mode: 'insensitive' },
+          author: { name: { contains: keyword, mode: 'insensitive' } },
+          category: { name: { contains: keyword, mode: 'insensitive' } },
+        })),
+      },
+      take: 5, // Giới hạn kết quả trả về
+      include: {
+        category: true,
+        author: true,
+        bookPromotion: {
+          where: {
+            promotion: {
+              AND: {
+                isActive: true,
+                startDate: { lte: new Date() },
+                expriedDate: { gte: new Date() },
+              },
+            },
+          },
+          include: { promotion: true },
+        },
+      },
+    });
+  }
+
   async findMany(params: {
     skip?: number;
     take?: number;

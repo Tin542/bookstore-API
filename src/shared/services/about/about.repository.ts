@@ -11,6 +11,10 @@ export class AboutRepository {
     return result;
   }
 
+  async getStoreInfo(): Promise<About> {
+    return this.prisma.about.findFirst(); // Assuming there is only one record
+  }
+
   async update(params: {
     id: Prisma.AboutWhereUniqueInput;
     data: Prisma.AboutUpdateInput;
